@@ -1,0 +1,45 @@
+{
+  "carName": "ferrari_296_gt3",
+  "track": "spa",
+  "_source": "Transkribiert aus In-Game-Screenshots (ACC, Chronos Motorsport Team). Hotlap/Quali-Setup. In-Game-Anzeigewerte.",
+  "referenceTemp": { "air": 19, "track": 24 },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": { "fl": 25.6, "fr": 25.8, "rl": 25.3, "rr": 25.4 }
+    },
+    "alignment": {
+      "camber": { "fl": -4.0, "fr": -4.0, "rl": -3.5, "rr": -3.5 },
+      "toe": { "fl": -0.35, "fr": -0.35, "rl": -0.1, "rr": -0.1 },
+      "caster": 13.8
+    },
+    "electronics": { "tc1": 7, "tc2": 0, "abs": 2, "ecuMap": 1 },
+    "strategy": { "fuel": 2, "tyreSet": 1, "frontBrakePad": 1, "rearBrakePad": 1 }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 6,
+      "arbRear": 0,
+      "brakeTorque": 100,
+      "brakeBias": 59.2,
+      "steeringRatio": 15,
+      "preload": 20,
+      "wheelRate": { "front": 163769, "rear": 122091 },
+      "bumpstopRate": { "front": 500, "rear": 1000 },
+      "bumpstopRange": { "front": 16, "rear": 38 }
+    },
+    "dampers": {
+      "front": { "bumpSlow": 0, "bumpFast": 0, "reboundSlow": 11, "reboundFast": 11 },
+      "rear": { "bumpSlow": 0, "bumpFast": 0, "reboundSlow": 11, "reboundFast": 11 }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 50,
+      "rideHeightRear": 54,
+      "rearWing": 8,
+      "diffusor": 0,
+      "brakeDuctFront": 2,
+      "brakeDuctRear": 2,
+      "frontSpoilerVariation": null
+    }
+  }
+}

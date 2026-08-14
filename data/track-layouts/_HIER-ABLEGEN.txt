@@ -1,0 +1,22 @@
+ECHTE STRECKENLAYOUTS HIER ABLEGEN
+===================================
+
+Lege die Layout-Dateien hier ab — am besten als SVG (Vektor).
+Bitte exakt so benennen (Datei-IDs der Strecken):
+
+  imola.svg
+  kyalami.svg
+  nbr_24h.svg      (Nordschleife + GP, 24h-Layout)
+  nbr_gp.svg       (GP-Strecke)
+  spa.svg
+  valencia.svg
+
+Format:
+  - SVG ist ideal: ich ziehe die Streckenlinie heraus und baue sie sauber ein.
+  - PNG/JPG geht zur Not auch, wird aber ungenauer (muss nachgezeichnet werden).
+
+Sobald die Dateien hier liegen, sag kurz Bescheid — ich integriere sie
+in tracks.json und ersetze die stilisierten Platzhalter.
+
+Quelle: eigene/offizielle SVGs sind am saubersten. Aus dem Netz (z. B.
+Wikimedia Commons) bitte auf die Lizenz achten (CC-BY-SA -> Quellenangabe).

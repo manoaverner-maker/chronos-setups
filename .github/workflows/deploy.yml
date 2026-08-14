@@ -1,0 +1,66 @@
+# Baut die Setup-App bei jedem Push auf main und deployt sie zu GitHub Pages.
+# Die Daten unter /data werden beim Build von client/scripts/stage-data.mjs
+# ins Frontend gestaged — neue Setups also einfach als JSON committen.
+name: Deploy zu GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Die Seite liegt unter https://manoaverner-maker.github.io/chronos-setups/
+      APP_BASE: /chronos-setups/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+        working-directory: client
+      - run: npm run build
+        working-directory: client
+      # GitHub Pages kennt keine _redirects-Datei: 404.html uebernimmt die
+      # SPA-Weiterleitung, damit Deep-Links (/ferrari_296_gt3/imola) funktionieren.
+      - run: cp client/dist/index.html client/dist/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: client/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Pages meldet direkt nach dem Artifact-Upload oefter "Deployment failed,
+      # try again later" — darum Retries mit wachsendem Abstand.
+      - id: versuch1
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - if: steps.versuch1.outcome == 'failure'
+        run: sleep 60
+      - id: versuch2
+        if: steps.versuch1.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - if: steps.versuch1.outcome == 'failure' && steps.versuch2.outcome == 'failure'
+        run: sleep 120
+      - id: deployment
+        if: steps.versuch1.outcome == 'failure' && steps.versuch2.outcome == 'failure'
+        uses: actions/deploy-pages@v4

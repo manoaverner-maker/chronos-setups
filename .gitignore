@@ -1,0 +1,7 @@
+node_modules/
+client/dist/
+client/dev-dist/
+# Von client/scripts/stage-data.mjs beim Build aus /data erzeugt:
+client/public/data/
+client/public/images/
+.DS_Store

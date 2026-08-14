@@ -1,0 +1,68 @@
+{
+  "_comment": "ASPL Rennkalender. Solo- und Team-Series fahren dieselben Strecken, aber an anderen Tagen/Zeiten. Daten aus den offiziellen Saison-2-Rennkalendern. 'track' verweist auf eine id in tracks.json. (Solo-Series auf Wunsch entfernt - nur Team-Series.)",
+  "currentSeason": 2,
+  "seasons": [
+    {
+      "id": 2,
+      "name": "Saison 2",
+      "series": [
+        {
+          "id": "team",
+          "name": "Team Series",
+          "day": "Samstag",
+          "schedule": {
+            "training": "18:30",
+            "quali": "19:00",
+            "race": "19:20"
+          },
+          "midSeasonPause": [
+            "2026-07-18",
+            "2026-07-25"
+          ],
+          "rounds": [
+            {
+              "round": 1,
+              "track": "imola",
+              "date": "2026-06-13"
+            },
+            {
+              "round": 2,
+              "track": "barcelona",
+              "date": "2026-06-20"
+            },
+            {
+              "round": 3,
+              "track": "red_bull_ring",
+              "date": "2026-06-27"
+            },
+            {
+              "round": 4,
+              "track": "laguna_seca",
+              "date": "2026-07-04"
+            },
+            {
+              "round": 5,
+              "track": "nbr_gp",
+              "date": "2026-07-11"
+            },
+            {
+              "round": 6,
+              "track": "donington",
+              "date": "2026-08-01"
+            },
+            {
+              "round": 7,
+              "track": "mount_panorama",
+              "date": "2026-08-08"
+            },
+            {
+              "round": 8,
+              "track": "monza",
+              "date": "2026-08-15"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "_comment": "Physikalisch hergeleitetes Reifendruck-Temperatur-Modell. KEINE erfundenen Messdaten - reines deterministisches Engineering-Modell (vom Prompt ausdruecklich erlaubt). Grundidee: Steigt die Strecken-/Lufttemperatur, baut der Reifen im Betrieb mehr Druck auf. Um denselben Ziel-Heissdruck zu treffen, muss der Kaltdruck entsprechend gesenkt werden.",
+  "_formula": "empfohlener_kaltdruck = baseline_kaltdruck - (psiPerDegC * gewichtetes_temp_delta);  gewichtetes_temp_delta = wTrack*(trackTemp - refTrackTemp) + wAir*(airTemp - refAirTemp)",
+  "classes": {
+    "gt3": {
+      "targetHotPressure": 26.5,
+      "hotPressureWindow": [26.0, 27.0],
+      "psiPerDegC": 0.1,
+      "tempWeights": { "track": 0.75, "air": 0.25 },
+      "_reasoning": "GT3-Slicks (Pirelli DHE) laufen im optimalen Fenster bei ~26.5 psi heiss (Bereich 26.0-27.0). psiPerDegC = 0.1: pro +1 Grad C gewichteter Temperaturanstieg muss der Kaltdruck um ~0.1 psi gesenkt werden, um denselben Heissdruck zu halten. Strecke wird hoeher gewichtet (0.75) als Luft (0.25), weil die Fahrbahntemperatur den Reifenkern staerker beeinflusst. Werte sind ein konservatives Ingenieursmodell und sollten gegen reale Telemetrie kalibriert werden."
+    }
+  },
+  "carClassMap": {
+    "ferrari_296_gt3": "gt3",
+    "mercedes_amg_gt3_evo": "gt3",
+    "amr_v8_vantage_gt3": "gt3"
+  }
+}

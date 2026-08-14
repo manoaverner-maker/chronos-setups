@@ -1,0 +1,54 @@
+{
+  "_comment": "Championship Team Series, Saison 2 (nur Chronos-Teams). Stand nach R1 Imola. driverStandings/teamStandings = RENNPUNKTE (DTM-Schema); Quali-Bonus ist noch NICHT eingerechnet (Quali-Platzierungen liegen nicht vor). pointsSystem.race = P1..P15, qualiBonus = P1..P3.",
+  "season": 2,
+  "seriesName": "Team Series",
+  "status": "live",
+  "lastUpdated": "Stand nach R1 · Imola",
+  "note": "Rennpunkte nach R1 Imola. Quali-Bonus noch nicht eingerechnet (Quali-Ergebnisse fehlen).",
+  "principals": ["@Djlowtom — M. Verner #26", "@StReApZ_Yt — N. Pfeiffer #53"],
+  "pointsSystem": {
+    "race": [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+    "qualiBonus": [3, 2, 1],
+    "note": "Keine Punkte für die schnellste Rennrunde"
+  },
+  "driverStandings": [
+    { "pos": 1, "driver": "@StReApZ_Yt", "name": "N. Pfeiffer", "number": 53, "team": "Chronos Motorsport", "points": 13, "r1": "P4" },
+    { "pos": 2, "driver": "@Djlowtom", "name": "M. Verner", "number": 26, "team": "Chronos Motorsport", "points": 11, "r1": "P5" },
+    { "pos": 3, "driver": "@Teaa_bags", "name": "E. Schneider", "number": 7, "team": "Chronos Omega Racing", "points": 0, "r1": "P18" },
+    { "pos": 4, "driver": "@Caaaaapitaain", "name": "Y. Guillaume", "number": null, "team": "Chronos Omega Racing", "points": 0, "r1": "—" },
+    { "pos": 5, "driver": "@Z-Alge", "name": "R. Thaler", "number": 35, "team": "Chronos Omega Racing", "points": 0, "r1": "—" },
+    { "pos": 6, "driver": "@banni05", "name": "L. Verner", "number": 44, "team": "Chronos Motorsport Academy", "points": 0, "r1": "—" }
+  ],
+  "teamStandings": [
+    { "pos": 1, "team": "Chronos Motorsport", "points": 24 },
+    { "pos": 2, "team": "Chronos Omega Racing", "points": 0 },
+    { "pos": 3, "team": "Chronos Motorsport Academy", "points": 0 }
+  ],
+  "teams": [
+    {
+      "name": "Chronos Motorsport",
+      "drivers": [
+        { "driver": "@Djlowtom", "name": "M. Verner", "number": 26, "country": null, "car": "Ferrari 296 GT3" },
+        { "driver": "@StReApZ_Yt", "name": "N. Pfeiffer", "number": 53, "country": null, "car": "Ferrari 296 GT3" }
+      ]
+    },
+    {
+      "name": "Chronos Omega Racing",
+      "drivers": [
+        { "driver": "@Teaa_bags", "name": "E. Schneider", "number": 7, "country": null, "car": "Aston Martin Vantage GT3" },
+        { "driver": "@Caaaaapitaain", "name": "Y. Guillaume", "number": null, "country": null, "car": "Ferrari 296 GT3" },
+        { "driver": "@Z-Alge", "name": "R. Thaler", "number": 35, "country": "AT", "car": "Ferrari 296 GT3" }
+      ]
+    },
+    {
+      "name": "Chronos Motorsport Academy",
+      "drivers": [
+        { "driver": "@banni05", "name": "L. Verner", "number": 44, "country": null, "car": "Ferrari 296 GT3" }
+      ]
+    }
+  ],
+  "reservePool": [
+    { "driver": "@XFz iCrank", "name": "T. Scheibe", "number": 922, "car": "Mercedes-AMG GT3" },
+    { "driver": "@Ackjjr", "name": "M. Ackermann", "number": 510, "car": "Ferrari 296 GT3" }
+  ]
+}

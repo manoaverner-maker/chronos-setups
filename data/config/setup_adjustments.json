@@ -1,0 +1,65 @@
+{
+  "_comment": "Regeln fuer den Safe/Aggressiv-Slider. Slider-Wert s laeuft von -3 (Sicher/stabil) ueber 0 (Baseline) bis +3 (Aggressiv/drehfreudig). Jede Regel veraendert genau einen physikalisch begruendeten Parameter relativ zur Baseline: neuer_wert = baseline + s * perStep, anschliessend auf [min,max] geklemmt. Nur physikalisch herleitbare Anpassungen - keine erfundenen Magie-Werte.",
+  "sliderRange": [-3, 3],
+  "labels": {
+    "-3": "Sehr sicher",
+    "-2": "Sicher",
+    "-1": "Leicht sicher",
+    "0": "Baseline",
+    "1": "Leicht aggressiv",
+    "2": "Aggressiv",
+    "3": "Sehr aggressiv"
+  },
+  "rules": [
+    {
+      "key": "rearWing",
+      "path": "advancedSetup.aeroBalance.rearWing",
+      "perStep": -1,
+      "min": 0,
+      "max": 12,
+      "unit": "",
+      "decimals": 0,
+      "reasoning": "Weniger Heckfluegel = weniger Anpressdruck hinten = mehr Rotation/Uebersteuern, aber weniger Stabilitaet bei hohem Tempo. Aggressiv senkt den Fluegel, Sicher erhoeht ihn."
+    },
+    {
+      "key": "arbFront",
+      "path": "advancedSetup.mechanicalBalance.arbFront",
+      "perStep": -1,
+      "min": 0,
+      "max": 8,
+      "unit": "",
+      "decimals": 0,
+      "reasoning": "Steiferer vorderer Stabilisator erzeugt mehr Untersteuern (stabiler). Aggressiv weicht die Front auf (mehr Frontgrip/Einlenken), Sicher versteift sie."
+    },
+    {
+      "key": "arbRear",
+      "path": "advancedSetup.mechanicalBalance.arbRear",
+      "perStep": 1,
+      "min": 0,
+      "max": 8,
+      "unit": "",
+      "decimals": 0,
+      "reasoning": "Steiferer hinterer Stabilisator erzeugt mehr Rotation/Uebersteuern. Aggressiv versteift hinten, Sicher weicht auf fuer mehr Heckstabilitaet."
+    },
+    {
+      "key": "brakeBias",
+      "path": "advancedSetup.mechanicalBalance.brakeBias",
+      "perStep": -0.5,
+      "min": 50.0,
+      "max": 70.0,
+      "unit": "%",
+      "decimals": 1,
+      "reasoning": "Weiter vorne liegende Bremsbalance = stabiles, untersteuerndes Bremsen. Aggressiv schiebt die Balance leicht nach hinten (Rotation beim Trail-Braking), Sicher nach vorne."
+    },
+    {
+      "key": "preload",
+      "path": "advancedSetup.mechanicalBalance.preload",
+      "perStep": -15,
+      "min": 20,
+      "max": 300,
+      "unit": "Nm",
+      "decimals": 0,
+      "reasoning": "Hoehere Differential-Vorspannung = mehr Traktion/Stabilitaet unter Last, aber traeger. Aggressiv senkt die Vorspannung (agileres Einlenken), Sicher erhoeht sie."
+    }
+  ]
+}
