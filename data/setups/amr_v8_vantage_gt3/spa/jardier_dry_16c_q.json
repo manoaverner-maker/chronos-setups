@@ -1,0 +1,94 @@
+{
+  "carName": "amr_v8_vantage_gt3",
+  "author": "Jardier",
+  "variant": "Quali",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (amr_v8_vantage_gt3/Spa/(Jardier)(6-2023) DRY 16C Q.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 16,
+    "track": 25,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.6,
+        "fr": 25.6,
+        "rl": 25.8,
+        "rr": 25.7
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.4,
+        "fr": -0.4,
+        "rl": -0.4,
+        "rr": -0.4
+      },
+      "caster": 16.1
+    },
+    "electronics": {
+      "tc1": 3,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 14,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 8,
+      "arbRear": 3,
+      "brakeTorque": 100,
+      "brakeBias": 61,
+      "steeringRatio": 15,
+      "preload": 20,
+      "wheelRate": {
+        "front": 125000,
+        "rear": 105000
+      },
+      "bumpstopRate": {
+        "front": 500,
+        "rear": 700
+      },
+      "bumpstopRange": {
+        "front": 2,
+        "rear": 10
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 1,
+        "bumpFast": 0,
+        "reboundSlow": 40,
+        "reboundFast": 49
+      },
+      "rear": {
+        "bumpSlow": 1,
+        "bumpFast": 0,
+        "reboundSlow": 40,
+        "reboundFast": 49
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 55,
+      "rideHeightRear": 87,
+      "rearWing": 10,
+      "diffusor": 0,
+      "brakeDuctFront": 2,
+      "brakeDuctRear": 2
+    }
+  },
+  "track": "spa"
+}

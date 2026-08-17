@@ -1,0 +1,93 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "OhneSpeed",
+  "variant": "Rennen 22°/31°",
+  "_source": "OhneSpeed — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/Barcelona/OhneSpeed_22c31c_DRY_R_evo2.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 22,
+    "track": 31
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.1,
+        "fr": 26.5,
+        "rl": 24.5,
+        "rr": 25.6
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -3.9,
+        "fr": -3.9,
+        "rl": -3.2,
+        "rr": -3.2
+      },
+      "toe": {
+        "fl": -0.13,
+        "fr": -0.13,
+        "rl": 0.03,
+        "rr": 0.03
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 5,
+      "tc2": 1,
+      "abs": 4,
+      "ecuMap": 5
+    },
+    "strategy": {
+      "fuel": 38,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 6,
+      "arbRear": 0,
+      "brakeTorque": 100,
+      "brakeBias": 56.2,
+      "steeringRatio": 14,
+      "preload": 20,
+      "wheelRate": {
+        "front": 182666,
+        "rear": 122091
+      },
+      "bumpstopRate": {
+        "front": 1500,
+        "rear": 400
+      },
+      "bumpstopRange": {
+        "front": 12,
+        "rear": 8
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 2,
+        "bumpFast": 3,
+        "reboundSlow": 3,
+        "reboundFast": 3
+      },
+      "rear": {
+        "bumpSlow": 2,
+        "bumpFast": 4,
+        "reboundSlow": 4,
+        "reboundFast": 4
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 50,
+      "rideHeightRear": 64,
+      "rearWing": 12,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "barcelona"
+}

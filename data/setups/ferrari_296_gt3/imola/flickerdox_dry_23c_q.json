@@ -1,0 +1,94 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "Flickerdox",
+  "variant": "Quali",
+  "_source": "Flickerdox — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/Imola/(Flickerdox-4Bumps)(3-2023) DRY 23C Q.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 23,
+    "track": 32,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 26.1,
+        "fr": 25.6,
+        "rl": 25.3,
+        "rr": 24.9
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -3.8,
+        "fr": -3.8,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.27,
+        "fr": -0.27,
+        "rl": 0,
+        "rr": 0
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 6,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 11,
+      "tyreSet": 16,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 0,
+      "arbRear": 1,
+      "brakeTorque": 100,
+      "brakeBias": 57.6,
+      "steeringRatio": 14,
+      "preload": 180,
+      "wheelRate": {
+        "front": 176367,
+        "rear": 136455
+      },
+      "bumpstopRate": {
+        "front": 600,
+        "rear": 1600
+      },
+      "bumpstopRange": {
+        "front": 2,
+        "rear": 10
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 5,
+        "bumpFast": 8,
+        "reboundSlow": 9,
+        "reboundFast": 7
+      },
+      "rear": {
+        "bumpSlow": 6,
+        "bumpFast": 5,
+        "reboundSlow": 8,
+        "reboundFast": 5
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 55,
+      "rideHeightRear": 64,
+      "rearWing": 12,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "imola"
+}

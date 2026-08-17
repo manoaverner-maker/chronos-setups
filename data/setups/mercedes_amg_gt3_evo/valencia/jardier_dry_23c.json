@@ -1,0 +1,94 @@
+{
+  "carName": "mercedes_amg_gt3_evo",
+  "author": "Jardier",
+  "variant": "Allround",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (mercedes_amg_gt3_evo/Valencia/(Jardier)(4-2023) DRY 23C.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 23,
+    "track": 32,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.4,
+        "fr": 24.5,
+        "rl": 25.6,
+        "rr": 25.1
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.22,
+        "fr": -0.22,
+        "rl": -0.1,
+        "rr": -0.1
+      },
+      "caster": 14.1
+    },
+    "electronics": {
+      "tc1": 6,
+      "tc2": 0,
+      "abs": 4,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 37,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 8,
+      "arbRear": 7,
+      "brakeTorque": 100,
+      "brakeBias": 57.2,
+      "steeringRatio": 12,
+      "preload": 180,
+      "wheelRate": {
+        "front": 143000,
+        "rear": 107000
+      },
+      "bumpstopRate": {
+        "front": 1800,
+        "rear": 1200
+      },
+      "bumpstopRange": {
+        "front": 10,
+        "rear": 7
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 5,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 7
+      },
+      "rear": {
+        "bumpSlow": 11,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 11
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 43,
+      "rideHeightRear": 74,
+      "rearWing": 10,
+      "diffusor": 11,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "valencia"
+}

@@ -70,8 +70,10 @@ export default function CarCard({ car }) {
       {/* Fußzeile */}
       <div className="relative px-5 pb-5 pt-2 flex items-end justify-between gap-2">
         <h3 className="display text-xl font-semibold leading-tight">{car.displayName}</h3>
+        {/* Es gibt inzwischen mehrere Setups je Strecke — deshalb Strecken zaehlen,
+            nicht Setups (sonst waere die Zahl irrefuehrend). */}
         {available ? (
-          <span className="text-xs text-good whitespace-nowrap">{car.availableTracks.length} Setup(s) ›</span>
+          <span className="text-xs text-good whitespace-nowrap">{car.availableTracks.length} Strecken ›</span>
         ) : (
           <span className="text-xs text-muted whitespace-nowrap">keine Setups</span>
         )}

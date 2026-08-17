@@ -1,0 +1,93 @@
+{
+  "carName": "mercedes_amg_gt3_evo",
+  "author": "Fri3d0lf",
+  "variant": "Rennen (stabil)",
+  "_source": "Fri3d0lf — importiert aus github.com/Lon3035/ACC_Setups (mercedes_amg_gt3_evo/Imola/FRI3_AMGEVO_IMO_RS_20_25_v1.10.3.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 20,
+    "track": 25
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 26,
+        "fr": 25.4,
+        "rl": 25.3,
+        "rr": 25
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.14,
+        "fr": -0.14,
+        "rl": 0.08,
+        "rr": 0.08
+      },
+      "caster": 14.1
+    },
+    "electronics": {
+      "tc1": 3,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 48,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 4,
+      "arbRear": 3,
+      "brakeTorque": 100,
+      "brakeBias": 53.4,
+      "steeringRatio": 13,
+      "preload": 120,
+      "wheelRate": {
+        "front": 143000,
+        "rear": 83000
+      },
+      "bumpstopRate": {
+        "front": 1000,
+        "rear": 800
+      },
+      "bumpstopRange": {
+        "front": 25,
+        "rear": 35
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 8,
+        "bumpFast": 3,
+        "reboundSlow": 5,
+        "reboundFast": 6
+      },
+      "rear": {
+        "bumpSlow": 5,
+        "bumpFast": 3,
+        "reboundSlow": 6,
+        "reboundFast": 6
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 47,
+      "rideHeightRear": 80,
+      "rearWing": 10,
+      "diffusor": 1,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "imola"
+}

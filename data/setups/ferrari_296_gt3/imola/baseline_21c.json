@@ -2,19 +2,47 @@
   "carName": "ferrari_296_gt3",
   "track": "imola",
   "_source": "Transkribiert aus In-Game-Screenshots (ACC v1.9.14, Chronos Motorsport Team). Werte sind In-Game-Anzeigewerte (psi/Grad/mm/Klicks), kein rohes ACC-Klick-Encoding.",
-  "referenceTemp": { "air": 21, "track": 29 },
+  "referenceTemp": {
+    "air": 21,
+    "track": 29
+  },
   "basicSetup": {
     "tyres": {
       "compound": "dry",
-      "coldPressure": { "fl": 25.9, "fr": 25.5, "rl": 25.5, "rr": 25.5 }
+      "coldPressure": {
+        "fl": 25.9,
+        "fr": 25.5,
+        "rl": 25.5,
+        "rr": 25.5
+      }
     },
     "alignment": {
-      "camber": { "fl": -4.0, "fr": -4.0, "rl": -3.5, "rr": -3.5 },
-      "toe": { "fl": -0.1, "fr": -0.1, "rl": -0.1, "rr": -0.1 },
+      "camber": {
+        "fl": -4.0,
+        "fr": -4.0,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.1,
+        "fr": -0.1,
+        "rl": -0.1,
+        "rr": -0.1
+      },
       "caster": 13.8
     },
-    "electronics": { "tc1": 5, "tc2": 0, "abs": 1, "ecuMap": 1 },
-    "strategy": { "fuel": 27, "tyreSet": 10, "frontBrakePad": 1, "rearBrakePad": 1 }
+    "electronics": {
+      "tc1": 5,
+      "tc2": 0,
+      "abs": 1,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 27,
+      "tyreSet": 10,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
   },
   "advancedSetup": {
     "mechanicalBalance": {
@@ -24,13 +52,32 @@
       "brakeBias": 57.4,
       "steeringRatio": 15,
       "preload": 200,
-      "wheelRate": { "front": 163769, "rear": 122091 },
-      "bumpstopRate": { "front": 300, "rear": 400 },
-      "bumpstopRange": { "front": 16, "rear": 38 }
+      "wheelRate": {
+        "front": 163769,
+        "rear": 122091
+      },
+      "bumpstopRate": {
+        "front": 300,
+        "rear": 400
+      },
+      "bumpstopRange": {
+        "front": 16,
+        "rear": 38
+      }
     },
     "dampers": {
-      "front": { "bumpSlow": 0, "bumpFast": 0, "reboundSlow": 0, "reboundFast": 0 },
-      "rear": { "bumpSlow": 0, "bumpFast": 0, "reboundSlow": 11, "reboundFast": 11 }
+      "front": {
+        "bumpSlow": 0,
+        "bumpFast": 0,
+        "reboundSlow": 0,
+        "reboundFast": 0
+      },
+      "rear": {
+        "bumpSlow": 0,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 11
+      }
     },
     "aeroBalance": {
       "rideHeightFront": 63,
@@ -41,5 +88,7 @@
       "brakeDuctRear": 3,
       "frontSpoilerVariation": 1.0
     }
-  }
+  },
+  "author": "bernagk1",
+  "variant": "Team-Baseline"
 }

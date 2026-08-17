@@ -1,0 +1,93 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "Fri3d0lf",
+  "variant": "Quali",
+  "_source": "Fri3d0lf — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/watkins_glen/FRI3_296_WAT_Q_20_25_v1.10.3.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 20,
+    "track": 25
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.2,
+        "fr": 25.5,
+        "rl": 24.8,
+        "rr": 25.1
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.12,
+        "fr": -0.12,
+        "rl": 0.14,
+        "rr": 0.14
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 6,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 13,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 4,
+      "arbRear": 3,
+      "brakeTorque": 100,
+      "brakeBias": 57,
+      "steeringRatio": 16,
+      "preload": 120,
+      "wheelRate": {
+        "front": 188964,
+        "rear": 136455
+      },
+      "bumpstopRate": {
+        "front": 700,
+        "rear": 1800
+      },
+      "bumpstopRange": {
+        "front": 4,
+        "rear": 15
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 7,
+        "bumpFast": 5,
+        "reboundSlow": 7,
+        "reboundFast": 6
+      },
+      "rear": {
+        "bumpSlow": 5,
+        "bumpFast": 4,
+        "reboundSlow": 5,
+        "reboundFast": 8
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 50,
+      "rideHeightRear": 60,
+      "rearWing": 12,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "watkins_glen"
+}

@@ -11,6 +11,8 @@ export function buildSetupExport(data) {
   return {
     _meta: {
       source: 'ASPL Racing — ACC Setup & Referenz',
+      setupAuthor: data.author ?? baseline?.author ?? null,
+      setupVariant: data.variant ?? baseline?.variant ?? null,
       exportedAt: new Date().toISOString(),
       note: 'Anzeigewerte, kein roh-encodiertes ACC-.json. Werte im Spiel manuell uebernehmen.',
     },
@@ -37,6 +39,7 @@ export function buildSetupText(data) {
   if (!e) return '';
   const L = [];
   L.push(`ASPL Racing — ${e.car} @ ${e.track}`);
+  if (e._meta.setupAuthor) L.push(`Setup: ${e._meta.setupAuthor}${e._meta.setupVariant ? ` (${e._meta.setupVariant})` : ''}`);
   L.push(`Bedingungen: Luft ${e.conditions.airTemp}°C / Strecke ${e.conditions.trackTemp}°C · ${e.conditions.character}`);
   if (e.recommendedColdPressures) {
     const p = e.recommendedColdPressures;

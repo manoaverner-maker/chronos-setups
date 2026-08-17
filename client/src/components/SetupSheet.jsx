@@ -58,7 +58,7 @@ export default function SetupSheet({ baseline, adjustment }) {
           <Field label="Vorne rechts" value={cp.fr} unit=" psi" />
           <Field label="Hinten links" value={cp.rl} unit=" psi" />
           <Field label="Hinten rechts" value={cp.rr} unit=" psi" />
-          <Field label="Mischung" value={b.basicSetup?.tyres?.compound === 'dry' ? 'Trocken' : b.basicSetup?.tyres?.compound} />
+          <Field label="Mischung" value={{ dry: 'Trocken', wet: 'Regen' }[b.basicSetup?.tyres?.compound] ?? b.basicSetup?.tyres?.compound} />
         </Group>
 
         <Group title="Ausrichtung">

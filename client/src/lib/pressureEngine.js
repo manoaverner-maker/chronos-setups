@@ -25,10 +25,14 @@ export function classForCar(carId, model) {
  */
 export function computePressures({ baseline, model, carId, airTemp, trackTemp }) {
   const cls = classForCar(carId, model);
-  const params = model?.classes?.[cls];
-  if (!params) {
+  const base = model?.classes?.[cls];
+  if (!base) {
     return { available: false, reason: `Kein Druckmodell fuer Klasse "${cls}" (Auto ${carId}).` };
   }
+  // Regenreifen haben ein eigenes Zielfenster (~30 psi statt 26.5) — die
+  // compound-spezifischen Werte ueberlagern die Klassen-Defaults.
+  const compound = baseline?.basicSetup?.tyres?.compound === 'wet' ? 'wet' : 'dry';
+  const params = { ...base, ...(base.compounds?.[compound] ?? {}) };
 
   const cold = baseline?.basicSetup?.tyres?.coldPressure;
   const ref = baseline?.referenceTemp;

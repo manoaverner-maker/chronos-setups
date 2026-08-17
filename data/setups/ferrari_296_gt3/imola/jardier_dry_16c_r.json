@@ -1,0 +1,94 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "Jardier",
+  "variant": "Rennen",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/Imola/(Jardier)(5-2023) DRY 16C R.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 16,
+    "track": 25,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 26.5,
+        "fr": 26,
+        "rl": 25.5,
+        "rr": 25.1
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.25,
+        "fr": -0.25,
+        "rl": 0,
+        "rr": 0
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 6,
+      "tc2": 0,
+      "abs": 2,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 38,
+      "tyreSet": 4,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 0,
+      "arbRear": 0,
+      "brakeTorque": 100,
+      "brakeBias": 58.4,
+      "steeringRatio": 14,
+      "preload": 200,
+      "wheelRate": {
+        "front": 170068,
+        "rear": 129273
+      },
+      "bumpstopRate": {
+        "front": 900,
+        "rear": 1800
+      },
+      "bumpstopRange": {
+        "front": 1,
+        "rear": 10
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 5,
+        "bumpFast": 6,
+        "reboundSlow": 9,
+        "reboundFast": 6
+      },
+      "rear": {
+        "bumpSlow": 5,
+        "bumpFast": 6,
+        "reboundSlow": 9,
+        "reboundFast": 6
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 55,
+      "rideHeightRear": 64,
+      "rearWing": 12,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 2
+    }
+  },
+  "track": "imola"
+}

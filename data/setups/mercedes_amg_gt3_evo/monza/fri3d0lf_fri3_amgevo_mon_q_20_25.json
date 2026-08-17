@@ -1,0 +1,93 @@
+{
+  "carName": "mercedes_amg_gt3_evo",
+  "author": "Fri3d0lf",
+  "variant": "Quali",
+  "_source": "Fri3d0lf — importiert aus github.com/Lon3035/ACC_Setups (mercedes_amg_gt3_evo/monza/FRI3_AMGEVO_MON_Q_20_25_v1.9.5.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 20,
+    "track": 25
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.3,
+        "fr": 26,
+        "rl": 25.1,
+        "rr": 25.6
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.1,
+        "fr": -0.1,
+        "rl": 0.05,
+        "rr": 0.05
+      },
+      "caster": 14.1
+    },
+    "electronics": {
+      "tc1": 3,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 13,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 4,
+      "arbRear": 3,
+      "brakeTorque": 100,
+      "brakeBias": 53.6,
+      "steeringRatio": 13,
+      "preload": 100,
+      "wheelRate": {
+        "front": 143000,
+        "rear": 95000
+      },
+      "bumpstopRate": {
+        "front": 1000,
+        "rear": 800
+      },
+      "bumpstopRange": {
+        "front": 4,
+        "rear": 35
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 6,
+        "bumpFast": 4,
+        "reboundSlow": 5,
+        "reboundFast": 5
+      },
+      "rear": {
+        "bumpSlow": 5,
+        "bumpFast": 4,
+        "reboundSlow": 5,
+        "reboundFast": 7
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 42,
+      "rideHeightRear": 67,
+      "rearWing": 2,
+      "diffusor": 1,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 2
+    }
+  },
+  "track": "monza"
+}

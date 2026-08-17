@@ -63,16 +63,21 @@ export async function getSeason(car) {
   return { season: { id: season.id, name: season.name }, series };
 }
 
-export async function getSetup(car, track, { airTemp, trackTemp, slider } = {}) {
+/** Liste der verfügbaren Setup-Varianten (für den Picker in SetupDetail). */
+export async function getSetupVariants(car, track) {
+  const index = await setupIndex();
+  return index[car]?.[track] ?? [];
+}
+
+export async function getSetup(car, track, { airTemp, trackTemp, slider, file } = {}) {
   const index = await setupIndex();
   const entries = index[car]?.[track];
   if (!entries || !entries.length) {
     return { error: 'Kein Setup vorhanden', message: `Für ${car} / ${track} liegen keine transkribierten Setup-Daten vor.` };
   }
-  let entry = entries[0];
-  if (airTemp != null) {
-    entry = entries.reduce((best, e) => (Math.abs(e.temp - airTemp) < Math.abs(best.temp - airTemp) ? e : best));
-  }
+  // Explizit gewählte Variante gewinnt; sonst die erste (Index ist vorsortiert:
+  // Team-Setup zuerst, dann Rennen vor Quali, Regen zuletzt).
+  const entry = (file && entries.find((e) => e.file === file)) ?? entries[0];
   const [baseline, model, adjustments, refTimesAll] = await Promise.all([
     load(`/data/setups/${car}/${track}/${entry.file}`),
     cfg('pressure_model'),
@@ -88,6 +93,9 @@ export async function getSetup(car, track, { airTemp, trackTemp, slider } = {}) 
   const referenceTimes = refTimesAll.times?.[car]?.[track] ?? null;
   return {
     car, track, sourceFile: entry.file,
+    author: baseline.author ?? entry.author ?? null,
+    variant: baseline.variant ?? entry.label ?? null,
+    compound: baseline.basicSetup?.tyres?.compound ?? 'dry',
     referenceTemp: ref, requestedTemp: { air, track: trk },
     baseline, pressures, adjustment,
     referenceTimes,

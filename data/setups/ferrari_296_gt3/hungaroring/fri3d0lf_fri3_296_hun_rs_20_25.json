@@ -1,0 +1,93 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "Fri3d0lf",
+  "variant": "Rennen (stabil)",
+  "_source": "Fri3d0lf — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/Hungaroring/FRI3_296_HUN_RS_20_25_v1.10.2.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 20,
+    "track": 25
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.5,
+        "fr": 26,
+        "rl": 24.8,
+        "rr": 25.1
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.15,
+        "fr": -0.15,
+        "rl": 0.12,
+        "rr": 0.12
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 8,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 48,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 4,
+      "arbRear": 1,
+      "brakeTorque": 100,
+      "brakeBias": 56,
+      "steeringRatio": 16,
+      "preload": 100,
+      "wheelRate": {
+        "front": 182666,
+        "rear": 129273
+      },
+      "bumpstopRate": {
+        "front": 500,
+        "rear": 2000
+      },
+      "bumpstopRange": {
+        "front": 8,
+        "rear": 20
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 5,
+        "bumpFast": 4,
+        "reboundSlow": 5,
+        "reboundFast": 6
+      },
+      "rear": {
+        "bumpSlow": 6,
+        "bumpFast": 5,
+        "reboundSlow": 6,
+        "reboundFast": 4
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 52,
+      "rideHeightRear": 58,
+      "rearWing": 12,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 2
+    }
+  },
+  "track": "hungaroring"
+}

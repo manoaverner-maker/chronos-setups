@@ -23,7 +23,16 @@ for (const f of fs.readdirSync(path.join(dataDir, 'config'))) {
 fs.cpSync(path.join(dataDir, 'setups'), path.join(pub, 'data', 'setups'), { recursive: true });
 fs.cpSync(path.join(dataDir, 'images'), path.join(pub, 'images'), { recursive: true });
 
-// Setup-Index: car -> track -> [{ temp, file }]
+// Setup-Index: car -> track -> [{ file, temp, trackTemp, compound, author, label, estimated }]
+// Die Metadaten kommen aus den Setup-JSONs selbst (author/variant/referenceTemp),
+// nicht mehr aus dem Dateinamen — so funktionieren auch importierte Community-Setups.
+// Sortierung: Team-Setups (bernagk1) zuerst, dann Renn- vor Quali-Varianten, Regen ans Ende.
+function sortKey(e) {
+  const teamRank = e.author?.startsWith('bernagk1') ? 0 : 1;
+  const wetRank = e.compound === 'wet' ? 1 : 0;
+  const labelRank = /stabil/i.test(e.label) ? 0 : /rennen|allround/i.test(e.label) ? 1 : /quali(?! 2)/i.test(e.label) ? 2 : 3;
+  return [wetRank, teamRank, labelRank];
+}
 const index = {};
 const setupsDir = path.join(dataDir, 'setups');
 for (const car of fs.readdirSync(setupsDir)) {
@@ -33,10 +42,31 @@ for (const car of fs.readdirSync(setupsDir)) {
   for (const track of fs.readdirSync(cd)) {
     const td = path.join(cd, track);
     if (!fs.statSync(td).isDirectory()) continue;
-    const entries = fs.readdirSync(td)
-      .filter((f) => /baseline_\d+c\.json$/i.test(f))
-      .map((f) => ({ temp: Number(f.match(/baseline_(\d+)c/i)[1]), file: f }))
-      .sort((a, b) => a.temp - b.temp);
+    const entries = [];
+    for (const f of fs.readdirSync(td)) {
+      if (!f.endsWith('.json')) continue;
+      let s;
+      try {
+        s = JSON.parse(fs.readFileSync(path.join(td, f), 'utf8'));
+      } catch {
+        console.warn(`[stage-data] ${car}/${track}/${f}: kein gueltiges JSON — uebersprungen`);
+        continue;
+      }
+      entries.push({
+        file: f,
+        temp: s.referenceTemp?.air ?? null,
+        trackTemp: s.referenceTemp?.track ?? null,
+        estimated: s.referenceTemp?.estimated ?? false,
+        compound: s.basicSetup?.tyres?.compound ?? 'dry',
+        author: s.author ?? 'Chronos Team',
+        label: s.variant ?? 'Baseline',
+      });
+    }
+    entries.sort((a, b) => {
+      const ka = sortKey(a), kb = sortKey(b);
+      for (let i = 0; i < ka.length; i++) if (ka[i] !== kb[i]) return ka[i] - kb[i];
+      return (a.temp ?? 99) - (b.temp ?? 99);
+    });
     if (entries.length) index[car][track] = entries;
   }
 }

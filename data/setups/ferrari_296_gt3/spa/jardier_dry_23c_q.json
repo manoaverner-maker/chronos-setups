@@ -1,0 +1,94 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "Jardier",
+  "variant": "Quali",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/Spa/(Jardier)(7-2023) DRY 23C Q.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 23,
+    "track": 32,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.7,
+        "fr": 25.7,
+        "rl": 25.1,
+        "rr": 25.2
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.24,
+        "fr": -0.24,
+        "rl": 0.03,
+        "rr": 0.03
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 7,
+      "tc2": 0,
+      "abs": 2,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 13,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 6,
+      "arbRear": 0,
+      "brakeTorque": 100,
+      "brakeBias": 58.2,
+      "steeringRatio": 16,
+      "preload": 80,
+      "wheelRate": {
+        "front": 163769,
+        "rear": 122091
+      },
+      "bumpstopRate": {
+        "front": 300,
+        "rear": 400
+      },
+      "bumpstopRange": {
+        "front": 6,
+        "rear": 10
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 2,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 11
+      },
+      "rear": {
+        "bumpSlow": 2,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 11
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 50,
+      "rideHeightRear": 51,
+      "rearWing": 3,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "spa"
+}

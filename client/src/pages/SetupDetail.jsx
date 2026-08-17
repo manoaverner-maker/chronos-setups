@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
-import { getCars, getTracks, getSetup } from '../lib/api.js';
+import { getCars, getTracks, getSetup, getSetupVariants } from '../lib/api.js';
 import { pageMotion } from '../lib/motion.js';
 import { useCarAccent } from '../lib/useCarAccent.js';
 import TrackHero from '../components/TrackHero.jsx';
@@ -14,11 +14,38 @@ import SetupSheet from '../components/SetupSheet.jsx';
 import FuelCalculator from '../components/FuelCalculator.jsx';
 import SetupActions from '../components/SetupActions.jsx';
 
+// Ein Pill-Knopf pro Setup-Variante (Ersteller · Session; Regen-Setups blau markiert).
+function VariantPicker({ variants, selected, onSelect }) {
+  if (!variants || variants.length < 2) return null;
+  return (
+    <div className="flex flex-wrap gap-2">
+      {variants.map((v) => {
+        const active = v.file === selected;
+        const wet = v.compound === 'wet';
+        return (
+          <button
+            key={v.file}
+            onClick={() => onSelect(v.file)}
+            className={`glass rounded-xl px-3 py-1.5 text-xs transition-colors
+              ${active ? 'border-car/60 bg-car/15 text-ink' : 'text-muted hover:text-ink'}
+              ${wet ? 'border-sky-400/40' : ''}`}
+          >
+            {wet && <span className="mr-1" aria-hidden>🌧</span>}
+            <span className="font-medium">{v.author}</span>
+            <span className="opacity-70"> · {v.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function SetupDetail() {
   const { car, track } = useParams();
   const [air, setAir] = useState(null);
   const [trk, setTrk] = useState(null);
   const [slider, setSlider] = useState(0);
+  const [file, setFile] = useState(null); // null = Standard-Variante (Index-Sortierung)
 
   const { data: cars } = useQuery({ queryKey: ['cars'], queryFn: getCars });
   const carInfo = cars?.find((c) => c.id === car);
@@ -27,19 +54,31 @@ export default function SetupDetail() {
   const { data: tracks } = useQuery({ queryKey: ['tracks'], queryFn: getTracks });
   const trackInfo = tracks?.find((t) => t.id === track);
 
+  const { data: variants } = useQuery({ queryKey: ['variants', car, track], queryFn: () => getSetupVariants(car, track) });
+
   const { data } = useQuery({
-    queryKey: ['setup', car, track, air, trk, slider],
-    queryFn: () => getSetup(car, track, { airTemp: air, trackTemp: trk, slider }),
+    queryKey: ['setup', car, track, air, trk, slider, file],
+    queryFn: () => getSetup(car, track, { airTemp: air, trackTemp: trk, slider, file }),
     placeholderData: keepPreviousData,
   });
 
-  // Regler einmalig mit der Referenztemperatur der Baseline initialisieren.
+  // Variantenwechsel: Temperaturregler auf die Referenz der neuen Baseline zuruecksetzen.
+  const selectVariant = (f) => {
+    setFile(f);
+    setAir(null);
+    setTrk(null);
+  };
+
+  // Regler mit der Referenztemperatur der Baseline initialisieren. Nach einem
+  // Variantenwechsel nur mit den Daten der NEUEN Variante (keepPreviousData zeigt
+  // kurz noch die alte — deren Referenz darf nicht einrasten).
   useEffect(() => {
-    if (data?.referenceTemp && air == null && data.referenceTemp.air != null) {
+    const freshVariant = file == null || data?.sourceFile === file;
+    if (freshVariant && data?.referenceTemp && air == null && data.referenceTemp.air != null) {
       setAir(data.referenceTemp.air);
       setTrk(data.referenceTemp.track);
     }
-  }, [data, air]);
+  }, [data, air, file]);
 
   const noSetup = data?.error;
 
@@ -60,6 +99,15 @@ export default function SetupDetail() {
         </div>
       ) : (
         <>
+          <VariantPicker variants={variants} selected={data?.sourceFile} onSelect={selectVariant} />
+          {data?.author && (
+            <p className="text-[11px] text-muted -mt-2">
+              Setup von <span className="text-ink font-medium">{data.author}</span>
+              {data.variant ? ` · ${data.variant}` : ''}
+              {data.referenceTemp?.air != null &&
+                ` · Referenz ${data.referenceTemp.air}°/${data.referenceTemp.track}°C${data.referenceTemp.estimated ? ' (Streckentemp. geschätzt)' : ''}`}
+            </p>
+          )}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div className="space-y-5">
               <TempControls

@@ -1,0 +1,93 @@
+{
+  "carName": "mercedes_amg_gt3_evo",
+  "author": "OhneSpeed",
+  "variant": "Rennen 22°/31°",
+  "_source": "OhneSpeed — importiert aus github.com/Lon3035/ACC_Setups (mercedes_amg_gt3_evo/Hungaroring/OhneSpeed_22c31c_DRY_R_evo4.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 22,
+    "track": 31
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 24.9,
+        "fr": 25.8,
+        "rl": 25.1,
+        "rr": 25.5
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3,
+        "rr": -3
+      },
+      "toe": {
+        "fl": -0.1,
+        "fr": -0.1,
+        "rl": 0.01,
+        "rr": 0.01
+      },
+      "caster": 14.1
+    },
+    "electronics": {
+      "tc1": 3,
+      "tc2": 0,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 38,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 10,
+      "arbRear": 0,
+      "brakeTorque": 100,
+      "brakeBias": 52.8,
+      "steeringRatio": 13,
+      "preload": 20,
+      "wheelRate": {
+        "front": 155000,
+        "rear": 71000
+      },
+      "bumpstopRate": {
+        "front": 2500,
+        "rear": 1400
+      },
+      "bumpstopRange": {
+        "front": 46,
+        "rear": 0
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 3,
+        "bumpFast": 11,
+        "reboundSlow": 6,
+        "reboundFast": 10
+      },
+      "rear": {
+        "bumpSlow": 2,
+        "bumpFast": 11,
+        "reboundSlow": 5,
+        "reboundFast": 10
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 42,
+      "rideHeightRear": 80,
+      "rearWing": 10,
+      "diffusor": 1,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "hungaroring"
+}

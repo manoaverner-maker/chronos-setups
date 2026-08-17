@@ -1,0 +1,94 @@
+{
+  "carName": "amr_v8_vantage_gt3",
+  "author": "Jardier",
+  "variant": "Rennen",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (amr_v8_vantage_gt3/nurburgring_24h/(Jardier)(4-2024) DRY 22C R.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 22,
+    "track": 31,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.2,
+        "fr": 25.6,
+        "rl": 25.3,
+        "rr": 25.6
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.23,
+        "fr": -0.23,
+        "rl": -0.08,
+        "rr": -0.08
+      },
+      "caster": 16.1
+    },
+    "electronics": {
+      "tc1": 1,
+      "tc2": 0,
+      "abs": 2,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 111,
+      "tyreSet": 3,
+      "frontBrakePad": 2,
+      "rearBrakePad": 2
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 3,
+      "arbRear": 1,
+      "brakeTorque": 100,
+      "brakeBias": 61.4,
+      "steeringRatio": 14,
+      "preload": 20,
+      "wheelRate": {
+        "front": 125000,
+        "rear": 125000
+      },
+      "bumpstopRate": {
+        "front": 300,
+        "rear": 400
+      },
+      "bumpstopRange": {
+        "front": 23,
+        "rear": 27
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 8,
+        "bumpFast": 0,
+        "reboundSlow": 35,
+        "reboundFast": 49
+      },
+      "rear": {
+        "bumpSlow": 1,
+        "bumpFast": 0,
+        "reboundSlow": 32,
+        "reboundFast": 49
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 55,
+      "rideHeightRear": 80,
+      "rearWing": 10,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "nbr_24h"
+}

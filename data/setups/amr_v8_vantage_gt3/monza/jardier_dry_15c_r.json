@@ -1,0 +1,94 @@
+{
+  "carName": "amr_v8_vantage_gt3",
+  "author": "Jardier",
+  "variant": "Rennen",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (amr_v8_vantage_gt3/monza/(Jardier)(5-2023) DRY 15C R.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 15,
+    "track": 24,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25.4,
+        "fr": 26.4,
+        "rl": 25.8,
+        "rr": 26.4
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.4,
+        "fr": -0.4,
+        "rl": -0.3,
+        "rr": -0.3
+      },
+      "caster": 16.1
+    },
+    "electronics": {
+      "tc1": 2,
+      "tc2": 8,
+      "abs": 3,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 54,
+      "tyreSet": 9,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 4,
+      "arbRear": 2,
+      "brakeTorque": 100,
+      "brakeBias": 59.2,
+      "steeringRatio": 14,
+      "preload": 300,
+      "wheelRate": {
+        "front": 135000,
+        "rear": 125000
+      },
+      "bumpstopRate": {
+        "front": 1000,
+        "rear": 1200
+      },
+      "bumpstopRange": {
+        "front": 10,
+        "rear": 20
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 15,
+        "bumpFast": 20,
+        "reboundSlow": 33,
+        "reboundFast": 27
+      },
+      "rear": {
+        "bumpSlow": 12,
+        "bumpFast": 16,
+        "reboundSlow": 32,
+        "reboundFast": 22
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 55,
+      "rideHeightRear": 67,
+      "rearWing": 2,
+      "diffusor": 0,
+      "brakeDuctFront": 2,
+      "brakeDuctRear": 2
+    }
+  },
+  "track": "monza"
+}

@@ -1,0 +1,94 @@
+{
+  "carName": "ferrari_296_gt3",
+  "author": "Jardier",
+  "variant": "Rennen",
+  "_source": "Jardier — importiert aus github.com/Lon3035/ACC_Setups (ferrari_296_gt3/Suzuka/(Jardier)(5-2023) DRY 24C R.json), klick-dekodiert mit Race-Element-Tabellen (github.com/RiddleTime/Race-Element)",
+  "referenceTemp": {
+    "air": 24,
+    "track": 33,
+    "estimated": true
+  },
+  "basicSetup": {
+    "tyres": {
+      "compound": "dry",
+      "coldPressure": {
+        "fl": 25,
+        "fr": 25.1,
+        "rl": 24.5,
+        "rr": 24.8
+      }
+    },
+    "alignment": {
+      "camber": {
+        "fl": -4,
+        "fr": -4,
+        "rl": -3.5,
+        "rr": -3.5
+      },
+      "toe": {
+        "fl": -0.3,
+        "fr": -0.3,
+        "rl": 0,
+        "rr": 0
+      },
+      "caster": 13.8
+    },
+    "electronics": {
+      "tc1": 6,
+      "tc2": 0,
+      "abs": 2,
+      "ecuMap": 1
+    },
+    "strategy": {
+      "fuel": 38,
+      "tyreSet": 1,
+      "frontBrakePad": 1,
+      "rearBrakePad": 1
+    }
+  },
+  "advancedSetup": {
+    "mechanicalBalance": {
+      "arbFront": 3,
+      "arbRear": 1,
+      "brakeTorque": 100,
+      "brakeBias": 59,
+      "steeringRatio": 16,
+      "preload": 60,
+      "wheelRate": {
+        "front": 170068,
+        "rear": 129273
+      },
+      "bumpstopRate": {
+        "front": 900,
+        "rear": 1800
+      },
+      "bumpstopRange": {
+        "front": 3,
+        "rear": 10
+      }
+    },
+    "dampers": {
+      "front": {
+        "bumpSlow": 1,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 11
+      },
+      "rear": {
+        "bumpSlow": 1,
+        "bumpFast": 0,
+        "reboundSlow": 11,
+        "reboundFast": 11
+      }
+    },
+    "aeroBalance": {
+      "rideHeightFront": 50,
+      "rideHeightRear": 65,
+      "rearWing": 12,
+      "diffusor": 0,
+      "brakeDuctFront": 3,
+      "brakeDuctRear": 3
+    }
+  },
+  "track": "suzuka"
+}
