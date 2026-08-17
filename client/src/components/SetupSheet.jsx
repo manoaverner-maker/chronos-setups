@@ -32,7 +32,11 @@ function Group({ title, children }) {
 
 export default function SetupSheet({ baseline, adjustment }) {
   if (!baseline) return null;
-  const ch = Object.fromEntries((adjustment?.changes ?? []).map((c) => [c.path, c]));
+  // Nur echte Aenderungen hervorheben — bei Slider=Baseline (oder am Klemm-Limit)
+  // ist from==to, und ein durchgestrichener identischer Wert waere nur Rauschen.
+  const ch = Object.fromEntries(
+    (adjustment?.changes ?? []).filter((c) => c.delta !== 0).map((c) => [c.path, c]),
+  );
   const b = baseline;
   const cp = b.basicSetup?.tyres?.coldPressure ?? {};
   const al = b.basicSetup?.alignment ?? {};
@@ -92,7 +96,9 @@ export default function SetupSheet({ baseline, adjustment }) {
           <Field label="Heckflügel" value={ae.rearWing} change={ch['advancedSetup.aeroBalance.rearWing']} />
           <Field label="Bodenfreiheit vorne" value={ae.rideHeightFront} unit=" mm" />
           <Field label="Bodenfreiheit hinten" value={ae.rideHeightRear} unit=" mm" />
-          <Field label="Diffusor" value={ae.diffusor} />
+          {/* Splitter/Diffusor ist bei den meisten GT3 (z. B. Ferrari 296) im Spiel fest auf 0 —
+              die Zeile nur zeigen, wenn das Setup wirklich einen Wert > 0 hat. */}
+          {ae.diffusor > 0 && <Field label="Diffusor" value={ae.diffusor} />}
           <Field label="Bremsluft vorne" value={ae.brakeDuctFront} />
           <Field label="Bremsluft hinten" value={ae.brakeDuctRear} />
         </Group>

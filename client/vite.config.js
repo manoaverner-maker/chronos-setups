@@ -11,7 +11,9 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      // 'prompt': neue Version wird nicht still uebernommen, sondern per
+      // "Aktualisieren"-Banner angeboten (siehe components/UpdateToast.jsx).
+      registerType: 'prompt',
       includeAssets: ['apple-touch-icon.png'],
       manifest: {
         name: 'Chronos Motorsport Racing Team — Setups',

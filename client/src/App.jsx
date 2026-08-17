@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Background from './components/Background.jsx';
 import Header from './components/Header.jsx';
+import UpdateToast from './components/UpdateToast.jsx';
 import Footer from './components/Footer.jsx';
 import CarSelect from './pages/CarSelect.jsx';
 import Calendar from './pages/Calendar.jsx';
@@ -25,6 +26,7 @@ export default function App() {
         </AnimatePresence>
       </main>
       <Footer />
+      <UpdateToast />
     </div>
   );
 }

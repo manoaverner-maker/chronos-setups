@@ -1,6 +1,9 @@
 {
   "_comment": "Regeln fuer den Safe/Aggressiv-Slider. Slider-Wert s laeuft von -3 (Sicher/stabil) ueber 0 (Baseline) bis +3 (Aggressiv/drehfreudig). Jede Regel veraendert genau einen physikalisch begruendeten Parameter relativ zur Baseline: neuer_wert = baseline + s * perStep, anschliessend auf [min,max] geklemmt. Nur physikalisch herleitbare Anpassungen - keine erfundenen Magie-Werte.",
-  "sliderRange": [-3, 3],
+  "sliderRange": [
+    -3,
+    3
+  ],
   "labels": {
     "-3": "Sehr sicher",
     "-2": "Sicher",
@@ -44,22 +47,22 @@
     {
       "key": "brakeBias",
       "path": "advancedSetup.mechanicalBalance.brakeBias",
-      "perStep": -0.5,
+      "perStep": -0.4,
       "min": 50.0,
       "max": 70.0,
       "unit": "%",
       "decimals": 1,
-      "reasoning": "Weiter vorne liegende Bremsbalance = stabiles, untersteuerndes Bremsen. Aggressiv schiebt die Balance leicht nach hinten (Rotation beim Trail-Braking), Sicher nach vorne."
+      "reasoning": "Weiter vorne liegende Bremsbalance = stabiles, untersteuerndes Bremsen. Aggressiv schiebt die Balance leicht nach hinten (Rotation beim Trail-Braking), Sicher nach vorne. Schrittweite -0.4 = 2 ACC-Klicks (das Spiel verstellt in 0.2%-Schritten), damit jeder Slider-Wert im Spiel exakt einstellbar ist."
     },
     {
       "key": "preload",
       "path": "advancedSetup.mechanicalBalance.preload",
-      "perStep": -15,
+      "perStep": -20,
       "min": 20,
       "max": 300,
       "unit": "Nm",
       "decimals": 0,
-      "reasoning": "Hoehere Differential-Vorspannung = mehr Traktion/Stabilitaet unter Last, aber traeger. Aggressiv senkt die Vorspannung (agileres Einlenken), Sicher erhoeht sie."
+      "reasoning": "Hoehere Differential-Vorspannung = mehr Traktion/Stabilitaet unter Last, aber traeger. Aggressiv senkt die Vorspannung (agileres Einlenken), Sicher erhoeht sie. Schrittweite -20 = 2 ACC-Klicks (das Spiel verstellt in 10-Nm-Schritten), damit jeder Slider-Wert im Spiel exakt einstellbar ist."
     }
   ]
 }
