@@ -14,6 +14,7 @@ import SetupSheet from '../components/SetupSheet.jsx';
 import FuelCalculator from '../components/FuelCalculator.jsx';
 import SetupActions from '../components/SetupActions.jsx';
 import BopInfo from '../components/BopInfo.jsx';
+import Tabs from '../components/Tabs.jsx';
 
 // Ein Pill-Knopf pro Setup-Variante (Ersteller · Session; Regen-Setups blau markiert).
 function VariantPicker({ variants, selected, onSelect }) {
@@ -92,51 +93,86 @@ export default function SetupDetail() {
         {!noSetup && <SetupActions data={data} />}
       </div>
 
-      <TrackHero track={trackInfo} />
+      <TrackHero track={trackInfo}>
+        {!noSetup && (
+          <div className="flex flex-col gap-2.5">
+            {/* Wer das Setup gebaut hat — gehoert zum Kopf, nicht in eine Randnotiz. */}
+            {data?.author && (
+              <p className="text-sm">
+                <span className="text-muted">Setup von </span>
+                <span className="font-semibold" style={{ color: 'var(--car-accent)' }}>{data.author}</span>
+                {data.variant && <span className="text-muted"> · {data.variant}</span>}
+                {data.referenceTemp?.air != null && (
+                  <span className="text-muted/70 text-xs">
+                    {' '}· gebaut bei {data.referenceTemp.air}°/{data.referenceTemp.track}°C
+                    {data.referenceTemp.estimated ? ' (ca.)' : ''}
+                  </span>
+                )}
+              </p>
+            )}
+            <VariantPicker variants={variants} selected={data?.sourceFile} onSelect={selectVariant} />
+          </div>
+        )}
+      </TrackHero>
 
       {noSetup ? (
         <div className="glass rounded-2xl p-6 text-warn">
           Für diese Strecke liegt noch kein transkribiertes Setup vor.
         </div>
       ) : (
-        <>
-          <VariantPicker variants={variants} selected={data?.sourceFile} onSelect={selectVariant} />
-          {data?.author && (
-            <p className="text-[11px] text-muted -mt-2">
-              Setup von <span className="text-ink font-medium">{data.author}</span>
-              {data.variant ? ` · ${data.variant}` : ''}
-              {data.referenceTemp?.air != null &&
-                ` · Referenz ${data.referenceTemp.air}°/${data.referenceTemp.track}°C${data.referenceTemp.estimated ? ' (Streckentemp. geschätzt)' : ''}`}
-            </p>
-          )}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <div className="space-y-5">
-              <TempControls
-                air={air ?? data?.referenceTemp?.air ?? 21}
-                track={trk ?? data?.referenceTemp?.track ?? 29}
-                refTemp={data?.referenceTemp}
-                onAir={setAir}
-                onTrack={setTrk}
-              />
-              <PressurePanel pressures={data?.pressures} />
-            </div>
-            <div className="space-y-5">
-              <SafetySlider adjustment={data?.adjustment} value={slider} onChange={setSlider} />
-              <BopInfo bop={data?.bop} />
-              <ReferenceTimes
-                times={data?.referenceTimes}
-                available={data?.referenceTimesAvailable}
-                estimated={data?.referenceTimesEstimated}
-              />
-              <FuelCalculator
-                lapTimeStr={data?.referenceTimes?.pro ?? data?.referenceTimes?.alien}
-                lengthKm={trackInfo?.lengthKm}
-              />
-            </div>
-          </div>
-
-          <SetupSheet baseline={data?.baseline} adjustment={data?.adjustment} />
-        </>
+        /* Drei Reiter statt sieben gestapelter Karten: zuerst das, was man am Lenkrad
+           braucht; Renn-Planung und das vollstaendige Datenblatt eine Ebene tiefer. */
+        <Tabs
+          tabs={[
+            {
+              id: 'setup',
+              label: 'Setup',
+              hint: 'Druck & Charakter',
+              content: (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  <div className="space-y-5">
+                    <TempControls
+                      air={air ?? data?.referenceTemp?.air ?? 21}
+                      track={trk ?? data?.referenceTemp?.track ?? 29}
+                      refTemp={data?.referenceTemp}
+                      onAir={setAir}
+                      onTrack={setTrk}
+                    />
+                    <PressurePanel pressures={data?.pressures} />
+                  </div>
+                  <SafetySlider adjustment={data?.adjustment} value={slider} onChange={setSlider} />
+                </div>
+              ),
+            },
+            {
+              id: 'rennen',
+              label: 'Rennen',
+              hint: 'BoP, Zeiten, Sprit',
+              content: (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  <div className="space-y-5">
+                    <BopInfo bop={data?.bop} />
+                    <ReferenceTimes
+                      times={data?.referenceTimes}
+                      available={data?.referenceTimesAvailable}
+                      estimated={data?.referenceTimesEstimated}
+                    />
+                  </div>
+                  <FuelCalculator
+                    lapTimeStr={data?.referenceTimes?.pro ?? data?.referenceTimes?.alien}
+                    lengthKm={trackInfo?.lengthKm}
+                  />
+                </div>
+              ),
+            },
+            {
+              id: 'datenblatt',
+              label: 'Datenblatt',
+              hint: 'alle Werte',
+              content: <SetupSheet baseline={data?.baseline} adjustment={data?.adjustment} />,
+            },
+          ]}
+        />
       )}
     </motion.div>
   );

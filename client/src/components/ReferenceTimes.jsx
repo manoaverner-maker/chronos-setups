@@ -17,13 +17,14 @@ export default function ReferenceTimes({ times, available, estimated }) {
           </span>
         )}
       </div>
-      <div className="mt-4 grid grid-cols-2 gap-2.5">
+      {/* Als Liste statt vier Kaesten — liest sich schneller und ist ruhiger. */}
+      <div className="mt-3 divide-y divide-line/60">
         {TIERS.map((t) => {
           const v = times?.[t.key];
           return (
-            <div key={t.key} className="glass rounded-xl p-3 border-line">
-              <div className="text-[11px] uppercase tracking-wider text-muted">{t.label}</div>
-              <div className={`mono text-lg mt-0.5 tabular-nums ${v ? 'text-ink' : 'text-muted/50'}`}>{fmtLap(v)}</div>
+            <div key={t.key} className="flex items-baseline justify-between py-2">
+              <span className="text-sm text-muted">{t.label}</span>
+              <span className={`mono text-lg tabular-nums ${v ? 'text-ink' : 'text-muted/50'}`}>{fmtLap(v)}</span>
             </div>
           );
         })}

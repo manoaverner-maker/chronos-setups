@@ -23,16 +23,17 @@ export default function BopInfo({ bop }) {
         </span>
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2.5">
-        <div className="glass rounded-xl p-3 border-line">
+      {/* Flach statt Kaesten-in-Kaesten — zwei Werte brauchen keine eigenen Rahmen. */}
+      <div className="mt-3 flex items-baseline gap-8">
+        <div>
           <div className="text-[11px] uppercase tracking-wider text-muted">Ballast</div>
-          <div className={`mono text-xl mt-0.5 tabular-nums ${farbe}`}>
-            {ballast > 0 ? '+' : ''}{ballast} kg
+          <div className={`mono text-2xl mt-0.5 tabular-nums ${farbe}`}>
+            {ballast > 0 ? '+' : ''}{ballast}<span className="text-sm text-muted ml-1">kg</span>
           </div>
         </div>
-        <div className="glass rounded-xl p-3 border-line">
+        <div>
           <div className="text-[11px] uppercase tracking-wider text-muted">Restriktor</div>
-          <div className={`mono text-xl mt-0.5 tabular-nums ${restrictor > 0 ? 'text-bad' : 'text-ink'}`}>
+          <div className={`mono text-2xl mt-0.5 tabular-nums ${restrictor > 0 ? 'text-bad' : 'text-muted'}`}>
             {restrictor}
           </div>
         </div>

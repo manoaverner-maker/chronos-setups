@@ -3,7 +3,7 @@ import { assetUrl } from '../lib/assetUrl.js';
 
 // Feature 3: Streckenansicht mit Layout-SVG, Kurvennamen, Sektoren.
 // Wenn ein Streckenfoto vorliegt, dient es als stimmungsvoller Hero-Hintergrund.
-export default function TrackHero({ track }) {
+export default function TrackHero({ track, children }) {
   if (!track) return null;
   const showRound = track.calendarRound && track.calendarRound < 90;
   const shadow = track.photo ? { textShadow: '0 1px 8px rgba(0,0,0,0.7)' } : undefined;
@@ -47,6 +47,11 @@ export default function TrackHero({ track }) {
           )}
         </div>
       </div>
+
+      {/* Fussleiste des Kopfbereichs: welches Setup wird gerade gezeigt. */}
+      {children && (
+        <div className="relative border-t border-line/70 bg-black/25 px-5 sm:px-6 py-3">{children}</div>
+      )}
     </div>
   );
 }
