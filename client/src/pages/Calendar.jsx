@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link, useParams } from 'react-router-dom';
@@ -9,12 +9,27 @@ import RoundCard from '../components/RoundCard.jsx';
 import TrackTile from '../components/TrackTile.jsx';
 import NextRaceCountdown from '../components/NextRaceCountdown.jsx';
 
-const TODAY = new Date().toISOString().slice(0, 10);
+// Lokales Datum als YYYY-MM-DD. Bewusst NICHT toISOString() (das rechnet nach UTC und
+// liefert nachts zwischen 00:00 und 02:00 noch den Vortag) und bewusst nicht im
+// Modul-Scope: sonst friert das Datum ein, solange die PWA im Hintergrund offen bleibt.
+function heute() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
 
 export default function Calendar() {
   const { car } = useParams();
   const [seriesId, setSeriesId] = useState('team');
   const [trackQuery, setTrackQuery] = useState('');
+
+  // Tageswechsel mitbekommen — auch wenn die App tagelang im Hintergrund liegt.
+  const [today, setToday] = useState(heute);
+  useEffect(() => {
+    const pruefen = () => setToday((prev) => (heute() === prev ? prev : heute()));
+    const id = setInterval(pruefen, 60_000);
+    document.addEventListener('visibilitychange', pruefen);
+    return () => { clearInterval(id); document.removeEventListener('visibilitychange', pruefen); };
+  }, []);
 
   const { data: cars } = useQuery({ queryKey: ['cars'], queryFn: getCars });
   const carInfo = cars?.find((c) => c.id === car);
@@ -43,8 +58,8 @@ export default function Calendar() {
   const rounds = current?.rounds ?? [];
 
   const nextRoundObj = useMemo(() => {
-    return rounds.filter((r) => r.date >= TODAY).sort((a, b) => a.date.localeCompare(b.date))[0] ?? null;
-  }, [rounds]);
+    return rounds.filter((r) => r.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0] ?? null;
+  }, [rounds, today]);
   const nextRound = nextRoundObj?.round ?? null;
   const availableCount = rounds.filter((r) => r.hasSetup).length;
 

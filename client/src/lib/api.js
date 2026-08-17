@@ -21,7 +21,12 @@ const setupIndex = () => load('/data/setups-index.json');
 
 export async function getCars() {
   const [{ cars }, index] = await Promise.all([cfg('cars'), setupIndex()]);
-  return cars.map((c) => ({ ...c, availableTracks: Object.keys(index[c.id] || {}) }));
+  return cars.map((c) => {
+    const availableTracks = Object.keys(index[c.id] || {});
+    // 'available' folgt den tatsaechlich vorhandenen Setups statt dem Flag aus cars.json —
+    // sonst bleibt ein neu abgelegtes Setup unsichtbar, weil das Flag noch false steht.
+    return { ...c, availableTracks, available: availableTracks.length > 0 };
+  });
 }
 
 export async function getTracks() {

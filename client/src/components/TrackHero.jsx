@@ -1,4 +1,5 @@
 import TrackLayout from './TrackLayout.jsx';
+import { assetUrl } from '../lib/assetUrl.js';
 
 // Feature 3: Streckenansicht mit Layout-SVG, Kurvennamen, Sektoren.
 // Wenn ein Streckenfoto vorliegt, dient es als stimmungsvoller Hero-Hintergrund.
@@ -11,7 +12,7 @@ export default function TrackHero({ track }) {
     <div className="glass rounded-2xl overflow-hidden relative">
       {track.photo && (
         <div className="absolute inset-0">
-          <img src={track.photo} alt="" loading="lazy" className="w-full h-full object-cover" />
+          <img src={assetUrl(track.photo)} alt="" loading="lazy" className="w-full h-full object-cover" />
           <div
             className="absolute inset-0"
             style={{

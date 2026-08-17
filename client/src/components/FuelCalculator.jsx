@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 // Tank- & Stint-Rechner (minutenbasiert): Renndauer + frei wählbare Boxenstopp-
 // Zeitpunkte (Minute) → Spritbedarf pro Stint inkl. optionaler Einführungsrunde.
@@ -12,6 +12,9 @@ function parseLap(str) {
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const fmtMin = (m) => `${m}′`;
+
+// Grober Streckenverbrauch als Startwert (GT3, ~0.55 L pro km).
+const defaultFuelPerLap = (lengthKm) => (lengthKm ? Math.max(1.5, +(lengthKm * 0.55).toFixed(1)) : 3.0);
 
 function Field({ label, value, onChange, step = 1, min = 1, suffix }) {
   return (
@@ -41,7 +44,15 @@ function Out({ label, value, highlight }) {
 export default function FuelCalculator({ lapTimeStr, lengthKm }) {
   const lapSec = parseLap(lapTimeStr) ?? 110;
   const [minutes, setMinutes] = useState(60);
-  const [fuelPerLap, setFuelPerLap] = useState(lengthKm ? Math.max(1.5, +(lengthKm * 0.55).toFixed(1)) : 3.0);
+  const [fuelPerLap, setFuelPerLap] = useState(() => defaultFuelPerLap(lengthKm));
+
+  // Die Streckendaten treffen oft erst nach dem ersten Rendern ein (eigene Query).
+  // Solange der Wert noch nicht von Hand geaendert wurde, den Streckenwert nachziehen.
+  const touched = useRef(false);
+  useEffect(() => {
+    if (!touched.current) setFuelPerLap(defaultFuelPerLap(lengthKm));
+  }, [lengthKm]);
+  const changeFuelPerLap = (v) => { touched.current = true; setFuelPerLap(v); };
   const [tank, setTank] = useState(120);
   const [formation, setFormation] = useState(true);
   const [pitTimes, setPitTimes] = useState([30]); // Pflichtstopp bei Minute 30 (60-min-Default)
@@ -120,7 +131,7 @@ export default function FuelCalculator({ lapTimeStr, lengthKm }) {
 
       <div className="grid grid-cols-3 gap-2.5 mt-4">
         <Field label="Renndauer" value={minutes} onChange={setMinutes} suffix="min" />
-        <Field label="Sprit/Runde" value={fuelPerLap} onChange={setFuelPerLap} step={0.1} min={0.5} suffix="L" />
+        <Field label="Sprit/Runde" value={fuelPerLap} onChange={changeFuelPerLap} step={0.1} min={0.5} suffix="L" />
         <Field label="Tank" value={tank} onChange={setTank} step={5} suffix="L" />
       </div>
 

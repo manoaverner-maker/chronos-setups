@@ -1,9 +1,14 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { BRAND } from '../lib/brand.js';
 
 // Kopfzeile mit Marken-Wortmarke und Breadcrumb.
+// Der Header steht ausserhalb von <Routes>, dort liefert useParams() immer {} —
+// die Breadcrumb-Teile kommen deshalb direkt aus dem Pfad (/:car/:track).
 export default function Header() {
-  const { car, track } = useParams();
+  const { pathname } = useLocation();
+  const [first, second] = pathname.split('/').filter(Boolean);
+  const car = first === 'standings' ? undefined : first; // /standings ist kein Fahrzeug
+  const track = car ? second : undefined;
   return (
     <header className="sticky top-0 z-20 glass border-x-0 border-t-0">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
