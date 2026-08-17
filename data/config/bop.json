@@ -1,0 +1,457 @@
+{
+  "_comment": "LFM Custom BoP (Ballast/Restrictor je Auto und Strecke), von lowfuelmotorsport.com/accbop uebernommen. Aendert sich woechentlich — Aktualisieren: LFM-Tabelle kopieren nach data/lfm_bop_paste.txt, dann 'node scripts/import_lfm_bop.mjs'.",
+  "source": "Low Fuel Motorsport — lowfuelmotorsport.com/accbop",
+  "importedAt": "2026-08-17",
+  "tracks": {
+    "imola": {
+      "version": 52,
+      "activeSince": "2026-07-27T09:21",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 13,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 0,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 11,
+          "restrictor": 0
+        }
+      }
+    },
+    "monza": {
+      "version": 48,
+      "activeSince": "2026-07-27T17:00",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 11,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 4,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 0,
+          "restrictor": 0
+        }
+      }
+    },
+    "brands_hatch": {
+      "version": 44,
+      "activeSince": "2026-07-27T03:14",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -3,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 6,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -5,
+          "restrictor": 0
+        }
+      }
+    },
+    "barcelona": {
+      "version": 36,
+      "activeSince": "2026-07-27T01:42",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 20,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": -5,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -7,
+          "restrictor": 0
+        }
+      }
+    },
+    "paul_ricard": {
+      "version": 38,
+      "activeSince": "2026-07-28T00:56",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -3,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 15,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 5,
+          "restrictor": 0
+        }
+      }
+    },
+    "spa": {
+      "version": 55,
+      "activeSince": "2026-08-17T00:37",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 8,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 2,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -8,
+          "restrictor": 0
+        }
+      }
+    },
+    "cota": {
+      "version": 47,
+      "activeSince": "2026-07-27T04:46",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 6,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 7,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 5,
+          "restrictor": 0
+        }
+      }
+    },
+    "valencia": {
+      "version": 33,
+      "activeSince": "2026-07-28T10:06",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 0,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": -7,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 1,
+          "restrictor": 0
+        }
+      }
+    },
+    "donington": {
+      "version": 41,
+      "activeSince": "2026-07-27T06:17",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -8,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 17,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -11,
+          "restrictor": 0
+        }
+      }
+    },
+    "hungaroring": {
+      "version": 36,
+      "activeSince": "2026-07-27T07:49",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 17,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 1,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -9,
+          "restrictor": 0
+        }
+      }
+    },
+    "indianapolis": {
+      "version": 37,
+      "activeSince": "2026-07-27T10:53",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 17,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 5,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 6,
+          "restrictor": 0
+        }
+      }
+    },
+    "kyalami": {
+      "version": 37,
+      "activeSince": "2026-07-27T12:24",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 0,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 16,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 2,
+          "restrictor": 0
+        }
+      }
+    },
+    "laguna_seca": {
+      "version": 35,
+      "activeSince": "2026-07-27T13:56",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 0,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": -2,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -7,
+          "restrictor": 0
+        }
+      }
+    },
+    "misano": {
+      "version": 42,
+      "activeSince": "2026-07-27T15:28",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 3,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 4,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 23,
+          "restrictor": 0
+        }
+      }
+    },
+    "mount_panorama": {
+      "version": 46,
+      "activeSince": "2026-07-27T18:31",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -21,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 2,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -3,
+          "restrictor": 0
+        }
+      }
+    },
+    "nbr_gp": {
+      "version": 43,
+      "activeSince": "2026-07-27T20:03",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 12,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 0,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -1,
+          "restrictor": 0
+        }
+      }
+    },
+    "nbr_24h": {
+      "version": 33,
+      "activeSince": "2026-07-27T21:35",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 7,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 18,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -19,
+          "restrictor": 0
+        }
+      }
+    },
+    "oulton_park": {
+      "version": 43,
+      "activeSince": "2026-07-27T23:24",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -10,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 26,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -2,
+          "restrictor": 0
+        }
+      }
+    },
+    "silverstone": {
+      "version": 52,
+      "activeSince": "2026-07-28T03:59",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 16,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 5,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": -9,
+          "restrictor": 0
+        }
+      }
+    },
+    "snetterton": {
+      "version": 44,
+      "activeSince": "2026-07-28T05:31",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 7,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 1,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 9,
+          "restrictor": 0
+        }
+      }
+    },
+    "red_bull_ring": {
+      "version": 28,
+      "activeSince": "2026-03-23T00:38",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -21,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": -22,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 9,
+          "restrictor": 0
+        }
+      }
+    },
+    "suzuka": {
+      "version": 39,
+      "activeSince": "2026-08-10T00:37",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 13,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 1,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 10,
+          "restrictor": 0
+        }
+      }
+    },
+    "watkins_glen": {
+      "version": 39,
+      "activeSince": "2026-08-17T00:37",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 2,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": 22,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 20,
+          "restrictor": 0
+        }
+      }
+    },
+    "zandvoort": {
+      "version": 42,
+      "activeSince": "2026-07-28T13:10",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": 14,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": -1,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 4,
+          "restrictor": 0
+        }
+      }
+    },
+    "zolder": {
+      "version": 40,
+      "activeSince": "2026-07-28T14:42",
+      "cars": {
+        "ferrari_296_gt3": {
+          "ballast": -3,
+          "restrictor": 0
+        },
+        "amr_v8_vantage_gt3": {
+          "ballast": -15,
+          "restrictor": 0
+        },
+        "mercedes_amg_gt3_evo": {
+          "ballast": 14,
+          "restrictor": 0
+        }
+      }
+    }
+  }
+}

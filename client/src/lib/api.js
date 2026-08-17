@@ -78,11 +78,12 @@ export async function getSetup(car, track, { airTemp, trackTemp, slider, file } 
   // Explizit gewählte Variante gewinnt; sonst die erste (Index ist vorsortiert:
   // Team-Setup zuerst, dann Rennen vor Quali, Regen zuletzt).
   const entry = (file && entries.find((e) => e.file === file)) ?? entries[0];
-  const [baseline, model, adjustments, refTimesAll] = await Promise.all([
+  const [baseline, model, adjustments, refTimesAll, bopAll] = await Promise.all([
     load(`/data/setups/${car}/${track}/${entry.file}`),
     cfg('pressure_model'),
     cfg('setup_adjustments'),
     cfg('reference_times'),
+    cfg('bop').catch(() => null), // BoP ist optional — fehlt sie, blendet die App sie aus
   ]);
   const ref = baseline.referenceTemp || {};
   const air = airTemp ?? ref.air;
@@ -98,6 +99,9 @@ export async function getSetup(car, track, { airTemp, trackTemp, slider, file } 
     compound: baseline.basicSetup?.tyres?.compound ?? 'dry',
     referenceTemp: ref, requestedTemp: { air, track: trk },
     baseline, pressures, adjustment,
+    bop: bopAll?.tracks?.[track]?.cars?.[car]
+      ? { ...bopAll.tracks[track].cars[car], version: bopAll.tracks[track].version, activeSince: bopAll.tracks[track].activeSince }
+      : null,
     referenceTimes,
     referenceTimesAvailable: !!referenceTimes && Object.values(referenceTimes).some((v) => v != null),
     referenceTimesEstimated: refTimesAll.estimated ?? false,

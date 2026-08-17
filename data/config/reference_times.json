@@ -1,18 +1,473 @@
 {
-  "_comment": "Referenzzeiten pro Auto/Strecke/Tier. estimated=true bedeutet: RICHTWERTE (ca.), keine offiziellen ASPL-Liga-Zeiten. Die 'Alien'-Zeit je Strecke ist eine reale ACC-GT3-Benchmark (Hotlap, Optimum) aus oeffentlichen Quellen (Coach Dave Academy Leaderboard, Track Titan); die uebrigen Tiers sind ueber ein Abstandsmodell abgeleitet. Sobald offizielle ASPL-Zeiten vorliegen, hier ueberschreiben und estimated auf false setzen.",
+  "_comment": "Referenzzeiten pro Auto/Strecke/Tier. estimated=true bedeutet: RICHTWERTE (ca.), keine gemessenen ASPL-Zeiten. Die 'Alien'-Zeit je Strecke ist ein oeffentlich bekannter ACC-GT3-Hotlap-Richtwert; die uebrigen Tiers sind ueber das Abstandsmodell unten abgeleitet. Fuer alle drei Autos gleich, weil die LFM-BoP die GT3 gerade angleicht (siehe bop.json). Eigene Team-Zeiten hier eintragen — sie werden beim Auffuellen nicht ueberschrieben.",
   "_model": "pro = alien * 1.010, proam = alien * 1.022, am = alien * 1.032 (auf Basis Spa: alien 2:16.2, Schnitt 2:20.5)",
-  "_sources": ["coachdaveacademy.com/acc-lap-times", "tracktitan.io"],
+  "_sources": [
+    "coachdaveacademy.com/acc-lap-times",
+    "tracktitan.io"
+  ],
   "estimated": true,
-  "_tiers": ["alien", "pro", "proam", "am"],
+  "_tiers": [
+    "alien",
+    "pro",
+    "proam",
+    "am"
+  ],
   "times": {
     "ferrari_296_gt3": {
-      "imola":    { "alien": "1:40.1", "pro": "1:41.1", "proam": "1:42.3", "am": "1:43.3" },
-      "barcelona":{ "alien": "1:43.0", "pro": "1:44.0", "proam": "1:45.3", "am": "1:46.3" },
-      "kyalami":  { "alien": "1:39.6", "pro": "1:40.6", "proam": "1:41.8", "am": "1:42.8" },
-      "nbr_24h":  { "alien": "8:03.5", "pro": "8:08.3", "proam": "8:14.1", "am": "8:18.9" },
-      "nbr_gp":   { "alien": "1:52.8", "pro": "1:53.9", "proam": "1:55.3", "am": "1:56.4" },
-      "spa":      { "alien": "2:16.2", "pro": "2:17.5", "proam": "2:19.2", "am": "2:20.5" },
-      "valencia": { "alien": "1:29.8", "pro": "1:30.7", "proam": "1:31.8", "am": "1:32.7" }
+      "imola": {
+        "alien": "1:40.1",
+        "pro": "1:41.1",
+        "proam": "1:42.3",
+        "am": "1:43.3"
+      },
+      "barcelona": {
+        "alien": "1:43.0",
+        "pro": "1:44.0",
+        "proam": "1:45.3",
+        "am": "1:46.3"
+      },
+      "kyalami": {
+        "alien": "1:39.6",
+        "pro": "1:40.6",
+        "proam": "1:41.8",
+        "am": "1:42.8"
+      },
+      "nbr_24h": {
+        "alien": "8:03.5",
+        "pro": "8:08.3",
+        "proam": "8:14.1",
+        "am": "8:18.9"
+      },
+      "nbr_gp": {
+        "alien": "1:52.8",
+        "pro": "1:53.9",
+        "proam": "1:55.3",
+        "am": "1:56.4"
+      },
+      "spa": {
+        "alien": "2:16.2",
+        "pro": "2:17.5",
+        "proam": "2:19.2",
+        "am": "2:20.5"
+      },
+      "valencia": {
+        "alien": "1:29.8",
+        "pro": "1:30.7",
+        "proam": "1:31.8",
+        "am": "1:32.7"
+      },
+      "red_bull_ring": {
+        "alien": "1:28.5",
+        "pro": "1:29.4",
+        "proam": "1:30.4",
+        "am": "1:31.3"
+      },
+      "laguna_seca": {
+        "alien": "1:21.5",
+        "pro": "1:22.3",
+        "proam": "1:23.3",
+        "am": "1:24.1"
+      },
+      "donington": {
+        "alien": "1:26.5",
+        "pro": "1:27.4",
+        "proam": "1:28.4",
+        "am": "1:29.3"
+      },
+      "mount_panorama": {
+        "alien": "2:01.5",
+        "pro": "2:02.7",
+        "proam": "2:04.2",
+        "am": "2:05.4"
+      },
+      "monza": {
+        "alien": "1:47.0",
+        "pro": "1:48.1",
+        "proam": "1:49.4",
+        "am": "1:50.4"
+      },
+      "zolder": {
+        "alien": "1:26.5",
+        "pro": "1:27.4",
+        "proam": "1:28.4",
+        "am": "1:29.3"
+      },
+      "brands_hatch": {
+        "alien": "1:22.5",
+        "pro": "1:23.3",
+        "proam": "1:24.3",
+        "am": "1:25.1"
+      },
+      "silverstone": {
+        "alien": "1:57.0",
+        "pro": "1:58.2",
+        "proam": "1:59.6",
+        "am": "2:00.7"
+      },
+      "paul_ricard": {
+        "alien": "1:53.5",
+        "pro": "1:54.6",
+        "proam": "1:56.0",
+        "am": "1:57.1"
+      },
+      "misano": {
+        "alien": "1:33.5",
+        "pro": "1:34.4",
+        "proam": "1:35.6",
+        "am": "1:36.5"
+      },
+      "hungaroring": {
+        "alien": "1:42.5",
+        "pro": "1:43.5",
+        "proam": "1:44.8",
+        "am": "1:45.8"
+      },
+      "zandvoort": {
+        "alien": "1:35.5",
+        "pro": "1:36.5",
+        "proam": "1:37.6",
+        "am": "1:38.6"
+      },
+      "suzuka": {
+        "alien": "2:00.5",
+        "pro": "2:01.7",
+        "proam": "2:03.2",
+        "am": "2:04.4"
+      },
+      "snetterton": {
+        "alien": "1:47.0",
+        "pro": "1:48.1",
+        "proam": "1:49.4",
+        "am": "1:50.4"
+      },
+      "oulton_park": {
+        "alien": "1:33.5",
+        "pro": "1:34.4",
+        "proam": "1:35.6",
+        "am": "1:36.5"
+      },
+      "watkins_glen": {
+        "alien": "1:47.5",
+        "pro": "1:48.6",
+        "proam": "1:49.9",
+        "am": "1:50.9"
+      },
+      "cota": {
+        "alien": "2:03.5",
+        "pro": "2:04.7",
+        "proam": "2:06.2",
+        "am": "2:07.5"
+      },
+      "indianapolis": {
+        "alien": "1:32.5",
+        "pro": "1:33.4",
+        "proam": "1:34.5",
+        "am": "1:35.5"
+      }
+    },
+    "mercedes_amg_gt3_evo": {
+      "imola": {
+        "alien": "1:41.5",
+        "pro": "1:42.5",
+        "proam": "1:43.7",
+        "am": "1:44.7"
+      },
+      "barcelona": {
+        "alien": "1:42.5",
+        "pro": "1:43.5",
+        "proam": "1:44.8",
+        "am": "1:45.8"
+      },
+      "kyalami": {
+        "alien": "1:41.0",
+        "pro": "1:42.0",
+        "proam": "1:43.2",
+        "am": "1:44.2"
+      },
+      "nbr_24h": {
+        "alien": "8:05.0",
+        "pro": "8:09.9",
+        "proam": "8:15.7",
+        "am": "8:20.5"
+      },
+      "nbr_gp": {
+        "alien": "1:53.0",
+        "pro": "1:54.1",
+        "proam": "1:55.5",
+        "am": "1:56.6"
+      },
+      "spa": {
+        "alien": "2:16.2",
+        "pro": "2:17.6",
+        "proam": "2:19.2",
+        "am": "2:20.6"
+      },
+      "valencia": {
+        "alien": "1:31.5",
+        "pro": "1:32.4",
+        "proam": "1:33.5",
+        "am": "1:34.4"
+      },
+      "red_bull_ring": {
+        "alien": "1:28.5",
+        "pro": "1:29.4",
+        "proam": "1:30.4",
+        "am": "1:31.3"
+      },
+      "laguna_seca": {
+        "alien": "1:21.5",
+        "pro": "1:22.3",
+        "proam": "1:23.3",
+        "am": "1:24.1"
+      },
+      "donington": {
+        "alien": "1:26.5",
+        "pro": "1:27.4",
+        "proam": "1:28.4",
+        "am": "1:29.3"
+      },
+      "mount_panorama": {
+        "alien": "2:01.5",
+        "pro": "2:02.7",
+        "proam": "2:04.2",
+        "am": "2:05.4"
+      },
+      "monza": {
+        "alien": "1:47.0",
+        "pro": "1:48.1",
+        "proam": "1:49.4",
+        "am": "1:50.4"
+      },
+      "zolder": {
+        "alien": "1:26.5",
+        "pro": "1:27.4",
+        "proam": "1:28.4",
+        "am": "1:29.3"
+      },
+      "brands_hatch": {
+        "alien": "1:22.5",
+        "pro": "1:23.3",
+        "proam": "1:24.3",
+        "am": "1:25.1"
+      },
+      "silverstone": {
+        "alien": "1:57.0",
+        "pro": "1:58.2",
+        "proam": "1:59.6",
+        "am": "2:00.7"
+      },
+      "paul_ricard": {
+        "alien": "1:53.5",
+        "pro": "1:54.6",
+        "proam": "1:56.0",
+        "am": "1:57.1"
+      },
+      "misano": {
+        "alien": "1:33.5",
+        "pro": "1:34.4",
+        "proam": "1:35.6",
+        "am": "1:36.5"
+      },
+      "hungaroring": {
+        "alien": "1:42.5",
+        "pro": "1:43.5",
+        "proam": "1:44.8",
+        "am": "1:45.8"
+      },
+      "zandvoort": {
+        "alien": "1:35.5",
+        "pro": "1:36.5",
+        "proam": "1:37.6",
+        "am": "1:38.6"
+      },
+      "suzuka": {
+        "alien": "2:00.5",
+        "pro": "2:01.7",
+        "proam": "2:03.2",
+        "am": "2:04.4"
+      },
+      "snetterton": {
+        "alien": "1:47.0",
+        "pro": "1:48.1",
+        "proam": "1:49.4",
+        "am": "1:50.4"
+      },
+      "oulton_park": {
+        "alien": "1:33.5",
+        "pro": "1:34.4",
+        "proam": "1:35.6",
+        "am": "1:36.5"
+      },
+      "watkins_glen": {
+        "alien": "1:47.5",
+        "pro": "1:48.6",
+        "proam": "1:49.9",
+        "am": "1:50.9"
+      },
+      "cota": {
+        "alien": "2:03.5",
+        "pro": "2:04.7",
+        "proam": "2:06.2",
+        "am": "2:07.5"
+      },
+      "indianapolis": {
+        "alien": "1:32.5",
+        "pro": "1:33.4",
+        "proam": "1:34.5",
+        "am": "1:35.5"
+      }
+    },
+    "amr_v8_vantage_gt3": {
+      "imola": {
+        "alien": "1:41.5",
+        "pro": "1:42.5",
+        "proam": "1:43.7",
+        "am": "1:44.7"
+      },
+      "barcelona": {
+        "alien": "1:42.5",
+        "pro": "1:43.5",
+        "proam": "1:44.8",
+        "am": "1:45.8"
+      },
+      "kyalami": {
+        "alien": "1:41.0",
+        "pro": "1:42.0",
+        "proam": "1:43.2",
+        "am": "1:44.2"
+      },
+      "nbr_24h": {
+        "alien": "8:05.0",
+        "pro": "8:09.9",
+        "proam": "8:15.7",
+        "am": "8:20.5"
+      },
+      "nbr_gp": {
+        "alien": "1:53.0",
+        "pro": "1:54.1",
+        "proam": "1:55.5",
+        "am": "1:56.6"
+      },
+      "spa": {
+        "alien": "2:16.2",
+        "pro": "2:17.6",
+        "proam": "2:19.2",
+        "am": "2:20.6"
+      },
+      "valencia": {
+        "alien": "1:31.5",
+        "pro": "1:32.4",
+        "proam": "1:33.5",
+        "am": "1:34.4"
+      },
+      "red_bull_ring": {
+        "alien": "1:28.5",
+        "pro": "1:29.4",
+        "proam": "1:30.4",
+        "am": "1:31.3"
+      },
+      "laguna_seca": {
+        "alien": "1:21.5",
+        "pro": "1:22.3",
+        "proam": "1:23.3",
+        "am": "1:24.1"
+      },
+      "donington": {
+        "alien": "1:26.5",
+        "pro": "1:27.4",
+        "proam": "1:28.4",
+        "am": "1:29.3"
+      },
+      "mount_panorama": {
+        "alien": "2:01.5",
+        "pro": "2:02.7",
+        "proam": "2:04.2",
+        "am": "2:05.4"
+      },
+      "monza": {
+        "alien": "1:47.0",
+        "pro": "1:48.1",
+        "proam": "1:49.4",
+        "am": "1:50.4"
+      },
+      "zolder": {
+        "alien": "1:26.5",
+        "pro": "1:27.4",
+        "proam": "1:28.4",
+        "am": "1:29.3"
+      },
+      "brands_hatch": {
+        "alien": "1:22.5",
+        "pro": "1:23.3",
+        "proam": "1:24.3",
+        "am": "1:25.1"
+      },
+      "silverstone": {
+        "alien": "1:57.0",
+        "pro": "1:58.2",
+        "proam": "1:59.6",
+        "am": "2:00.7"
+      },
+      "paul_ricard": {
+        "alien": "1:53.5",
+        "pro": "1:54.6",
+        "proam": "1:56.0",
+        "am": "1:57.1"
+      },
+      "misano": {
+        "alien": "1:33.5",
+        "pro": "1:34.4",
+        "proam": "1:35.6",
+        "am": "1:36.5"
+      },
+      "hungaroring": {
+        "alien": "1:42.5",
+        "pro": "1:43.5",
+        "proam": "1:44.8",
+        "am": "1:45.8"
+      },
+      "zandvoort": {
+        "alien": "1:35.5",
+        "pro": "1:36.5",
+        "proam": "1:37.6",
+        "am": "1:38.6"
+      },
+      "suzuka": {
+        "alien": "2:00.5",
+        "pro": "2:01.7",
+        "proam": "2:03.2",
+        "am": "2:04.4"
+      },
+      "snetterton": {
+        "alien": "1:47.0",
+        "pro": "1:48.1",
+        "proam": "1:49.4",
+        "am": "1:50.4"
+      },
+      "oulton_park": {
+        "alien": "1:33.5",
+        "pro": "1:34.4",
+        "proam": "1:35.6",
+        "am": "1:36.5"
+      },
+      "watkins_glen": {
+        "alien": "1:47.5",
+        "pro": "1:48.6",
+        "proam": "1:49.9",
+        "am": "1:50.9"
+      },
+      "cota": {
+        "alien": "2:03.5",
+        "pro": "2:04.7",
+        "proam": "2:06.2",
+        "am": "2:07.5"
+      },
+      "indianapolis": {
+        "alien": "1:32.5",
+        "pro": "1:33.4",
+        "proam": "1:34.5",
+        "am": "1:35.5"
+      }
     }
   }
 }

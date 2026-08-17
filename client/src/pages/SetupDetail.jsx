@@ -13,6 +13,7 @@ import ReferenceTimes from '../components/ReferenceTimes.jsx';
 import SetupSheet from '../components/SetupSheet.jsx';
 import FuelCalculator from '../components/FuelCalculator.jsx';
 import SetupActions from '../components/SetupActions.jsx';
+import BopInfo from '../components/BopInfo.jsx';
 
 // Ein Pill-Knopf pro Setup-Variante (Ersteller · Session; Regen-Setups blau markiert).
 function VariantPicker({ variants, selected, onSelect }) {
@@ -121,6 +122,7 @@ export default function SetupDetail() {
             </div>
             <div className="space-y-5">
               <SafetySlider adjustment={data?.adjustment} value={slider} onChange={setSlider} />
+              <BopInfo bop={data?.bop} />
               <ReferenceTimes
                 times={data?.referenceTimes}
                 available={data?.referenceTimesAvailable}
