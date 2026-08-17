@@ -22,8 +22,17 @@ export default function TrackLayout({ svg, status, viewBox = '0 0 100 100', clas
     return <div className={`flex items-center justify-center text-muted text-xs ${className}`}>Layout folgt</div>;
   }
 
+  // Die Pfade sind auf 0..100 normalisiert und beruehren damit den Rand. Ohne Puffer
+  // schneidet der Viewport die 4.5 breite Linie (plus Glow) an den Raendern ab.
+  const padded = (() => {
+    const p = String(viewBox).trim().split(/[\s,]+/).map(Number);
+    if (p.length !== 4 || p.some((n) => !Number.isFinite(n))) return viewBox;
+    const pad = Math.max(p[2], p[3]) * 0.05;
+    return `${p[0] - pad} ${p[1] - pad} ${p[2] + pad * 2} ${p[3] + pad * 2}`;
+  })();
+
   return (
-    <svg viewBox={viewBox} className={className} aria-hidden preserveAspectRatio="xMidYMid meet">
+    <svg viewBox={padded} className={className} aria-hidden preserveAspectRatio="xMidYMid meet">
       <defs>
         <filter id={`glow-${id}`} x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="1.5" result="b" />

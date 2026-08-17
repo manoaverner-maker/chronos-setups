@@ -1,5 +1,5 @@
 {
-  "_comment": "Auto-Stammdaten. 'available' = true nur wenn echte Setup-Daten vorliegen. Aktuell hat nur der Ferrari 296 GT3 transkribierte Setups; die anderen beiden sind aus dem Prompt vorgesehen, aber ohne Daten (available=false), damit das Frontend ehrlich 'keine Setups' anzeigt statt etwas zu erfinden.",
+  "_comment": "Auto-Stammdaten. 'available' ist nur noch ein Fallback fuer sehr alte App-Versionen — massgeblich sind die tatsaechlich vorhandenen Setup-Dateien unter data/setups/<auto>/.",
   "cars": [
     {
       "id": "ferrari_296_gt3",
@@ -19,7 +19,7 @@
       "class": "GT3",
       "image": "/images/cars/mercedes_amg_gt3_evo.jpg",
       "accentColor": "#00A19B",
-      "available": false
+      "available": true
     },
     {
       "id": "amr_v8_vantage_gt3",
@@ -29,7 +29,7 @@
       "class": "GT3",
       "image": "/images/cars/amr_v8_vantage_gt3.jpg",
       "accentColor": "#00665E",
-      "available": false
+      "available": true
     }
   ]
 }
