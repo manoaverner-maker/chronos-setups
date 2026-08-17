@@ -21,7 +21,14 @@ export default function CarSelect() {
       </div>
 
       {isLoading && <p className="text-muted">lädt Fahrzeuge…</p>}
-      {error && <p className="text-bad">Backend nicht erreichbar — läuft der Server auf Port 4000?</p>}
+      {/* Die App braucht kein Backend mehr — ein Fehler heisst hier: die eingebackenen
+          Daten liessen sich nicht laden (z. B. veralteter Cache oder falsche URL). */}
+      {error && (
+        <p className="text-bad">
+          Fahrzeugdaten konnten nicht geladen werden. Bitte die Seite neu laden — falls das nicht
+          hilft, die App über <span className="whitespace-nowrap">manoaverner-maker.github.io/chronos-setups/</span> öffnen.
+        </p>
+      )}
 
       <motion.div
         variants={stagger}
