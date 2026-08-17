@@ -8,6 +8,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 // (https://manoaverner-maker.github.io/chronos-setups/). Lokal (npm run dev) '/'.
 export default defineConfig({
   base: process.env.APP_BASE || '/',
+  // Build-Zeitpunkt als Versionsstempel im Footer — so ist sofort erkennbar, ob
+  // eine alte Fassung aus dem Offline-Cache angezeigt wird.
+  define: {
+    __APP_BUILD__: JSON.stringify(
+      new Date().toLocaleString('de-CH', { timeZone: 'Europe/Zurich', dateStyle: 'short', timeStyle: 'short' }),
+    ),
+  },
   plugins: [
     react(),
     VitePWA({

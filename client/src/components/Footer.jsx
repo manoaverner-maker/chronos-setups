@@ -19,6 +19,9 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-5 text-[11px] text-muted/70 leading-relaxed">
         Setups aus Team-Vorlagen transkribiert · Drücke deterministisch berechnet · Fehlende Daten werden als „—" ausgewiesen, nicht erfunden.
         <br />Streckenlayouts © OpenStreetMap-Mitwirkende (ODbL).
+        {/* Versionsstempel: macht auf einen Blick sichtbar, ob die App noch aus dem
+            Offline-Cache kommt (alte Version) oder aktuell ist. */}
+        <br />Version <span className="mono">{__APP_BUILD__}</span>
       </div>
     </footer>
   );
