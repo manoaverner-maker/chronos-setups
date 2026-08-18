@@ -83,36 +83,63 @@ async function overpass(query) {
 
 // Wege an gemeinsamen Endpunkten zu moeglichst langen Ketten verbinden.
 // OSM-Segmente stossen exakt aneinander, darum genuegt ein Schluessel aus den Koordinaten.
-function chain(ways) {
-  const key = (p) => `${p.lat.toFixed(6)},${p.lon.toFixed(6)}`;
-  const segments = ways.map((w) => w.geometry).filter((g) => g && g.length > 1);
-  const chains = [];
+//
+// An Abzweigungen (Boxengasse, kuerzere Streckenvarianten wie Brands Hatch Indy oder
+// Snetterton 200) ist die Verkettung mehrdeutig: greedy erwischt man leicht den Stichweg
+// und der Rundkurs bleibt offen. Darum mehrere Startreihenfolgen durchprobieren und die
+// beste Kette nehmen — geschlossene Runden schlagen offene, danach zaehlt die Laenge.
+const keyOf = (p) => `${p.lat.toFixed(6)},${p.lon.toFixed(6)}`;
 
-  while (segments.length) {
-    let current = segments.pop().slice();
+function buildChains(segmente) {
+  const rest = segmente.map((s) => s.slice());
+  const chains = [];
+  while (rest.length) {
+    let current = rest.pop();
     let merged = true;
     while (merged) {
       merged = false;
-      for (let i = 0; i < segments.length; i++) {
-        const s = segments[i];
-        const head = key(current[0]);
-        const tail = key(current[current.length - 1]);
-        const sHead = key(s[0]);
-        const sTail = key(s[s.length - 1]);
+      for (let i = 0; i < rest.length; i++) {
+        const s = rest[i];
+        const head = keyOf(current[0]);
+        const tail = keyOf(current[current.length - 1]);
+        const sHead = keyOf(s[0]);
+        const sTail = keyOf(s[s.length - 1]);
         if (tail === sHead) current = current.concat(s.slice(1));
         else if (tail === sTail) current = current.concat(s.slice().reverse().slice(1));
         else if (head === sTail) current = s.slice(0, -1).concat(current);
         else if (head === sHead) current = s.slice().reverse().slice(0, -1).concat(current);
         else continue;
-        segments.splice(i, 1);
+        rest.splice(i, 1);
         merged = true;
         break;
       }
     }
     chains.push(current);
   }
-  // Laengste Kette = die eigentliche Rennstrecke (Zufahrten/Boxengassen sind kuerzer).
-  return chains.sort((a, b) => b.length - a.length)[0] ?? [];
+  return chains;
+}
+
+function chain(ways) {
+  const segmente = ways.map((w) => w.geometry).filter((g) => g && g.length > 1);
+  if (!segmente.length) return [];
+
+  const bewerten = (c) => [keyOf(c[0]) === keyOf(c[c.length - 1]) ? 1 : 0, c.length];
+  let best = [];
+  let bestScore = [-1, -1];
+
+  // Deterministisch verschiedene Startreihenfolgen: jeweils um eine Position rotiert.
+  const versuche = Math.min(12, segmente.length);
+  for (let v = 0; v < versuche; v++) {
+    const rotiert = segmente.slice(v).concat(segmente.slice(0, v));
+    for (const c of buildChains(rotiert)) {
+      const s = bewerten(c);
+      if (s[0] > bestScore[0] || (s[0] === bestScore[0] && s[1] > bestScore[1])) {
+        best = c;
+        bestScore = s;
+      }
+    }
+  }
+  return best;
 }
 
 // Geographische Laenge/Breite -> normierte SVG-Koordinaten (0..100, Seitenverhaeltnis erhalten).
