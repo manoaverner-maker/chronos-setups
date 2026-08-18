@@ -8,6 +8,7 @@ import { useCarAccent } from '../lib/useCarAccent.js';
 import RoundCard from '../components/RoundCard.jsx';
 import TrackTile from '../components/TrackTile.jsx';
 import NextRaceCountdown from '../components/NextRaceCountdown.jsx';
+import Tabs from '../components/Tabs.jsx';
 
 // Lokales Datum als YYYY-MM-DD. Bewusst NICHT toISOString() (das rechnet nach UTC und
 // liefert nachts zwischen 00:00 und 02:00 noch den Vortag) und bewusst nicht im
@@ -107,51 +108,59 @@ export default function Calendar() {
       {isLoading && <p className="text-muted">lädt Kalender…</p>}
       {error && <p className="text-bad">Konnte Kalender nicht laden.</p>}
 
-      <motion.div
-        variants={stagger}
-        initial="initial"
-        animate="animate"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-      >
-        {rounds.map((r) => (
-          <RoundCard key={r.round} round={r} car={car} isNext={r.round === nextRound} />
-        ))}
-      </motion.div>
-
-      {/* Alle Strecken / Weitere Setups */}
-      {allTracks.length > 0 && (
-        <div className="mt-12">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <div>
-              <h2 className="display text-xl font-semibold">Alle Strecken</h2>
-              <p className="text-xs text-muted mt-0.5">Weitere Setups jenseits des Saison-Kalenders</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <input
-                type="search"
-                value={trackQuery}
-                onChange={(e) => setTrackQuery(e.target.value)}
-                placeholder="Strecke suchen…"
-                className="glass rounded-xl px-3.5 py-2 text-sm bg-transparent outline-none focus:border-car/50 w-44 sm:w-56"
-              />
-              <span className="text-xs text-muted whitespace-nowrap hidden sm:inline">
-                <span className="text-good">{allTracks.filter((t) => t.hasSetup).length}</span> mit Setup · {allTracks.length}
-              </span>
-            </div>
-          </div>
-          <motion.div
-            variants={stagger}
-            initial="initial"
-            animate="animate"
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
-          >
-            {filteredTracks.map((t) => <TrackTile key={t.id} track={t} car={car} />)}
-          </motion.div>
-          {filteredTracks.length === 0 && (
-            <p className="text-sm text-muted">Keine Strecke gefunden für „{trackQuery}".</p>
-          )}
-        </div>
-      )}
+      {/* Saison-Kalender und die vollstaendige Streckenliste trennen: vorher standen
+          8 Rennkarten und 25 Streckenkacheln ungetrennt untereinander. */}
+      <Tabs
+        tabs={[
+          {
+            id: 'saison',
+            label: 'Saison',
+            hint: `${rounds.length} Rennen`,
+            content: (
+              <motion.div
+                variants={stagger}
+                initial="initial"
+                animate="animate"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              >
+                {rounds.map((r) => (
+                  <RoundCard key={r.round} round={r} car={car} isNext={r.round === nextRound} />
+                ))}
+              </motion.div>
+            ),
+          },
+          {
+            id: 'strecken',
+            label: 'Alle Strecken',
+            hint: `${allTracks.filter((t) => t.hasSetup).length} mit Setup`,
+            content: (
+              <div>
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                  <p className="text-xs text-muted">Auch Strecken ausserhalb des Saison-Kalenders</p>
+                  <input
+                    type="search"
+                    value={trackQuery}
+                    onChange={(e) => setTrackQuery(e.target.value)}
+                    placeholder="Strecke suchen…"
+                    className="glass rounded-xl px-3.5 py-2 text-sm bg-transparent outline-none focus:border-car/50 w-44 sm:w-56"
+                  />
+                </div>
+                <motion.div
+                  variants={stagger}
+                  initial="initial"
+                  animate="animate"
+                  className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3"
+                >
+                  {filteredTracks.map((t) => <TrackTile key={t.id} track={t} car={car} />)}
+                </motion.div>
+                {filteredTracks.length === 0 && (
+                  <p className="text-sm text-muted">Keine Strecke gefunden für „{trackQuery}".</p>
+                )}
+              </div>
+            ),
+          },
+        ]}
+      />
     </motion.div>
   );
 }

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { getStandings } from '../lib/api.js';
 import { pageMotion, stagger, rise } from '../lib/motion.js';
+import Tabs from '../components/Tabs.jsx';
 
 const CAR_COLOR = {
   'Ferrari 296 GT3': '#E8002D',
@@ -68,100 +69,131 @@ export default function Standings() {
 
       {isLoading && <p className="text-muted">lädt…</p>}
 
-      {hasPoints && (
-        <>
-          {data?.note && (
-            <p className="text-[11px] text-warn mb-4 glass rounded-xl px-3 py-2 inline-block">ℹ {data.note}</p>
-          )}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-            {/* Fahrerwertung */}
-            <div className="glass rounded-2xl p-5">
-              <h2 className="display text-lg font-semibold mb-3">Fahrerwertung</h2>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
-                    <th className="py-2 text-left w-7">#</th>
-                    <th className="py-2 text-left">Fahrer</th>
-                    <th className="py-2 text-center w-12">R1</th>
-                    <th className="py-2 text-right w-12">Pkt</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {driverStandings.map((d) => (
-                    <tr key={d.driver} className="border-b border-line/50 last:border-0">
-                      <td className="py-2.5 text-muted mono">{d.pos}</td>
-                      <td className="py-2.5">
-                        <div className="font-medium leading-tight">{d.name || d.driver}</div>
-                        <div className="text-[11px] text-muted">{d.driver}{d.number ? ` · #${d.number}` : ''} · {d.team}</div>
-                      </td>
-                      <td className="py-2.5 text-center text-muted mono text-xs">{d.r1 ?? '—'}</td>
-                      <td className="py-2.5 text-right mono font-semibold text-car">{d.points}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {/* Teamwertung */}
-            <div className="glass rounded-2xl p-5 self-start">
-              <h2 className="display text-lg font-semibold mb-3">Teamwertung</h2>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
-                    <th className="py-2 text-left w-7">#</th>
-                    <th className="py-2 text-left">Team</th>
-                    <th className="py-2 text-right w-12">Pkt</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {teamStandings.map((t) => (
-                    <tr key={t.team} className="border-b border-line/50 last:border-0">
-                      <td className="py-2.5 text-muted mono">{t.pos}</td>
-                      <td className="py-2.5 font-medium">{t.team}</td>
-                      <td className="py-2.5 text-right mono font-semibold text-car">{t.points}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      )}
+      {/* Gleiche Gliederung wie auf der Setup-Seite: die Seite war 4580 px lang,
+          weil Wertung, Kader und Punktesystem ungetrennt untereinander standen. */}
+      <Tabs
+        tabs={[
+          {
+            id: 'wertung',
+            label: 'Wertung',
+            hint: 'Fahrer & Teams',
+            content: (
+              <>
+              {hasPoints && (
+                <>
+                  {data?.note && (
+                    <p className="text-[11px] text-warn mb-4 glass rounded-xl px-3 py-2 inline-block">ℹ {data.note}</p>
+                  )}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+                    {/* Fahrerwertung */}
+                    <div className="glass rounded-2xl p-5">
+                      <h2 className="display text-lg font-semibold mb-3">Fahrerwertung</h2>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
+                            <th className="py-2 text-left w-7">#</th>
+                            <th className="py-2 text-left">Fahrer</th>
+                            <th className="py-2 text-center w-12">R1</th>
+                            <th className="py-2 text-right w-12">Pkt</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {driverStandings.map((d) => (
+                            <tr key={d.driver} className="border-b border-line/50 last:border-0">
+                              <td className="py-2.5 text-muted mono">{d.pos}</td>
+                              <td className="py-2.5">
+                                <div className="font-medium leading-tight">{d.name || d.driver}</div>
+                                <div className="text-[11px] text-muted">{d.driver}{d.number ? ` · #${d.number}` : ''} · {d.team}</div>
+                              </td>
+                              <td className="py-2.5 text-center text-muted mono text-xs">{d.r1 ?? '—'}</td>
+                              <td className="py-2.5 text-right mono font-semibold text-car">{d.points}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* Teamwertung */}
+                    <div className="glass rounded-2xl p-5 self-start">
+                      <h2 className="display text-lg font-semibold mb-3">Teamwertung</h2>
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
+                            <th className="py-2 text-left w-7">#</th>
+                            <th className="py-2 text-left">Team</th>
+                            <th className="py-2 text-right w-12">Pkt</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {teamStandings.map((t) => (
+                            <tr key={t.team} className="border-b border-line/50 last:border-0">
+                              <td className="py-2.5 text-muted mono">{t.pos}</td>
+                              <td className="py-2.5 font-medium">{t.team}</td>
+                              <td className="py-2.5 text-right mono font-semibold text-car">{t.points}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+              </>
+            ),
+          },
+          {
+            id: 'kader',
+            label: 'Teams',
+            hint: 'Fahrer & Ersatz',
+            content: (
+              <>
+              <h2 className="display text-xl font-semibold mb-3">Teams &amp; Fahrer</h2>
+              <motion.div variants={stagger} initial="initial" animate="animate" className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                {teams.map((t, i) => (
+                  <motion.div key={i} variants={rise} className="glass rounded-2xl p-5">
+                    <h3 className="display text-lg font-semibold">{t.name}</h3>
+                    <div className="mt-2">
+                      {t.drivers.map((d, j) => <DriverRosterRow key={j} d={d} />)}
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
 
-      <h2 className="display text-xl font-semibold mb-3">Teams &amp; Fahrer</h2>
-      <motion.div variants={stagger} initial="initial" animate="animate" className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        {teams.map((t, i) => (
-          <motion.div key={i} variants={rise} className="glass rounded-2xl p-5">
-            <h3 className="display text-lg font-semibold">{t.name}</h3>
-            <div className="mt-2">
-              {t.drivers.map((d, j) => <DriverRosterRow key={j} d={d} />)}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {reserve.length > 0 && (
-        <div className="glass rounded-2xl p-5 mb-8">
-          <h3 className="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2.5">Ersatzfahrer-Pool</h3>
-          <div className="flex flex-wrap gap-2">
-            {reserve.map((d, i) => (
-              <span key={i} className="text-sm glass rounded-lg px-3 py-1.5">
-                {d.name || d.driver}{d.number ? ` · #${d.number}` : ''} <span className="text-muted text-xs">· {d.car}</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {ps && (
-        <div className="glass rounded-2xl p-5">
-          <h2 className="display text-lg font-semibold mb-4">Punktesystem</h2>
-          <div className="space-y-5">
-            <PointsGrid title="Rennpunkte (P1–P15)" points={ps.race} />
-            <div className="max-w-[220px]"><PointsGrid title="Qualifying-Bonus" points={ps.qualiBonus} /></div>
-            {ps.note && <p className="text-xs text-muted">ℹ {ps.note}</p>}
-          </div>
-        </div>
-      )}
+              {reserve.length > 0 && (
+                <div className="glass rounded-2xl p-5 mb-8">
+                  <h3 className="text-[11px] font-semibold text-muted uppercase tracking-wider mb-2.5">Ersatzfahrer-Pool</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {reserve.map((d, i) => (
+                      <span key={i} className="text-sm glass rounded-lg px-3 py-1.5">
+                        {d.name || d.driver}{d.number ? ` · #${d.number}` : ''} <span className="text-muted text-xs">· {d.car}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              </>
+            ),
+          },
+          {
+            id: 'punkte',
+            label: 'Punkte',
+            hint: 'Punktesystem',
+            content: (
+              <>
+              {ps && (
+                <div className="glass rounded-2xl p-5">
+                  <h2 className="display text-lg font-semibold mb-4">Punktesystem</h2>
+                  <div className="space-y-5">
+                    <PointsGrid title="Rennpunkte (P1–P15)" points={ps.race} />
+                    <div className="max-w-[220px]"><PointsGrid title="Qualifying-Bonus" points={ps.qualiBonus} /></div>
+                    {ps.note && <p className="text-xs text-muted">ℹ {ps.note}</p>}
+                  </div>
+                </div>
+              )}
+              </>
+            ),
+          },
+        ]}
+      />
     </motion.div>
   );
 }
