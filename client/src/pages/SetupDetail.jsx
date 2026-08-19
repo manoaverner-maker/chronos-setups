@@ -86,8 +86,10 @@ export default function SetupDetail() {
 
   return (
     <motion.div variants={pageMotion} initial="initial" animate="animate" exit="exit" className="space-y-5">
-      <div className="flex items-center justify-between gap-3">
-        <Link to={`/${car}`} className="text-sm text-muted hover:text-ink transition-colors">
+      {/* Am Handy untereinander: Fahrzeugname und die zwei Export-Knoepfe passen
+          auf 375 px nicht nebeneinander und brachen unschoen um. */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
+        <Link to={`/${car}`} className="text-sm text-muted hover:text-ink transition-colors truncate">
           ‹ {carInfo?.displayName ?? 'Kalender'}
         </Link>
         {!noSetup && <SetupActions data={data} />}
