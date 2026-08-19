@@ -2,9 +2,9 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 
 // Update-Hinweis der PWA: Statt die neue Version beim naechsten Start stillschweigend
 // zu uebernehmen, erscheint ein Banner mit "Aktualisieren"-Knopf — die App muss nicht
-// geschlossen/neu gestartet werden. Zusaetzlich wird stuendlich aktiv nach einer
-// neuen Version gesucht (sonst prueft der Browser nur beim Seitenstart).
-const CHECK_INTERVAL_MS = 60 * 60 * 1000;
+// geschlossen/neu gestartet werden. Geprueft wird sofort beim Start, bei jeder
+// Rueckkehr in den Vordergrund und alle 15 Minuten.
+const CHECK_INTERVAL_MS = 15 * 60 * 1000;
 
 export default function UpdateToast() {
   const {
@@ -13,7 +13,16 @@ export default function UpdateToast() {
   } = useRegisterSW({
     onRegisteredSW(swUrl, registration) {
       if (!registration) return;
-      setInterval(() => registration.update().catch(() => {}), CHECK_INTERVAL_MS);
+      const pruefen = () => registration.update().catch(() => {});
+      // Sofort beim Start pruefen — sonst faellt ein Update erst beim naechsten
+      // Intervall auf, und wer die App nur kurz oeffnet, sieht nie einen Hinweis.
+      pruefen();
+      // Und jedes Mal, wenn die App wieder in den Vordergrund kommt (Handy!).
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') pruefen();
+      });
+      window.addEventListener('focus', pruefen);
+      setInterval(pruefen, CHECK_INTERVAL_MS);
     },
   });
 
