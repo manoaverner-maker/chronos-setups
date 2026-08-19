@@ -30,9 +30,8 @@ export default function PressurePanel({ pressures }) {
         <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: 'var(--warn)' }} /> Randbereich</span>
       </div>
 
-      <p className="text-[11px] text-muted mt-3 leading-relaxed">
-        Gewichtetes Temp-Delta {pressures.weightedDelta >= 0 ? '+' : ''}{pressures.weightedDelta} → Kaltdruck so gewählt,
-        dass der Heißdruck im Zielfenster landet.
+      <p className="text-[11px] text-muted mt-3">
+        Temp-Delta {pressures.weightedDelta >= 0 ? '+' : ''}{pressures.weightedDelta} · Kaltdruck aufs Zielfenster angepasst
       </p>
     </div>
   );

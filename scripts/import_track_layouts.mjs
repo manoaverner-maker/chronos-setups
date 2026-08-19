@@ -54,7 +54,7 @@ const AREAS = {
   watkins_glen: { bbox: [42.330, -76.935, 42.348, -76.912] },
   cota: { bbox: [30.126, -97.646, 30.145, -97.625] },
   indianapolis: { bbox: [39.784, -86.245, 39.801, -86.226] },
-  nbr_gp: { bbox: [50.330, 6.930, 50.345, 6.952] },
+  nbr_gp: { bbox: [50.325, 6.925, 50.350, 6.962] }, // weiter gefasst: Teile der GP-Strecke lagen ausserhalb
   nbr_24h: { bbox: [50.325, 6.925, 50.390, 7.010] },
 };
 
@@ -81,65 +81,122 @@ async function overpass(query) {
   throw new Error(lastErr);
 }
 
-// Wege an gemeinsamen Endpunkten zu moeglichst langen Ketten verbinden.
-// OSM-Segmente stossen exakt aneinander, darum genuegt ein Schluessel aus den Koordinaten.
+// Aus den OSM-Wegstuecken die Rennstrecke rekonstruieren.
 //
-// An Abzweigungen (Boxengasse, kuerzere Streckenvarianten wie Brands Hatch Indy oder
-// Snetterton 200) ist die Verkettung mehrdeutig: greedy erwischt man leicht den Stichweg
-// und der Rundkurs bleibt offen. Darum mehrere Startreihenfolgen durchprobieren und die
-// beste Kette nehmen — geschlossene Runden schlagen offene, danach zaehlt die Laenge.
+// Eine Strecke besteht aus vielen kurzen "ways", die sich an Knoten treffen. An
+// Kreuzungen (Boxengassenein-/ausfahrt, Verbindung zur Nordschleife, kuerzere
+// Varianten wie Snetterton 200) ist nicht eindeutig, wie es weitergeht. Blindes
+// Anhaengen fuehrt dort in Sackgassen — deshalb wird an jedem Knoten der Weg
+// gewaehlt, der die Fahrtrichtung am wenigsten aendert (geradeaus weiter), so wie
+// ein Auto der Ideallinie folgt. Zusaetzlich entscheidet die bekannte Streckenlaenge,
+// welche der gefundenen Runden die richtige ist.
 const keyOf = (p) => `${p.lat.toFixed(6)},${p.lon.toFixed(6)}`;
 
-function buildChains(segmente) {
-  const rest = segmente.map((s) => s.slice());
-  const chains = [];
-  while (rest.length) {
-    let current = rest.pop();
-    let merged = true;
-    while (merged) {
-      merged = false;
-      for (let i = 0; i < rest.length; i++) {
-        const s = rest[i];
-        const head = keyOf(current[0]);
-        const tail = keyOf(current[current.length - 1]);
-        const sHead = keyOf(s[0]);
-        const sTail = keyOf(s[s.length - 1]);
-        if (tail === sHead) current = current.concat(s.slice(1));
-        else if (tail === sTail) current = current.concat(s.slice().reverse().slice(1));
-        else if (head === sTail) current = s.slice(0, -1).concat(current);
-        else if (head === sHead) current = s.slice().reverse().slice(0, -1).concat(current);
-        else continue;
-        rest.splice(i, 1);
-        merged = true;
-        break;
-      }
-    }
-    chains.push(current);
+function laengeKm(punkte) {
+  let km = 0;
+  for (let i = 1; i < punkte.length; i++) {
+    const a = punkte[i - 1], b = punkte[i];
+    const dLat = ((b.lat - a.lat) * Math.PI) / 180;
+    const dLon = ((b.lon - a.lon) * Math.PI) / 180;
+    const la = (a.lat * Math.PI) / 180, lb = (b.lat * Math.PI) / 180;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(la) * Math.cos(lb) * Math.sin(dLon / 2) ** 2;
+    km += 6371 * 2 * Math.asin(Math.sqrt(h));
   }
-  return chains;
+  return km;
 }
 
-function chain(ways) {
+// Kompassrichtung von a nach b in Grad.
+function peilung(a, b) {
+  const la = (a.lat * Math.PI) / 180, lb = (b.lat * Math.PI) / 180;
+  const dLon = ((b.lon - a.lon) * Math.PI) / 180;
+  const y = Math.sin(dLon) * Math.cos(lb);
+  const x = Math.cos(la) * Math.sin(lb) - Math.sin(la) * Math.cos(lb) * Math.cos(dLon);
+  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+}
+const winkelDiff = (a, b) => Math.abs(((a - b + 540) % 360) - 180);
+
+// Rundensuche ab einem Startsegment.
+//
+// An Kreuzungen reicht "moeglichst geradeaus" nicht: Nuerburgring GP und die kuerzere
+// Sprintstrecke teilen sich Streckenteile, ebenso Snetterton 300/200/100 und der
+// Indianapolis-Roadcourse mit dem Oval. Geradeaus fuehrt dort systematisch auf die
+// falsche (kuerzere) Variante. Darum werden an jeder Kreuzung ALLE Fortsetzungen
+// verfolgt (Tiefensuche) und am Ende die geschlossene Runde genommen, deren Laenge
+// am besten zur bekannten Streckenlaenge passt. Begrenzungen verhindern, dass die
+// Suche im Streckennetz (z. B. Nordschleife) ausufert.
+function sucheRunden(segmente, knoten, startIdx, rueckwaerts, sollKm) {
+  const maxKm = sollKm ? sollKm * 1.35 : Infinity;
+  const treffer = [];
+  let schritte = 0;
+  const MAX_SCHRITTE = 40000;
+
+  const start = rueckwaerts ? segmente[startIdx].slice().reverse() : segmente[startIdx].slice();
+  const startKnoten = keyOf(start[0]);
+
+  (function weiter(punkte, benutzt, km) {
+    if (schritte++ > MAX_SCHRITTE || treffer.length > 40) return;
+    const ende = punkte[punkte.length - 1];
+    const hier = keyOf(ende);
+
+    if (punkte.length > 1 && hier === startKnoten) {
+      treffer.push({ punkte: punkte.slice(), geschlossen: true, km });
+      return;
+    }
+    if (km > maxKm) return;
+
+    const vorher = punkte[punkte.length - 2] ?? punkte[0];
+    const einfahrt = peilung(vorher, ende);
+
+    // Fortsetzungen nach Kurvigkeit sortieren: geradeaus zuerst, aber alle probieren.
+    const optionen = (knoten.get(hier) ?? [])
+      .filter((k) => !benutzt.has(k.idx))
+      .map((k) => {
+        const seg = segmente[k.idx];
+        const gedreht = k.amEnde ? seg.slice().reverse() : seg.slice();
+        return { idx: k.idx, punkte: gedreht, abw: winkelDiff(einfahrt, peilung(gedreht[0], gedreht[1])) };
+      })
+      .filter((o) => o.abw <= 120) // ueber 120 Grad waere eine Kehrtwende
+      .sort((a, b) => a.abw - b.abw);
+
+    for (const o of optionen) {
+      benutzt.add(o.idx);
+      weiter(punkte.concat(o.punkte.slice(1)), benutzt, km + laengeKm(o.punkte));
+      benutzt.delete(o.idx);
+    }
+  })(start, new Set([startIdx]), laengeKm(start));
+
+  return treffer;
+}
+
+function chain(ways, sollKm) {
   const segmente = ways.map((w) => w.geometry).filter((g) => g && g.length > 1);
   if (!segmente.length) return [];
 
-  const bewerten = (c) => [keyOf(c[0]) === keyOf(c[c.length - 1]) ? 1 : 0, c.length];
-  let best = [];
-  let bestScore = [-1, -1];
-
-  // Deterministisch verschiedene Startreihenfolgen: jeweils um eine Position rotiert.
-  const versuche = Math.min(12, segmente.length);
-  for (let v = 0; v < versuche; v++) {
-    const rotiert = segmente.slice(v).concat(segmente.slice(0, v));
-    for (const c of buildChains(rotiert)) {
-      const s = bewerten(c);
-      if (s[0] > bestScore[0] || (s[0] === bestScore[0] && s[1] > bestScore[1])) {
-        best = c;
-        bestScore = s;
-      }
+  const knoten = new Map();
+  segmente.forEach((seg, idx) => {
+    for (const [punkt, amEnde] of [[seg[0], false], [seg[seg.length - 1], true]]) {
+      const k = keyOf(punkt);
+      if (!knoten.has(k)) knoten.set(k, []);
+      knoten.get(k).push({ idx, amEnde });
     }
+  });
+
+  const alle = [];
+  for (let i = 0; i < segmente.length; i++) {
+    for (const rueckwaerts of [false, true]) {
+      alle.push(...sucheRunden(segmente, knoten, i, rueckwaerts, sollKm));
+      // Sobald eine Runde sehr genau passt, ist die Suche fertig.
+      if (sollKm && alle.some((k) => Math.abs(k.km - sollKm) < sollKm * 0.03)) break;
+    }
+    if (sollKm && alle.some((k) => Math.abs(k.km - sollKm) < sollKm * 0.03)) break;
   }
-  return best;
+
+  if (!alle.length) return [];
+  const abweichung = (k) => (sollKm ? Math.abs(k.km - sollKm) : -k.punkte.length);
+  alle.sort((a, b) => abweichung(a) - abweichung(b));
+  const beste = alle[0];
+  beste.punkte._km = beste.km;
+  return beste.punkte;
 }
 
 // Geographische Laenge/Breite -> normierte SVG-Koordinaten (0..100, Seitenverhaeltnis erhalten).
@@ -188,10 +245,13 @@ async function main() {
       const ways = (data.elements ?? []).filter((e) => e.type === 'way' && e.geometry?.length > 1
         && e.tags?.area !== 'yes' && !/pit|paddock|karting/i.test(e.tags?.name ?? ''));
       if (!ways.length) throw new Error('keine raceway-Wege gefunden');
-      const points = chain(ways);
+      const points = chain(ways, t.lengthKm);
       if (points.length < 20) throw new Error(`Kette zu kurz (${points.length} Punkte)`);
       const { path: svg, points: n, closed } = toSvgPath(points);
-      console.log(`${t.id.padEnd(16)} ${String(n).padStart(4)} Punkte  ${closed ? 'geschlossen' : 'OFFEN (Kontrolle noetig)'}`);
+      const istKm = points._km ?? 0;
+      const passt = t.lengthKm ? Math.abs(istKm - t.lengthKm) <= 0.35 : true;
+      console.log(`${t.id.padEnd(16)} ${String(n).padStart(4)} Punkte  ${istKm.toFixed(2)}/${t.lengthKm ?? '?'} km  `
+        + `${closed ? 'geschlossen' : 'OFFEN'}  ${passt ? 'Laenge passt' : 'LAENGE WEICHT AB'}`);
       if (!DRY) {
         t.layout = { svg, viewBox: '0 0 100 100', status: 'osm', source: 'OpenStreetMap (ODbL)' };
       }

@@ -4,6 +4,7 @@ import { getCars } from '../lib/api.js';
 import { pageMotion, stagger } from '../lib/motion.js';
 import { useCarAccent } from '../lib/useCarAccent.js';
 import CarCard from '../components/CarCard.jsx';
+import FuelCalculator from '../components/FuelCalculator.jsx';
 
 export default function CarSelect() {
   useCarAccent(null); // zurueck auf Marken-Gold
@@ -18,6 +19,12 @@ export default function CarSelect() {
           Hinterlegte Baseline-Setups des Teams, kombiniert mit temperaturbasierter Druck-Berechnung
           und Referenzzeiten je Strecke.
         </p>
+      </div>
+
+      {/* Tankrechner steht bewusst vor der Fahrzeugwahl: er wird oft unabhaengig
+          von einem konkreten Setup gebraucht (Renndauer planen, Sprit abschaetzen). */}
+      <div className="mb-8 max-w-xl">
+        <FuelCalculator titel="Tankrechner" />
       </div>
 
       {isLoading && <p className="text-muted">lädt Fahrzeuge…</p>}

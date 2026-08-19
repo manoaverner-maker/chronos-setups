@@ -30,14 +30,10 @@ export default function ReferenceTimes({ times, available, estimated }) {
         })}
       </div>
       {available && estimated && (
-        <p className="text-[11px] text-muted mt-3 leading-relaxed">
-          Richtwerte: „Alien" = realer ACC-Hotlap-Benchmark, übrige Tiers modelliert. Offizielle ASPL-Zeiten überschreiben diese jederzeit.
-        </p>
+        <p className="text-[11px] text-muted mt-3">Richtwerte — eigene Team-Zeiten haben Vorrang.</p>
       )}
       {!available && (
-        <p className="text-[11px] text-muted mt-3">
-          Sobald belegte Rundenzeiten in <span className="mono">reference_times.json</span> stehen, erscheinen sie hier automatisch.
-        </p>
+        <p className="text-[11px] text-muted mt-3">Noch keine Zeiten hinterlegt.</p>
       )}
     </div>
   );

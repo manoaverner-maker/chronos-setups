@@ -39,13 +39,13 @@ export default function BopInfo({ bop }) {
         </div>
       </div>
 
-      <p className="text-[11px] text-muted mt-3 leading-relaxed">
+      <p className="text-[11px] text-muted mt-3">
         {ballast === 0 && restrictor === 0
-          ? 'Keine Zusatzlast auf dieser Strecke.'
+          ? 'Keine Zusatzlast hier.'
           : ballast > 0
-            ? `${ballast} kg Zusatzgewicht kosten Rundenzeit — Bremspunkte etwas früher, Reifen bauen schneller ab.`
-            : `${Math.abs(ballast)} kg weniger als die Referenz — das Auto ist hier begünstigt.`}
-        {' '}Beeinflusst die Rundenzeiten, nicht die Druckberechnung.
+            ? `${ballast} kg Mehrgewicht — kostet Rundenzeit.`
+            : `${Math.abs(ballast)} kg leichter als die Referenz.`}
+        {' '}Wirkt auf Zeiten, nicht auf den Druck.
       </p>
     </div>
   );

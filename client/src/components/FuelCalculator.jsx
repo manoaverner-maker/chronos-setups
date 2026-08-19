@@ -1,26 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-// Tank- & Stint-Rechner (minutenbasiert): Renndauer + frei wählbare Boxenstopp-
-// Zeitpunkte (Minute) → Spritbedarf pro Stint inkl. optionaler Einführungsrunde.
-// Gedacht für Zeitrennen mit Pflichtboxenstopp (z. B. 1-Stunden-Sprint).
+// Tankrechner. Bewusst schlank: die eine Zahl, die man wirklich braucht, ist die
+// Startfuellung. Alles Weitere (Tankgroesse, Einfuehrungsrunde, Stopp-Zeitpunkte,
+// Stint-Plan) liegt hinter "Details" — vorhanden, aber nicht im Weg.
 function parseLap(str) {
   if (!str) return null;
-  const m = String(str).match(/(?:(\d+):)?(\d+)(?:\.(\d+))?/);
+  const m = String(str).match(/(?:(\d+):)?(\d+)(?:[.,](\d+))?/);
   if (!m) return null;
   return (+(m[1] || 0)) * 60 + +m[2] + (m[3] ? +`0.${m[3]}` : 0);
 }
-
+const fmtLap = (s) => `${Math.floor(s / 60)}:${(s % 60).toFixed(1).padStart(4, '0')}`;
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-const fmtMin = (m) => `${m}′`;
 
-// Grober Streckenverbrauch als Startwert (GT3, ~0.55 L pro km).
-const defaultFuelPerLap = (lengthKm) => (lengthKm ? Math.max(1.5, +(lengthKm * 0.55).toFixed(1)) : 3.0);
-
-function Field({ label, value, onChange, step = 1, min = 1, suffix }) {
+function Feld({ label, value, onChange, step = 1, min = 1, suffix }) {
   return (
     <label className="block">
       <span className="text-[11px] uppercase tracking-wider text-muted">{label}</span>
-      <div className="mt-1 flex items-center glass rounded-xl px-2 py-1.5">
+      <div className="mt-1 flex items-center glass rounded-xl px-2.5 py-1.5">
         <input
           type="number" value={value} step={step} min={min}
           onChange={(e) => onChange(Math.max(min, Number(e.target.value)))}
@@ -32,177 +28,182 @@ function Field({ label, value, onChange, step = 1, min = 1, suffix }) {
   );
 }
 
-function Out({ label, value, highlight }) {
-  return (
-    <div className="glass rounded-xl p-3 border-line text-center">
-      <div className="text-[11px] uppercase tracking-wider text-muted">{label}</div>
-      <div className={`mono text-xl mt-0.5 tabular-nums ${highlight ? 'text-car' : 'text-ink'}`}>{value}</div>
-    </div>
-  );
-}
+export default function FuelCalculator({ lapTimeStr, lengthKm, titel = 'Tank- & Stint-Rechner' }) {
+  const refLap = parseLap(lapTimeStr);
+  const [lapText, setLapText] = useState(refLap ? fmtLap(refLap) : '1:50.0');
+  const lapSec = parseLap(refLap ? lapTimeStr : lapText) ?? 110;
 
-export default function FuelCalculator({ lapTimeStr, lengthKm }) {
-  const lapSec = parseLap(lapTimeStr) ?? 110;
-  const [minutes, setMinutes] = useState(60);
-  const [fuelPerLap, setFuelPerLap] = useState(() => defaultFuelPerLap(lengthKm));
-
-  // Die Streckendaten treffen oft erst nach dem ersten Rendern ein (eigene Query).
-  // Solange der Wert noch nicht von Hand geaendert wurde, den Streckenwert nachziehen.
-  const touched = useRef(false);
-  useEffect(() => {
-    if (!touched.current) setFuelPerLap(defaultFuelPerLap(lengthKm));
-  }, [lengthKm]);
-  const changeFuelPerLap = (v) => { touched.current = true; setFuelPerLap(v); };
+  const [minuten, setMinuten] = useState(60);
+  const [proRunde, setProRunde] = useState(lengthKm ? Math.max(1.5, +(lengthKm * 0.55).toFixed(1)) : 2.8);
   const [tank, setTank] = useState(120);
   const [formation, setFormation] = useState(true);
-  const [pitTimes, setPitTimes] = useState([30]); // Pflichtstopp bei Minute 30 (60-min-Default)
+  const [stopps, setStopps] = useState([30]);
+  const [details, setDetails] = useState(false);
 
-  // gültige Stopp-Minuten: in (0, Renndauer), eindeutig, sortiert
-  const valid = useMemo(
-    () => [...new Set(pitTimes.map((t) => clamp(Math.round(t), 1, minutes - 1)))]
-      .filter((t) => t > 0 && t < minutes)
-      .sort((a, b) => a - b),
-    [pitTimes, minutes],
+  const gueltig = useMemo(
+    () => [...new Set(stopps.map((t) => clamp(Math.round(t), 1, minuten - 1)))]
+      .filter((t) => t > 0 && t < minuten).sort((a, b) => a - b),
+    [stopps, minuten],
   );
 
   const r = useMemo(() => {
-    const raceLaps = Math.max(1, Math.ceil((minutes * 60) / lapSec) + 1); // +1 = Zieldurchfahrt
-    const lapAt = (min) => Math.round((min * 60) / lapSec);
-    const reserve = fuelPerLap;            // 1 Runde Reserve je Stint
-    const formationFuel = formation ? fuelPerLap : 0;
-
-    // Stint-Grenzen in Runden (kumuliert, streng steigend)
-    const bounds = [0];
-    for (const t of valid) {
-      const lp = clamp(lapAt(t), bounds[bounds.length - 1] + 1, raceLaps - 1);
-      bounds.push(lp);
+    const runden = Math.max(1, Math.ceil((minuten * 60) / lapSec) + 1);
+    const reserve = proRunde;
+    const formationSprit = formation ? proRunde : 0;
+    const grenzen = [0];
+    for (const t of gueltig) {
+      grenzen.push(clamp(Math.round((t * 60) / lapSec), grenzen[grenzen.length - 1] + 1, runden - 1));
     }
-    bounds.push(raceLaps);
+    grenzen.push(runden);
 
     const plan = [];
-    for (let i = 0; i < bounds.length - 1; i++) {
-      const laps = bounds[i + 1] - bounds[i];
-      const fuel = Math.ceil(laps * fuelPerLap + reserve + (i === 0 ? formationFuel : 0));
+    for (let i = 0; i < grenzen.length - 1; i++) {
+      const laps = grenzen[i + 1] - grenzen[i];
+      const sprit = Math.ceil(laps * proRunde + reserve + (i === 0 ? formationSprit : 0));
       plan.push({
-        stint: i + 1,
-        fromLap: bounds[i] + 1,
-        toLap: bounds[i + 1],
-        fromMin: i === 0 ? 0 : valid[i - 1],
-        toMin: i < valid.length ? valid[i] : minutes,
-        laps,
-        fuel,
-        overTank: fuel > tank,
+        stint: i + 1, vonRunde: grenzen[i] + 1, bisRunde: grenzen[i + 1],
+        vonMin: i === 0 ? 0 : gueltig[i - 1], bisMin: i < gueltig.length ? gueltig[i] : minuten,
+        laps, sprit, ueberTank: sprit > tank,
       });
     }
+    const gesamt = Math.ceil(runden * proRunde + formationSprit + reserve);
+    return {
+      runden, plan, gesamt,
+      minStopps: Math.max(0, Math.ceil(gesamt / tank) - 1),
+      start: plan[0]?.sprit ?? gesamt,
+      problem: plan.some((s) => s.ueberTank),
+    };
+  }, [minuten, proRunde, tank, formation, gueltig, lapSec]);
 
-    const totalFuel = Math.ceil(raceLaps * fuelPerLap + formationFuel + reserve);
-    const minStopsTank = Math.max(0, Math.ceil(totalFuel / tank) - 1);
-    const startFuel = plan[0]?.fuel ?? totalFuel;
-    const anyOverTank = plan.some((s) => s.overTank);
-
-    return { raceLaps, plan, totalFuel, minStopsTank, startFuel, anyOverTank };
-  }, [minutes, fuelPerLap, tank, formation, valid, lapSec]);
-
-  // Stopp am Mittelpunkt der größten Lücke einfügen (sinnvoller Default)
-  function addStop() {
-    const pts = [0, ...valid, minutes];
-    let bestGap = -1, mid = Math.round(minutes / 2);
+  function stoppHinzu() {
+    const pts = [0, ...gueltig, minuten];
+    let groessteLuecke = -1, mitte = Math.round(minuten / 2);
     for (let i = 0; i < pts.length - 1; i++) {
-      const gap = pts[i + 1] - pts[i];
-      if (gap > bestGap) { bestGap = gap; mid = Math.round((pts[i] + pts[i + 1]) / 2); }
+      if (pts[i + 1] - pts[i] > groessteLuecke) {
+        groessteLuecke = pts[i + 1] - pts[i];
+        mitte = Math.round((pts[i] + pts[i + 1]) / 2);
+      }
     }
-    setPitTimes([...valid, clamp(mid, 1, minutes - 1)]);
-  }
-  function setStopAt(idx, val) {
-    const next = [...valid];
-    next[idx] = clamp(Math.round(val), 1, minutes - 1);
-    setPitTimes(next);
-  }
-  function removeStop(idx) {
-    setPitTimes(valid.filter((_, i) => i !== idx));
+    setStopps([...gueltig, clamp(mitte, 1, minuten - 1)]);
   }
 
   return (
     <div className="glass rounded-2xl p-5">
       <div className="flex items-baseline justify-between gap-2">
-        <h3 className="display text-lg font-semibold">Tank- &amp; Stint-Rechner</h3>
-        <span className="text-[11px] text-muted">Runde ~{lapTimeStr ?? `${lapSec}s`}</span>
+        <h3 className="display text-lg font-semibold">{titel}</h3>
+        <span className="text-[11px] text-muted">Runde {fmtLap(lapSec)}</span>
       </div>
 
-      <div className="grid grid-cols-3 gap-2.5 mt-4">
-        <Field label="Renndauer" value={minutes} onChange={setMinutes} suffix="min" />
-        <Field label="Sprit/Runde" value={fuelPerLap} onChange={changeFuelPerLap} step={0.1} min={0.5} suffix="L" />
-        <Field label="Tank" value={tank} onChange={setTank} step={5} suffix="L" />
-      </div>
-
-      <label className="flex items-center gap-2 text-sm cursor-pointer select-none mt-3">
-        <input type="checkbox" checked={formation} onChange={(e) => setFormation(e.target.checked)} className="accent-[color:var(--car-accent)] w-4 h-4" />
-        Einführungsrunde
-      </label>
-
-      {/* Boxenstopp-Zeitpunkte (Minute) */}
-      <div className="mt-4">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[11px] uppercase tracking-wider text-muted">Boxenstopp bei Minute</span>
-          <button onClick={addStop} className="text-[11px] text-car hover:underline">+ Stopp</button>
-        </div>
-        {valid.length === 0 ? (
-          <p className="text-[11px] text-muted">Kein Stopp — Rennen in einem Stint. „+ Stopp“ für Pflichtboxenstopp.</p>
-        ) : (
-          <div className="flex flex-wrap gap-2">
-            {valid.map((t, i) => (
-              <div key={i} className="flex items-center glass rounded-lg pl-2 pr-1 py-1">
-                <input
-                  type="number" value={t} min={1} max={minutes - 1}
-                  onChange={(e) => setStopAt(i, Number(e.target.value))}
-                  className="w-12 bg-transparent outline-none mono text-ink text-sm text-right"
-                />
-                <span className="text-xs text-muted ml-0.5">min</span>
-                <button onClick={() => removeStop(i)} className="ml-1 w-5 h-5 leading-none text-muted hover:text-ink" aria-label="Stopp entfernen">×</button>
-              </div>
-            ))}
-          </div>
+      {/* Die drei Angaben, die das Ergebnis wirklich bestimmen. */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-4">
+        <Feld label="Renndauer" value={minuten} onChange={setMinuten} suffix="min" />
+        <Feld label="Sprit/Runde" value={proRunde} onChange={setProRunde} step={0.1} min={0.5} suffix="L" />
+        {!refLap && (
+          <label className="block">
+            <span className="text-[11px] uppercase tracking-wider text-muted">Rundenzeit</span>
+            <div className="mt-1 flex items-center glass rounded-xl px-2.5 py-1.5">
+              <input
+                value={lapText}
+                onChange={(e) => setLapText(e.target.value)}
+                placeholder="1:50.0"
+                className="w-full bg-transparent outline-none mono text-ink text-base"
+              />
+            </div>
+          </label>
         )}
       </div>
 
-      <div className="grid grid-cols-3 gap-2.5 mt-4">
-        <Out label="Renndistanz" value={`${r.raceLaps} Rdn`} />
-        <Out label="Startfüllung" value={`${r.startFuel} L`} highlight />
-        <Out label="Boxenstopps" value={valid.length} />
-      </div>
-
-      {/* Stint-Plan */}
-      <div className="mt-4">
-        <div className="text-[11px] uppercase tracking-wider text-muted mb-2">Stint-Plan ({r.plan.length} Stints)</div>
-        <div className="space-y-1.5">
-          {r.plan.map((s, i) => (
-            <div key={s.stint}>
-              <div className={`flex items-center justify-between text-sm glass rounded-lg px-3 py-2 ${s.overTank ? 'border border-red-500/50' : ''}`}>
-                <span>
-                  <span className="text-muted">Stint {s.stint}</span> · {fmtMin(s.fromMin)}–{fmtMin(s.toMin)}
-                  <span className="text-muted"> · Rdn {s.fromLap}–{s.toLap}</span>
-                </span>
-                <span className={`mono font-semibold ${s.overTank ? 'text-red-400' : 'text-car'}`}>{s.fuel} L</span>
-              </div>
-              {i < r.plan.length - 1 && (
-                <div className="text-[11px] text-muted text-center py-0.5">
-                  ↳ Boxenstopp bei Min {s.toMin} → Tank auf {r.plan[i + 1].fuel} L auffüllen
-                </div>
-              )}
-            </div>
-          ))}
+      {/* Das Ergebnis, um das es geht. */}
+      <div className="mt-5 flex items-end justify-between gap-4">
+        <div>
+          <div className="text-[11px] uppercase tracking-wider text-muted">Startfüllung</div>
+          <div className="mono text-4xl font-semibold tabular-nums" style={{ color: 'var(--car-accent)' }}>
+            {r.start}<span className="text-lg text-muted ml-1">L</span>
+          </div>
+        </div>
+        <div className="text-right text-sm text-muted leading-relaxed">
+          {r.runden} Runden<br />
+          {gueltig.length === 0 ? 'ohne Stopp' : `${gueltig.length} Stopp${gueltig.length > 1 ? 's' : ''}`}
         </div>
       </div>
 
-      {r.anyOverTank && (
-        <p className="text-[11px] text-red-400 mt-3">
-          ⚠ Ein Stint braucht mehr als der Tank fasst ({tank} L) — früher boxen oder Stopp hinzufügen (mind. {r.minStopsTank}).
+      {r.problem && (
+        <p className="text-[11px] text-red-400 mt-2">
+          ⚠ Ein Stint passt nicht in den {tank}-L-Tank — mind. {r.minStopps} Stopp{r.minStopps === 1 ? '' : 's'} nötig.
         </p>
       )}
-      <p className="text-[11px] text-muted mt-2">
-        Richtwert inkl. {formation ? 'Einführungsrunde + ' : ''}1 Rd. Reserve je Stint. Tank {tank} L ·
-        mind. {r.minStopsTank} Stopp{r.minStopsTank === 1 ? '' : 's'} nötig. Verbrauch je nach Fahrstil anpassen.
-      </p>
+
+      <button
+        onClick={() => setDetails((d) => !d)}
+        className="mt-4 text-xs text-muted hover:text-ink transition-colors"
+      >
+        {details ? 'Details ausblenden ▴' : 'Details ▾'}
+      </button>
+
+      {details && (
+        <div className="mt-3 pt-3 border-t border-line/60 space-y-4">
+          <div className="grid grid-cols-2 gap-2.5">
+            <Feld label="Tank" value={tank} onChange={setTank} step={5} suffix="L" />
+            <label className="flex items-end gap-2 text-sm cursor-pointer select-none pb-2">
+              <input
+                type="checkbox" checked={formation} onChange={(e) => setFormation(e.target.checked)}
+                className="accent-[color:var(--car-accent)] w-4 h-4"
+              />
+              Einführungsrunde
+            </label>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[11px] uppercase tracking-wider text-muted">Boxenstopp bei Minute</span>
+              <button onClick={stoppHinzu} className="text-[11px] text-car hover:underline">+ Stopp</button>
+            </div>
+            {gueltig.length === 0 ? (
+              <p className="text-[11px] text-muted">Kein Stopp — Rennen in einem Stint.</p>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {gueltig.map((t, i) => (
+                  <div key={i} className="flex items-center glass rounded-lg pl-2 pr-1 py-1">
+                    <input
+                      type="number" value={t} min={1} max={minuten - 1}
+                      onChange={(e) => {
+                        const next = [...gueltig];
+                        next[i] = clamp(Math.round(Number(e.target.value)), 1, minuten - 1);
+                        setStopps(next);
+                      }}
+                      className="w-12 bg-transparent outline-none mono text-ink text-sm text-right"
+                    />
+                    <span className="text-xs text-muted ml-0.5">min</span>
+                    <button
+                      onClick={() => setStopps(gueltig.filter((_, j) => j !== i))}
+                      className="ml-1 w-5 h-5 leading-none text-muted hover:text-ink"
+                      aria-label="Stopp entfernen"
+                    >×</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <div className="text-[11px] uppercase tracking-wider text-muted mb-2">Stint-Plan</div>
+            <div className="divide-y divide-line/60">
+              {r.plan.map((s) => (
+                <div key={s.stint} className="flex items-center justify-between text-sm py-2">
+                  <span className="text-muted">
+                    Stint {s.stint} · Min {s.vonMin}–{s.bisMin} · Rd {s.vonRunde}–{s.bisRunde}
+                  </span>
+                  <span className={`mono font-semibold ${s.ueberTank ? 'text-red-400' : 'text-car'}`}>{s.sprit} L</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <p className="text-[11px] text-muted">
+            Inkl. {formation ? 'Einführungsrunde und ' : ''}1 Runde Reserve je Stint. Verbrauch je nach Fahrstil anpassen.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
