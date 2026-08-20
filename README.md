@@ -56,6 +56,10 @@ aspl-racing-app/
 - **Neues Setup:** JSON nach `data/setups/<auto>/<strecke>/baseline_<lufttemp>c.json` legen
   (Schema: siehe `imola/baseline_21c.json`). Erscheint dank Filewatcher **ohne Neustart**.
 - **Referenzzeiten:** in `data/config/reference_times.json` eintragen (`null` = „—").
+- **Meisterschaftstabellen:** `node scripts/import_aspl_standings.mjs` liest die drei Tabellen
+  (Solo Series · Team Series · Team-Meisterschaft) aus dem Ergebnis-Abschnitt von
+  `asplracing.com` und schreibt sie nach `data/config/standings.json`. Kader, Punktesystem
+  und Teamleitung stehen nicht auf der Seite und bleiben dabei unangetastet.
 - **Was noch fehlt:** siehe [BENOETIGTE_DATEN.md](BENOETIGTE_DATEN.md).
 
 ## Status

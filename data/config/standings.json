@@ -1,54 +1,514 @@
 {
-  "_comment": "Championship Team Series, Saison 2 (nur Chronos-Teams). Stand nach R1 Imola. driverStandings/teamStandings = RENNPUNKTE (DTM-Schema); Quali-Bonus ist noch NICHT eingerechnet (Quali-Platzierungen liegen nicht vor). pointsSystem.race = P1..P15, qualiBonus = P1..P3.",
+  "_comment": "Meisterschaftstabellen der ASPL Season 2, uebernommen von asplracing.com (Abschnitt \"Ergebnisse\") ueber scripts/import_aspl_standings.mjs. soloStandings/driverStandings = Fahrerwertung Solo- bzw. Team-Series, teamStandings = Team-Meisterschaft (ganze Liga, nicht nur Chronos). Die Punkte enthalten den Quali-Bonus so, wie ihn die Liga rechnet. teams/reservePool/pointsSystem/principals stehen nicht auf der Seite und werden hier gepflegt.",
   "season": 2,
   "seriesName": "Team Series",
   "status": "live",
-  "lastUpdated": "Stand nach R1 · Imola",
-  "note": "Rennpunkte nach R1 Imola. Quali-Bonus noch nicht eingerechnet (Quali-Ergebnisse fehlen).",
-  "principals": ["@Djlowtom — M. Verner #26", "@StReApZ_Yt — N. Pfeiffer #53"],
+  "lastUpdated": "Stand 20.08.2026",
+  "note": "Tabellenstand direkt von asplracing.com übernommen — die Liga aktualisiert die Tabellen nach jeder Runde.",
+  "principals": [
+    "@Djlowtom — M. Verner #26",
+    "@StReApZ_Yt — N. Pfeiffer #53"
+  ],
   "pointsSystem": {
-    "race": [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-    "qualiBonus": [3, 2, 1],
+    "race": [
+      25,
+      20,
+      16,
+      13,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "qualiBonus": [
+      3,
+      2,
+      1
+    ],
     "note": "Keine Punkte für die schnellste Rennrunde"
   },
   "driverStandings": [
-    { "pos": 1, "driver": "@StReApZ_Yt", "name": "N. Pfeiffer", "number": 53, "team": "Chronos Motorsport", "points": 13, "r1": "P4" },
-    { "pos": 2, "driver": "@Djlowtom", "name": "M. Verner", "number": 26, "team": "Chronos Motorsport", "points": 11, "r1": "P5" },
-    { "pos": 3, "driver": "@Teaa_bags", "name": "E. Schneider", "number": 7, "team": "Chronos Omega Racing", "points": 0, "r1": "P18" },
-    { "pos": 4, "driver": "@Caaaaapitaain", "name": "Y. Guillaume", "number": null, "team": "Chronos Omega Racing", "points": 0, "r1": "—" },
-    { "pos": 5, "driver": "@Z-Alge", "name": "R. Thaler", "number": 35, "team": "Chronos Omega Racing", "points": 0, "r1": "—" },
-    { "pos": 6, "driver": "@banni05", "name": "L. Verner", "number": 44, "team": "Chronos Motorsport Academy", "points": 0, "r1": "—" }
+    {
+      "pos": 1,
+      "name": "E. Sprott",
+      "points": 114
+    },
+    {
+      "pos": 2,
+      "name": "K. Böhm",
+      "points": 65
+    },
+    {
+      "pos": 3,
+      "name": "M. Verner",
+      "points": 53,
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 4,
+      "name": "N. Pfeiffer",
+      "points": 53,
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 5,
+      "name": "L. Nierhaus",
+      "points": 42
+    },
+    {
+      "pos": 6,
+      "name": "T. Engemann",
+      "points": 40
+    },
+    {
+      "pos": 7,
+      "name": "L. Knips",
+      "points": 35
+    },
+    {
+      "pos": 8,
+      "name": "A. Fox",
+      "points": 31
+    },
+    {
+      "pos": 9,
+      "name": "A. Friedl",
+      "points": 29
+    },
+    {
+      "pos": 10,
+      "name": "M. Diaconu",
+      "points": 24
+    },
+    {
+      "pos": 11,
+      "name": "Jooeell",
+      "points": 23
+    },
+    {
+      "pos": 12,
+      "name": "F. Hübner",
+      "points": 22
+    },
+    {
+      "pos": 13,
+      "name": "C. Wilmott",
+      "points": 21
+    },
+    {
+      "pos": 14,
+      "name": "Er. Schneider",
+      "points": 21
+    },
+    {
+      "pos": 15,
+      "name": "M. Liebisch",
+      "points": 17
+    },
+    {
+      "pos": 16,
+      "name": "T. Seefeldt",
+      "points": 16
+    },
+    {
+      "pos": 17,
+      "name": "L. Moser",
+      "points": 15
+    },
+    {
+      "pos": 18,
+      "name": "L. Petrov",
+      "points": 14
+    },
+    {
+      "pos": 19,
+      "name": "Y. Guillaume",
+      "points": 13,
+      "team": "Chronos Omega Racing",
+      "chronos": true
+    },
+    {
+      "pos": 20,
+      "name": "D. Suess",
+      "points": 12
+    },
+    {
+      "pos": 21,
+      "name": "S. Röber",
+      "points": 11
+    },
+    {
+      "pos": 22,
+      "name": "L. Verner",
+      "points": 9,
+      "team": "Chronos Motorsport Academy",
+      "chronos": true
+    },
+    {
+      "pos": 23,
+      "name": "Ferrix",
+      "points": 8
+    },
+    {
+      "pos": 24,
+      "name": "M. Dohnt",
+      "points": 8
+    },
+    {
+      "pos": 25,
+      "name": "M. Drißen",
+      "points": 7
+    },
+    {
+      "pos": 26,
+      "name": "J. Huber",
+      "points": 7
+    },
+    {
+      "pos": 27,
+      "name": "L. Fox",
+      "points": 6
+    },
+    {
+      "pos": 28,
+      "name": "El. Schneider",
+      "points": 5
+    },
+    {
+      "pos": 29,
+      "name": "T. Hoffmann",
+      "points": 3
+    },
+    {
+      "pos": 30,
+      "name": "C. Hölper",
+      "points": 2
+    },
+    {
+      "pos": 31,
+      "name": "A. Hohoff",
+      "points": 2
+    },
+    {
+      "pos": 32,
+      "name": "E. Uchuev",
+      "points": 1
+    }
   ],
   "teamStandings": [
-    { "pos": 1, "team": "Chronos Motorsport", "points": 24 },
-    { "pos": 2, "team": "Chronos Omega Racing", "points": 0 },
-    { "pos": 3, "team": "Chronos Motorsport Academy", "points": 0 }
+    {
+      "pos": 1,
+      "team": "Golden Dynasty",
+      "points": 190
+    },
+    {
+      "pos": 2,
+      "team": "Chronos Motorsport",
+      "points": 94,
+      "chronos": true
+    },
+    {
+      "pos": 3,
+      "team": "Toxic Racing",
+      "points": 77
+    },
+    {
+      "pos": 4,
+      "team": "Silver Dynasty",
+      "points": 51
+    },
+    {
+      "pos": 5,
+      "team": "Nussy Motorsport",
+      "points": 45
+    },
+    {
+      "pos": 6,
+      "team": "Racing Team Langsam",
+      "points": 44
+    },
+    {
+      "pos": 7,
+      "team": "LFA Kult Competition",
+      "points": 34
+    },
+    {
+      "pos": 8,
+      "team": "Carbon Dynasty",
+      "points": 22
+    },
+    {
+      "pos": 9,
+      "team": "Chronos Academy",
+      "points": 9,
+      "chronos": true
+    },
+    {
+      "pos": 10,
+      "team": "Development Langsam",
+      "points": 8
+    },
+    {
+      "pos": 11,
+      "team": "LuMo Racing",
+      "points": 6
+    },
+    {
+      "pos": 12,
+      "team": "Toxic Academy",
+      "points": 3
+    },
+    {
+      "pos": 13,
+      "team": "Cosmos Future",
+      "points": 1
+    },
+    {
+      "pos": 14,
+      "team": "Toxic Psychos",
+      "points": 0
+    }
   ],
   "teams": [
     {
       "name": "Chronos Motorsport",
       "drivers": [
-        { "driver": "@Djlowtom", "name": "M. Verner", "number": 26, "country": null, "car": "Ferrari 296 GT3" },
-        { "driver": "@StReApZ_Yt", "name": "N. Pfeiffer", "number": 53, "country": null, "car": "Ferrari 296 GT3" }
+        {
+          "driver": "@Djlowtom",
+          "name": "M. Verner",
+          "number": 26,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        },
+        {
+          "driver": "@StReApZ_Yt",
+          "name": "N. Pfeiffer",
+          "number": 53,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        }
       ]
     },
     {
       "name": "Chronos Omega Racing",
       "drivers": [
-        { "driver": "@Teaa_bags", "name": "E. Schneider", "number": 7, "country": null, "car": "Aston Martin Vantage GT3" },
-        { "driver": "@Caaaaapitaain", "name": "Y. Guillaume", "number": null, "country": null, "car": "Ferrari 296 GT3" },
-        { "driver": "@Z-Alge", "name": "R. Thaler", "number": 35, "country": "AT", "car": "Ferrari 296 GT3" }
+        {
+          "driver": "@Teaa_bags",
+          "name": "E. Schneider",
+          "number": 7,
+          "country": null,
+          "car": "Aston Martin Vantage GT3"
+        },
+        {
+          "driver": "@Caaaaapitaain",
+          "name": "Y. Guillaume",
+          "number": null,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        },
+        {
+          "driver": "@Z-Alge",
+          "name": "R. Thaler",
+          "number": 35,
+          "country": "AT",
+          "car": "Ferrari 296 GT3"
+        }
       ]
     },
     {
       "name": "Chronos Motorsport Academy",
       "drivers": [
-        { "driver": "@banni05", "name": "L. Verner", "number": 44, "country": null, "car": "Ferrari 296 GT3" }
+        {
+          "driver": "@banni05",
+          "name": "L. Verner",
+          "number": 44,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        }
       ]
     }
   ],
   "reservePool": [
-    { "driver": "@XFz iCrank", "name": "T. Scheibe", "number": 922, "car": "Mercedes-AMG GT3" },
-    { "driver": "@Ackjjr", "name": "M. Ackermann", "number": 510, "car": "Ferrari 296 GT3" }
+    {
+      "driver": "@XFz iCrank",
+      "name": "T. Scheibe",
+      "number": 922,
+      "car": "Mercedes-AMG GT3"
+    },
+    {
+      "driver": "@Ackjjr",
+      "name": "M. Ackermann",
+      "number": 510,
+      "car": "Ferrari 296 GT3"
+    }
+  ],
+  "source": {
+    "name": "asplracing.com",
+    "url": "https://asplracing.com/#results",
+    "importedAt": "2026-08-20"
+  },
+  "soloStandings": [
+    {
+      "pos": 1,
+      "name": "E. Sprott",
+      "points": 88
+    },
+    {
+      "pos": 2,
+      "name": "K. Böhm",
+      "points": 65
+    },
+    {
+      "pos": 3,
+      "name": "M. Verner",
+      "points": 47,
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 4,
+      "name": "L. Knips",
+      "points": 35
+    },
+    {
+      "pos": 5,
+      "name": "N. Pfeiffer",
+      "points": 33,
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 6,
+      "name": "L. Nierhaus",
+      "points": 29
+    },
+    {
+      "pos": 7,
+      "name": "A. Friedl",
+      "points": 29
+    },
+    {
+      "pos": 8,
+      "name": "T. Engemann",
+      "points": 27
+    },
+    {
+      "pos": 9,
+      "name": "M. Diaconu",
+      "points": 24
+    },
+    {
+      "pos": 10,
+      "name": "Jooeell",
+      "points": 23
+    },
+    {
+      "pos": 11,
+      "name": "C. Wilmott",
+      "points": 21
+    },
+    {
+      "pos": 12,
+      "name": "Er. Schneider",
+      "points": 21
+    },
+    {
+      "pos": 13,
+      "name": "M. Liebisch",
+      "points": 17
+    },
+    {
+      "pos": 14,
+      "name": "T. Seefeldt",
+      "points": 16
+    },
+    {
+      "pos": 15,
+      "name": "A. Fox",
+      "points": 15
+    },
+    {
+      "pos": 16,
+      "name": "Y. Guillaume",
+      "points": 13,
+      "team": "Chronos Omega Racing",
+      "chronos": true
+    },
+    {
+      "pos": 17,
+      "name": "L. Petrov",
+      "points": 12
+    },
+    {
+      "pos": 18,
+      "name": "F. Hübner",
+      "points": 11
+    },
+    {
+      "pos": 19,
+      "name": "S. Röber",
+      "points": 10
+    },
+    {
+      "pos": 20,
+      "name": "L. Verner",
+      "points": 9,
+      "team": "Chronos Motorsport Academy",
+      "chronos": true
+    },
+    {
+      "pos": 21,
+      "name": "D. Suess",
+      "points": 7
+    },
+    {
+      "pos": 22,
+      "name": "M. Drißen",
+      "points": 7
+    },
+    {
+      "pos": 23,
+      "name": "L. Fox",
+      "points": 6
+    },
+    {
+      "pos": 24,
+      "name": "L. Moser",
+      "points": 6
+    },
+    {
+      "pos": 25,
+      "name": "Ferrix",
+      "points": 5
+    },
+    {
+      "pos": 26,
+      "name": "T. Hoffmann",
+      "points": 3
+    },
+    {
+      "pos": 27,
+      "name": "C. Hölper",
+      "points": 2
+    },
+    {
+      "pos": 28,
+      "name": "E. Uchuev",
+      "points": 1
+    },
+    {
+      "pos": 29,
+      "name": "El. Schneider",
+      "points": 1
+    }
   ]
 }

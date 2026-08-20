@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -47,20 +48,68 @@ function PointsGrid({ title, points }) {
   );
 }
 
+// Segmentierter Umschalter fuer die beiden Fahrerwertungen (Solo / Team Series).
+function SeriesSwitch({ options, value, onChange }) {
+  return (
+    <div className="flex gap-1 glass rounded-xl p-1">
+      {options.map((o) => {
+        const selected = o.id === value;
+        return (
+          <button
+            key={o.id}
+            onClick={() => onChange(o.id)}
+            aria-pressed={selected}
+            className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${selected ? 'text-ink' : 'text-muted hover:text-ink'}`}
+            style={selected ? { background: 'color-mix(in srgb, var(--car-accent) 18%, transparent)' } : undefined}
+          >
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Eine Zeile der Fahrer- oder Teamwertung. Chronos-Zeilen werden hervorgehoben,
+// damit man die eigenen Leute in der ligaweiten Tabelle sofort findet.
+function StandingRow({ pos, label, sub, points, highlight }) {
+  return (
+    <tr className="border-b border-line/50 last:border-0" style={highlight ? { background: 'color-mix(in srgb, var(--car-accent) 10%, transparent)' } : undefined}>
+      <td className="py-2 pl-2 text-muted mono">{pos}</td>
+      <td className="py-2">
+        <div className={`leading-tight ${highlight ? 'font-semibold' : 'font-medium'}`}>{label}</div>
+        {sub && <div className="text-[11px] text-muted">{sub}</div>}
+      </td>
+      <td className="py-2 pr-2 text-right mono font-semibold text-car">{points}</td>
+    </tr>
+  );
+}
+
 export default function Standings() {
   const { data, isLoading } = useQuery({ queryKey: ['standings'], queryFn: getStandings });
   const teams = data?.teams ?? [];
   const ps = data?.pointsSystem;
   const reserve = data?.reservePool ?? [];
   const driverStandings = data?.driverStandings ?? [];
+  const soloStandings = data?.soloStandings ?? [];
   const teamStandings = data?.teamStandings ?? [];
-  const hasPoints = driverStandings.length > 0 || teamStandings.length > 0;
+  const hasPoints = driverStandings.length > 0 || soloStandings.length > 0 || teamStandings.length > 0;
+
+  // Die Liga fuehrt zwei Fahrerwertungen (Solo- und Team-Series) — beide kommen
+  // aus derselben Quelle, deshalb ein Umschalter statt zweier langer Tabellen.
+  const seriesOptions = [
+    soloStandings.length > 0 && { id: 'solo', label: 'Solo Series', rows: soloStandings },
+    driverStandings.length > 0 && { id: 'team', label: 'Team Series', rows: driverStandings },
+  ].filter(Boolean);
+  const [series, setSeries] = useState('team');
+  const activeSeries = seriesOptions.find((o) => o.id === series) ?? seriesOptions[0];
 
   return (
     <motion.div variants={pageMotion} initial="initial" animate="animate" exit="exit">
       <Link to="/" className="text-sm text-muted hover:text-ink transition-colors">‹ Garage</Link>
       <div className="mt-3 mb-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-car">{data?.seriesName ?? 'Team Series'} · Saison {data?.season ?? 2}</p>
+        {/* Die Tabellen decken beide Serien ab, deshalb hier nicht mehr nur "Team Series". */}
+        <p className="text-xs uppercase tracking-[0.25em] text-car">ASPL Racing Series · Saison {data?.season ?? 2}</p>
         <h1 className="display text-3xl sm:text-4xl lg:text-5xl font-bold mt-1">Championship</h1>
         {data?.principals?.length > 0 && (
           <p className="text-sm text-muted mt-2">Teamleitung: {data.principals.join('  ·  ')}</p>
@@ -85,56 +134,61 @@ export default function Standings() {
                     <p className="text-[11px] text-warn mb-4 glass rounded-xl px-3 py-2 inline-block">ℹ {data.note}</p>
                   )}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-                    {/* Fahrerwertung */}
-                    <div className="glass rounded-2xl p-5">
-                      <h2 className="display text-lg font-semibold mb-3">Fahrerwertung</h2>
+                    {/* Fahrerwertung — ligaweit, umschaltbar zwischen Solo- und Team-Series */}
+                    <div className="glass rounded-2xl p-5 self-start">
+                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                        <h2 className="display text-lg font-semibold">Fahrerwertung</h2>
+                        {seriesOptions.length > 1 && (
+                          <SeriesSwitch options={seriesOptions} value={activeSeries?.id} onChange={setSeries} />
+                        )}
+                      </div>
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
-                            <th className="py-2 text-left w-7">#</th>
+                            <th className="py-2 pl-2 text-left w-7">#</th>
                             <th className="py-2 text-left">Fahrer</th>
-                            <th className="py-2 text-center w-12">R1</th>
-                            <th className="py-2 text-right w-12">Pkt</th>
+                            <th className="py-2 pr-2 text-right w-12">Pkt</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {driverStandings.map((d) => (
-                            <tr key={d.driver} className="border-b border-line/50 last:border-0">
-                              <td className="py-2.5 text-muted mono">{d.pos}</td>
-                              <td className="py-2.5">
-                                <div className="font-medium leading-tight">{d.name || d.driver}</div>
-                                <div className="text-[11px] text-muted">{d.driver}{d.number ? ` · #${d.number}` : ''} · {d.team}</div>
-                              </td>
-                              <td className="py-2.5 text-center text-muted mono text-xs">{d.r1 ?? '—'}</td>
-                              <td className="py-2.5 text-right mono font-semibold text-car">{d.points}</td>
-                            </tr>
+                          {(activeSeries?.rows ?? []).map((d) => (
+                            <StandingRow
+                              key={`${d.pos}-${d.name}`}
+                              pos={d.pos}
+                              label={d.name}
+                              sub={d.team}
+                              points={d.points}
+                              highlight={d.chronos}
+                            />
                           ))}
                         </tbody>
                       </table>
                     </div>
-                    {/* Teamwertung */}
+                    {/* Team-Meisterschaft — ebenfalls ligaweit */}
                     <div className="glass rounded-2xl p-5 self-start">
-                      <h2 className="display text-lg font-semibold mb-3">Teamwertung</h2>
+                      <h2 className="display text-lg font-semibold mb-3">Team-Meisterschaft</h2>
                       <table className="w-full text-sm">
                         <thead>
                           <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
-                            <th className="py-2 text-left w-7">#</th>
+                            <th className="py-2 pl-2 text-left w-7">#</th>
                             <th className="py-2 text-left">Team</th>
-                            <th className="py-2 text-right w-12">Pkt</th>
+                            <th className="py-2 pr-2 text-right w-12">Pkt</th>
                           </tr>
                         </thead>
                         <tbody>
                           {teamStandings.map((t) => (
-                            <tr key={t.team} className="border-b border-line/50 last:border-0">
-                              <td className="py-2.5 text-muted mono">{t.pos}</td>
-                              <td className="py-2.5 font-medium">{t.team}</td>
-                              <td className="py-2.5 text-right mono font-semibold text-car">{t.points}</td>
-                            </tr>
+                            <StandingRow key={`${t.pos}-${t.team}`} pos={t.pos} label={t.team} points={t.points} highlight={t.chronos} />
                           ))}
                         </tbody>
                       </table>
                     </div>
                   </div>
+                  {data?.source && (
+                    <p className="text-[11px] text-muted mb-8">
+                      Quelle: <a className="underline hover:text-ink" href={data.source.url} target="_blank" rel="noreferrer">{data.source.name}</a>
+                      {data.lastUpdated ? ` · ${data.lastUpdated}` : ''}
+                    </p>
+                  )}
                 </>
               )}
               </>
