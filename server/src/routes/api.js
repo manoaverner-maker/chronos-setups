@@ -144,8 +144,11 @@ router.get('/standings', (req, res) => {
     pointsSystem: s.pointsSystem ?? null,
     teams: s.teams ?? [],
     reservePool: s.reservePool ?? [],
-    drivers: s.drivers ?? [],
+    soloStandings: s.soloStandings ?? [],
+    driverStandings: s.driverStandings ?? [],
     teamStandings: s.teamStandings ?? [],
+    source: s.source ?? null,
+    note: s.note ?? null,
   });
 });
 

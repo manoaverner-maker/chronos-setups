@@ -1,0 +1,377 @@
+Team Series:
+
+P	STANDINGS		PEN	R1	R2	R3	R4	R5	R6	R7	R8	PTS
+1	
+🇩🇪 Eric Sprott
+3,001
+ Follow
+GT3  420 BMW M4 GT3
+2	—	4	—	1	1	1	2	134 †
+2	
+Manoa Verner
+2,448
+GT3  26 Ferrari 296 GT3
+5	—	2	—	6	DNS	10	1	80 †
+3	
+Kevin Böhm
+2,409
+ Follow
+GT3  94 BMW M4 GT3
+3	—	1	—	5	4	DNS	DNS	65
+4	
+🇩🇪 Lukas Knips
+2,538
+ Follow
+GT3  98 BMW M4 GT3
+1	—	10	—	—	—	DNS	3	54 †
+5	
+Noel Pfeiffer
+2,297
+ Follow
+GT3  53 Ferrari 296 GT3
+4	—	26	—	26	2	2	DNS	53
+6	
+🇩🇪 Tom Engemann
+2,019
+ Follow
+GT3  22 Ferrari 296 GT3
+6	—	—	—	7	8	6	11	45 †
+7	
+Leon Nierhaus
+2,603
+ Follow
+GT3  4 AMR V8 Vantage
+7	—	—	—	2	—	4	DNS	42
+8	
+Alexander Friedl
+2,205
+ Follow
+GT3  15 Ford Mustang GT3
+15	—	9	—	12	3	19	6	39 †
+9	
+🇳🇱 Alex Fox
+2,346
+ Follow
+GT3  71 Mercedes-AMG GT3 ...
+13	—	11	—	9	DNS	3	9	38
+10	
+Matthew Diaconu
+2,508
+ Follow
+GT3  9 Mercedes-AMG GT3 ...
+8	—	8	—	8	—	DNS	4	37
+11	
+🇩🇪 Joel Lorek
+2,071
+ Follow
+GT3  145 BMW M4 GT3
+11	—	3	—	23	14	DNS	5	34
+12	
+🇩🇪 Finn Hübner
+2,260
+ Follow
+GT3  40 Ford Mustang GT3
+—	—	—	—	—	5	5	7	31
+13	
+Erik Schneider
+2,027
+ Follow
+GT3  7 AMR V8 Vantage
+18	—	—	—	3	DNF	DNS	13	24 †
+14	
+Chad Wilmott
+2,193
+ Follow
+GT3  199 Mercedes-AMG GT3 ...
+9	—	5	—	24	DNS	DNS	DNS	21 †
+15	
+Tom Seefeldt
+1,926
+ Follow
+GT3  882 Audi R8 LMS Evo II
+22	—	6	—	14	12	18	12	20
+16	
+🇩🇪 Mike Liebisch
+1,848
+ Follow
+GT3  19 BMW M4 GT3
+—	—	14	—	11	6	DNS	26	17
+17	
+🇦🇹 Lukas Moser
+1,997
+ Follow
+GT3  43 McLaren 720S GT3 Evo
+19	—	—	—	19	10	7	DNS	15
+18	
+Lennard Petrov
+2,329
+ Follow
+GT3  93 Ferrari 296 GT3
+14	—	12	—	10	—	14	—	14
+19	
+Yann Guillaume
+2,508
+ Follow
+GT3  55 Ferrari 296 GT3
+—	—	18	—	4	—	22	DNS	13
+20	
+🇩🇪 David Suess
+1,963
+ Follow
+GT3  47 Honda NSX GT3 Evo
+12	—	13	—	—	DNS	11	15	13
+21	
+Sebastian Röber
+1,936
+ Follow
+GT3  16 BMW M4 GT3
+—	—	15	—	16	7	15	DNS	11
+22	
+🇩🇪 Mike Dohnt
+2,195
+ Follow
+GT3  800 Ford Mustang GT3
+—	—	—	—	18	DNS	8	14	10
+23	
+Leo Verner
+2,039
+ Follow
+GT3  44 Ferrari 296 GT3
+—	—	7	—	—	DNS	DNS	DNS	9
+24	
+🇩🇪 Tim Lüthke
+2,070
+ Follow
+GT3  50 BMW M4 GT3
+—	—	—	—	—	—	DNS	8	8
+25	
+🇩🇪 F. Ferrix73
+1,835
+ Follow
+GT3  73 AMR V8 Vantage
+—	—	25	—	—	11	13	19	8
+
+Solo Series:
+
+P	STANDINGS		PEN	R1	R2	R3	R4	R5	R6	R7	R8	PTS
+1	
+🇩🇪 Eric Sprott
+3,001
+ Follow
+GT3  1 BMW M4 GT3
+4	—	2	2	2	2	1	3	142 †
+2	
+Yann Guillaume
+2,508
+ Follow
+GT3  55 Ferrari 296 GT3
+3	—	4	5	1	—	2	6	97 †
+3	
+Chad Wilmott
+2,193
+ Follow
+GT3  199 Mercedes-AMG GT3 ...
+1	—	1	1	27	—	DNS	DNS	87 †
+4	
+Leon Nierhaus
+2,603
+ Follow
+GT3  4 AMR V8 Vantage
+5	—	8	3	7	5	3	5	84 †
+5	
+Noel Pfeiffer
+2,297
+ Follow
+GT3  53 Ferrari 296 GT3
+2	—	6	4	6	1	17	23	79 †
+6	
+Lennard Petrov
+2,329
+ Follow
+GT3  93 Ferrari 296 GT3
+—	—	7	9	9	4	4	1	78 †
+7	
+🇳🇱 Alex Fox
+2,346
+ Follow
+GT3  71 Mercedes-AMG GT3 ...
+9	—	16	6	5	3	15	12	51 †
+8	
+Elias Schneider
+1,868
+ Follow
+GT3  3 Ferrari 296 GT3
+DSQ		15	—	—	25	DNS	10	6	2	37
+9	
+🇩🇪 Finn Hübner
+2,260
+ Follow
+GT3  40 Ford Mustang GT3
+—	—	—	17	17	7	8	4	30
+10	
+Manoa Verner
+2,448
+GT3  26 Ferrari 296 GT3
+8	—	—	—	3	—	DNS	DNS	26 †
+11	
+🇩🇪 Mike Liebisch
+1,848
+ Follow
+GT3  19 Porsche 992 GT3
+31	—	30	27	DNS	6	7	9	26
+12	
+🇩🇪 Matthias Drißen
+1,998
+ Follow
+GT3  180 BMW M4 GT3
+12	—	10	11	11	—	11	DNS	25
+13	
+Kevin Böhm
+2,409
+ Follow
+GT3  94 BMW M4 GT3
+11	—	3	18	DNS	—	DNS	DNS	24 †
+14	
+Alexander Friedl
+2,205
+ Follow
+GT3  15 Ford Mustang GT3
+13	—	—	10	4	—	—	15	24 †
+15	
+🇩🇪 Lukas Knips
+2,538
+ Follow
+GT3  98 BMW M4 GT3
+6	—	5	DNS	DNS	—	DNS	DNS	24 †
+16	
+🇩🇪 Mike Dohnt
+2,195
+ Follow
+GT3  800 Ford Mustang GT3
+—	—	11	—	8	—	5	24	24
+17	
+Tobias Hoffmann
+1,970
+ Follow
+GT3  892 Bentley Continent...
+20	—	27	15	22	8	10	10	23 †
+18	
+Mika Ackermann
+2,014
+ Follow
+GT3  510 Ferrari 296 GT3
+7	—	12	24	—	—	—	8	21
+19	
+Sebastian Röber
+1,936
+ Follow
+GT3  16 BMW M4 GT3
+17	—	9	29	DNS	12	9	DNS	18
+20	
+🇩🇪 Valentino Böhm
+1,861
+ Follow
+GT3  37 Ford Mustang GT3
+21	—	15	19	12	9	16	11	17
+21	
+Lavdim Pelaj
+1,882
+ Follow
+GT3  96 Ferrari 296 GT3
+—	—	—	—	29	—	14	7	11
+22	
+🇦🇹 Lukas Moser
+1,997
+ Follow
+GT3  43 McLaren 720S GT3 Evo
+—	—	24	DNS	10	—	12	19	10
+23	
+🇩🇪 Tom Engemann
+2,019
+ Follow
+GT3  22 Ferrari 296 GT3
+28	—	DNS	7	—	—	—	22	9
+24	
+🇩🇪 Tim Lüthke
+2,070
+ Follow
+GT3  50 BMW M4 GT3
+—	—	—	8	DNS	—	DNS	25	8
+25	
+🇩🇪 F. Ferrix73
+1,835
+ Follow
+GT3  73 AMR V8 Vantage
+—	—	26	21	21	11	13	16	8
+26	
+Leo Verner
+2,039
+ Follow
+GT3  44 Ferrari 296 GT3
+10	—	—	—	DNS	—	DNS	DNS	6
+27	
+🇩🇪 Corvin M.
+2,041
+ Follow
+GT3  88 Porsche 992 GT3
+—	—	14	14	15	—	DNS	—	5
+28	
+David Dridiger
+1,935
+ Follow
+GT3  777 Porsche 992 GT3
+—	—	—	12	24	—	DNS	DNS	4
+29	
+Marco Maurer
+1,935
+ Follow
+GT3  174 Porsche 992 GT3
+—	—	—	28	16	—	DNS	13	3
+30	
+🇩🇪 David Suess
+1,963
+ Follow
+GT3  47 Honda NSX GT3 Evo
+—	—	—	DNF	13	—	DNF	DNF	3
+31	
+Lukas Fradl
+1,815
+ Follow
+GT3  911 Porsche 992 GT3
+—	—	18	13	32	—	DNS	DNS	3
+32	
+Clemens Hölper
+1,658
+ Follow
+GT3  74 BMW M4 GT3
+22	—	23	DNS	26	13	—	—	3
+33	
+🇩🇪 Jens Krauser
+2,677
+ Follow
+GT3  579 Porsche 992 GT3
+DSQ		—	—	13	DNS	—	—	DNS	DNS	3
+34	
+Eitan Uchuev
+1,951
+ Follow
+GT3  17 Ferrari 296 GT3
+—	—	19	—	14	—	—	—	2
+35	
+Constantin Deller
+1,714
+ Follow
+GT3  77 AMR V8 Vantage
+27	—	—	31	23	14	DNS	DNS	2
+36	
+🇩🇪 Angelo Chillo
+1,719
+Following
+GT3  12 Ferrari 296 GT3
+29	—	—	23	—	—	—	14	2
+37	
+Michel Friedli
+1,883
+ Follow
+GT3  5 Ferrari 296 GT3
+14	—	32	DNS	DNS	—	DNS	DNS	2

@@ -1,54 +1,1592 @@
 {
-  "_comment": "Championship Team Series, Saison 2 (nur Chronos-Teams). Stand nach R1 Imola. driverStandings/teamStandings = RENNPUNKTE (DTM-Schema); Quali-Bonus ist noch NICHT eingerechnet (Quali-Platzierungen liegen nicht vor). pointsSystem.race = P1..P15, qualiBonus = P1..P3.",
+  "_comment": "Meisterschaftstabellen ASPL Season 2. Fahrerwertungen (driverStandings = Team Series, soloStandings = Solo Series) kommen ueber scripts/import_standings_paste.mjs aus data/standings_paste.txt, die Team-Meisterschaft ueber scripts/import_aspl_standings.mjs von asplracing.com — siehe \"sources\", die Staende koennen sich unterscheiden. results = Rundenspalten R1..R8 der Liga-Plattform (null = kein Ergebnis); diese Nummerierung deckt sich NICHT mit den Runden in seasons.json. mark = Markierung der Plattform (z. B. \"†\"), unveraendert uebernommen. teams/reservePool/pointsSystem/principals werden hier von Hand gepflegt.",
   "season": 2,
   "seriesName": "Team Series",
   "status": "live",
-  "lastUpdated": "Stand nach R1 · Imola",
-  "note": "Rennpunkte nach R1 Imola. Quali-Bonus noch nicht eingerechnet (Quali-Ergebnisse fehlen).",
-  "principals": ["@Djlowtom — M. Verner #26", "@StReApZ_Yt — N. Pfeiffer #53"],
+  "lastUpdated": "Stand 20.08.2026",
+  "note": "Fahrerwertungen aus der Liga-Tabelle übernommen (inkl. R8). Die Team-Meisterschaft stammt weiterhin von asplracing.com und ist dort noch ohne R8.",
+  "principals": [
+    "@Djlowtom — Manoa Verner #26",
+    "@StReApZ_Yt — Noel Pfeiffer #53"
+  ],
   "pointsSystem": {
-    "race": [25, 20, 16, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
-    "qualiBonus": [3, 2, 1],
+    "race": [
+      25,
+      20,
+      16,
+      13,
+      11,
+      10,
+      9,
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "qualiBonus": [
+      3,
+      2,
+      1
+    ],
     "note": "Keine Punkte für die schnellste Rennrunde"
   },
   "driverStandings": [
-    { "pos": 1, "driver": "@StReApZ_Yt", "name": "N. Pfeiffer", "number": 53, "team": "Chronos Motorsport", "points": 13, "r1": "P4" },
-    { "pos": 2, "driver": "@Djlowtom", "name": "M. Verner", "number": 26, "team": "Chronos Motorsport", "points": 11, "r1": "P5" },
-    { "pos": 3, "driver": "@Teaa_bags", "name": "E. Schneider", "number": 7, "team": "Chronos Omega Racing", "points": 0, "r1": "P18" },
-    { "pos": 4, "driver": "@Caaaaapitaain", "name": "Y. Guillaume", "number": null, "team": "Chronos Omega Racing", "points": 0, "r1": "—" },
-    { "pos": 5, "driver": "@Z-Alge", "name": "R. Thaler", "number": 35, "team": "Chronos Omega Racing", "points": 0, "r1": "—" },
-    { "pos": 6, "driver": "@banni05", "name": "L. Verner", "number": 44, "team": "Chronos Motorsport Academy", "points": 0, "r1": "—" }
+    {
+      "pos": 1,
+      "country": "DE",
+      "name": "Eric Sprott",
+      "rating": 3001,
+      "class": "GT3",
+      "number": 420,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        2,
+        null,
+        4,
+        null,
+        1,
+        1,
+        1,
+        2
+      ],
+      "points": 134,
+      "mark": "†"
+    },
+    {
+      "pos": 2,
+      "country": null,
+      "name": "Manoa Verner",
+      "rating": 2448,
+      "class": "GT3",
+      "number": 26,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        5,
+        null,
+        2,
+        null,
+        6,
+        "DNS",
+        10,
+        1
+      ],
+      "points": 80,
+      "mark": "†",
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 3,
+      "country": null,
+      "name": "Kevin Böhm",
+      "rating": 2409,
+      "class": "GT3",
+      "number": 94,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        3,
+        null,
+        1,
+        null,
+        5,
+        4,
+        "DNS",
+        "DNS"
+      ],
+      "points": 65,
+      "mark": null
+    },
+    {
+      "pos": 4,
+      "country": "DE",
+      "name": "Lukas Knips",
+      "rating": 2538,
+      "class": "GT3",
+      "number": 98,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        1,
+        null,
+        10,
+        null,
+        null,
+        null,
+        "DNS",
+        3
+      ],
+      "points": 54,
+      "mark": "†"
+    },
+    {
+      "pos": 5,
+      "country": null,
+      "name": "Noel Pfeiffer",
+      "rating": 2297,
+      "class": "GT3",
+      "number": 53,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        4,
+        null,
+        26,
+        null,
+        26,
+        2,
+        2,
+        "DNS"
+      ],
+      "points": 53,
+      "mark": null,
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 6,
+      "country": "DE",
+      "name": "Tom Engemann",
+      "rating": 2019,
+      "class": "GT3",
+      "number": 22,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        6,
+        null,
+        null,
+        null,
+        7,
+        8,
+        6,
+        11
+      ],
+      "points": 45,
+      "mark": "†"
+    },
+    {
+      "pos": 7,
+      "country": null,
+      "name": "Leon Nierhaus",
+      "rating": 2603,
+      "class": "GT3",
+      "number": 4,
+      "car": "AMR V8 Vantage",
+      "pen": null,
+      "results": [
+        7,
+        null,
+        null,
+        null,
+        2,
+        null,
+        4,
+        "DNS"
+      ],
+      "points": 42,
+      "mark": null
+    },
+    {
+      "pos": 8,
+      "country": null,
+      "name": "Alexander Friedl",
+      "rating": 2205,
+      "class": "GT3",
+      "number": 15,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        15,
+        null,
+        9,
+        null,
+        12,
+        3,
+        19,
+        6
+      ],
+      "points": 39,
+      "mark": "†"
+    },
+    {
+      "pos": 9,
+      "country": "NL",
+      "name": "Alex Fox",
+      "rating": 2346,
+      "class": "GT3",
+      "number": 71,
+      "car": "Mercedes-AMG GT3 ...",
+      "pen": null,
+      "results": [
+        13,
+        null,
+        11,
+        null,
+        9,
+        "DNS",
+        3,
+        9
+      ],
+      "points": 38,
+      "mark": null
+    },
+    {
+      "pos": 10,
+      "country": null,
+      "name": "Matthew Diaconu",
+      "rating": 2508,
+      "class": "GT3",
+      "number": 9,
+      "car": "Mercedes-AMG GT3 ...",
+      "pen": null,
+      "results": [
+        8,
+        null,
+        8,
+        null,
+        8,
+        null,
+        "DNS",
+        4
+      ],
+      "points": 37,
+      "mark": null
+    },
+    {
+      "pos": 11,
+      "country": "DE",
+      "name": "Joel Lorek",
+      "rating": 2071,
+      "class": "GT3",
+      "number": 145,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        11,
+        null,
+        3,
+        null,
+        23,
+        14,
+        "DNS",
+        5
+      ],
+      "points": 34,
+      "mark": null
+    },
+    {
+      "pos": 12,
+      "country": "DE",
+      "name": "Finn Hübner",
+      "rating": 2260,
+      "class": "GT3",
+      "number": 40,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        5,
+        5,
+        7
+      ],
+      "points": 31,
+      "mark": null
+    },
+    {
+      "pos": 13,
+      "country": null,
+      "name": "Erik Schneider",
+      "rating": 2027,
+      "class": "GT3",
+      "number": 7,
+      "car": "AMR V8 Vantage",
+      "pen": null,
+      "results": [
+        18,
+        null,
+        null,
+        null,
+        3,
+        "DNF",
+        "DNS",
+        13
+      ],
+      "points": 24,
+      "mark": "†",
+      "team": "Chronos Omega Racing",
+      "chronos": true
+    },
+    {
+      "pos": 14,
+      "country": null,
+      "name": "Chad Wilmott",
+      "rating": 2193,
+      "class": "GT3",
+      "number": 199,
+      "car": "Mercedes-AMG GT3 ...",
+      "pen": null,
+      "results": [
+        9,
+        null,
+        5,
+        null,
+        24,
+        "DNS",
+        "DNS",
+        "DNS"
+      ],
+      "points": 21,
+      "mark": "†"
+    },
+    {
+      "pos": 15,
+      "country": null,
+      "name": "Tom Seefeldt",
+      "rating": 1926,
+      "class": "GT3",
+      "number": 882,
+      "car": "Audi R8 LMS Evo II",
+      "pen": null,
+      "results": [
+        22,
+        null,
+        6,
+        null,
+        14,
+        12,
+        18,
+        12
+      ],
+      "points": 20,
+      "mark": null
+    },
+    {
+      "pos": 16,
+      "country": "DE",
+      "name": "Mike Liebisch",
+      "rating": 1848,
+      "class": "GT3",
+      "number": 19,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        14,
+        null,
+        11,
+        6,
+        "DNS",
+        26
+      ],
+      "points": 17,
+      "mark": null
+    },
+    {
+      "pos": 17,
+      "country": "AT",
+      "name": "Lukas Moser",
+      "rating": 1997,
+      "class": "GT3",
+      "number": 43,
+      "car": "McLaren 720S GT3 Evo",
+      "pen": null,
+      "results": [
+        19,
+        null,
+        null,
+        null,
+        19,
+        10,
+        7,
+        "DNS"
+      ],
+      "points": 15,
+      "mark": null
+    },
+    {
+      "pos": 18,
+      "country": null,
+      "name": "Lennard Petrov",
+      "rating": 2329,
+      "class": "GT3",
+      "number": 93,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        14,
+        null,
+        12,
+        null,
+        10,
+        null,
+        14,
+        null
+      ],
+      "points": 14,
+      "mark": null
+    },
+    {
+      "pos": 19,
+      "country": null,
+      "name": "Yann Guillaume",
+      "rating": 2508,
+      "class": "GT3",
+      "number": 55,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        18,
+        null,
+        4,
+        null,
+        22,
+        "DNS"
+      ],
+      "points": 13,
+      "mark": null,
+      "team": "Chronos Omega Racing",
+      "chronos": true
+    },
+    {
+      "pos": 20,
+      "country": "DE",
+      "name": "David Suess",
+      "rating": 1963,
+      "class": "GT3",
+      "number": 47,
+      "car": "Honda NSX GT3 Evo",
+      "pen": null,
+      "results": [
+        12,
+        null,
+        13,
+        null,
+        null,
+        "DNS",
+        11,
+        15
+      ],
+      "points": 13,
+      "mark": null
+    },
+    {
+      "pos": 21,
+      "country": null,
+      "name": "Sebastian Röber",
+      "rating": 1936,
+      "class": "GT3",
+      "number": 16,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        15,
+        null,
+        16,
+        7,
+        15,
+        "DNS"
+      ],
+      "points": 11,
+      "mark": null
+    },
+    {
+      "pos": 22,
+      "country": "DE",
+      "name": "Mike Dohnt",
+      "rating": 2195,
+      "class": "GT3",
+      "number": 800,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        null,
+        18,
+        "DNS",
+        8,
+        14
+      ],
+      "points": 10,
+      "mark": null
+    },
+    {
+      "pos": 23,
+      "country": null,
+      "name": "Leo Verner",
+      "rating": 2039,
+      "class": "GT3",
+      "number": 44,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        7,
+        null,
+        null,
+        "DNS",
+        "DNS",
+        "DNS"
+      ],
+      "points": 9,
+      "mark": null,
+      "team": "Chronos Motorsport Academy",
+      "chronos": true
+    },
+    {
+      "pos": 24,
+      "country": "DE",
+      "name": "Tim Lüthke",
+      "rating": 2070,
+      "class": "GT3",
+      "number": 50,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "DNS",
+        8
+      ],
+      "points": 8,
+      "mark": null
+    },
+    {
+      "pos": 25,
+      "country": "DE",
+      "name": "F. Ferrix73",
+      "rating": 1835,
+      "class": "GT3",
+      "number": 73,
+      "car": "AMR V8 Vantage",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        25,
+        null,
+        null,
+        11,
+        13,
+        19
+      ],
+      "points": 8,
+      "mark": null
+    }
   ],
   "teamStandings": [
-    { "pos": 1, "team": "Chronos Motorsport", "points": 24 },
-    { "pos": 2, "team": "Chronos Omega Racing", "points": 0 },
-    { "pos": 3, "team": "Chronos Motorsport Academy", "points": 0 }
+    {
+      "pos": 1,
+      "team": "Golden Dynasty",
+      "points": 190
+    },
+    {
+      "pos": 2,
+      "team": "Chronos Motorsport",
+      "points": 94,
+      "chronos": true
+    },
+    {
+      "pos": 3,
+      "team": "Toxic Racing",
+      "points": 77
+    },
+    {
+      "pos": 4,
+      "team": "Silver Dynasty",
+      "points": 51
+    },
+    {
+      "pos": 5,
+      "team": "Nussy Motorsport",
+      "points": 45
+    },
+    {
+      "pos": 6,
+      "team": "Racing Team Langsam",
+      "points": 44
+    },
+    {
+      "pos": 7,
+      "team": "LFA Kult Competition",
+      "points": 34
+    },
+    {
+      "pos": 8,
+      "team": "Carbon Dynasty",
+      "points": 22
+    },
+    {
+      "pos": 9,
+      "team": "Chronos Academy",
+      "points": 9,
+      "chronos": true
+    },
+    {
+      "pos": 10,
+      "team": "Development Langsam",
+      "points": 8
+    },
+    {
+      "pos": 11,
+      "team": "LuMo Racing",
+      "points": 6
+    },
+    {
+      "pos": 12,
+      "team": "Toxic Academy",
+      "points": 3
+    },
+    {
+      "pos": 13,
+      "team": "Cosmos Future",
+      "points": 1
+    },
+    {
+      "pos": 14,
+      "team": "Toxic Psychos",
+      "points": 0
+    }
   ],
   "teams": [
     {
       "name": "Chronos Motorsport",
       "drivers": [
-        { "driver": "@Djlowtom", "name": "M. Verner", "number": 26, "country": null, "car": "Ferrari 296 GT3" },
-        { "driver": "@StReApZ_Yt", "name": "N. Pfeiffer", "number": 53, "country": null, "car": "Ferrari 296 GT3" }
+        {
+          "driver": "@Djlowtom",
+          "name": "Manoa Verner",
+          "number": 26,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        },
+        {
+          "driver": "@StReApZ_Yt",
+          "name": "Noel Pfeiffer",
+          "number": 53,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        }
       ]
     },
     {
       "name": "Chronos Omega Racing",
       "drivers": [
-        { "driver": "@Teaa_bags", "name": "E. Schneider", "number": 7, "country": null, "car": "Aston Martin Vantage GT3" },
-        { "driver": "@Caaaaapitaain", "name": "Y. Guillaume", "number": null, "country": null, "car": "Ferrari 296 GT3" },
-        { "driver": "@Z-Alge", "name": "R. Thaler", "number": 35, "country": "AT", "car": "Ferrari 296 GT3" }
+        {
+          "driver": "@Teaa_bags",
+          "name": "Erik Schneider",
+          "number": 7,
+          "country": null,
+          "car": "Aston Martin Vantage GT3"
+        },
+        {
+          "driver": "@Caaaaapitaain",
+          "name": "Yann Guillaume",
+          "number": 55,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        },
+        {
+          "driver": "@Z-Alge",
+          "name": "R. Thaler",
+          "number": 35,
+          "country": "AT",
+          "car": "Ferrari 296 GT3"
+        }
       ]
     },
     {
       "name": "Chronos Motorsport Academy",
       "drivers": [
-        { "driver": "@banni05", "name": "L. Verner", "number": 44, "country": null, "car": "Ferrari 296 GT3" }
+        {
+          "driver": "@banni05",
+          "name": "Leo Verner",
+          "number": 44,
+          "country": null,
+          "car": "Ferrari 296 GT3"
+        }
       ]
     }
   ],
   "reservePool": [
-    { "driver": "@XFz iCrank", "name": "T. Scheibe", "number": 922, "car": "Mercedes-AMG GT3" },
-    { "driver": "@Ackjjr", "name": "M. Ackermann", "number": 510, "car": "Ferrari 296 GT3" }
-  ]
+    {
+      "driver": "@XFz iCrank",
+      "name": "T. Scheibe",
+      "number": 922,
+      "car": "Mercedes-AMG GT3"
+    },
+    {
+      "driver": "@Ackjjr",
+      "name": "Mika Ackermann",
+      "number": 510,
+      "car": "Ferrari 296 GT3"
+    }
+  ],
+  "soloStandings": [
+    {
+      "pos": 1,
+      "country": "DE",
+      "name": "Eric Sprott",
+      "rating": 3001,
+      "class": "GT3",
+      "number": 1,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        4,
+        null,
+        2,
+        2,
+        2,
+        2,
+        1,
+        3
+      ],
+      "points": 142,
+      "mark": "†"
+    },
+    {
+      "pos": 2,
+      "country": null,
+      "name": "Yann Guillaume",
+      "rating": 2508,
+      "class": "GT3",
+      "number": 55,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        3,
+        null,
+        4,
+        5,
+        1,
+        null,
+        2,
+        6
+      ],
+      "points": 97,
+      "mark": "†",
+      "team": "Chronos Omega Racing",
+      "chronos": true
+    },
+    {
+      "pos": 3,
+      "country": null,
+      "name": "Chad Wilmott",
+      "rating": 2193,
+      "class": "GT3",
+      "number": 199,
+      "car": "Mercedes-AMG GT3 ...",
+      "pen": null,
+      "results": [
+        1,
+        null,
+        1,
+        1,
+        27,
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 87,
+      "mark": "†"
+    },
+    {
+      "pos": 4,
+      "country": null,
+      "name": "Leon Nierhaus",
+      "rating": 2603,
+      "class": "GT3",
+      "number": 4,
+      "car": "AMR V8 Vantage",
+      "pen": null,
+      "results": [
+        5,
+        null,
+        8,
+        3,
+        7,
+        5,
+        3,
+        5
+      ],
+      "points": 84,
+      "mark": "†"
+    },
+    {
+      "pos": 5,
+      "country": null,
+      "name": "Noel Pfeiffer",
+      "rating": 2297,
+      "class": "GT3",
+      "number": 53,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        2,
+        null,
+        6,
+        4,
+        6,
+        1,
+        17,
+        23
+      ],
+      "points": 79,
+      "mark": "†",
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 6,
+      "country": null,
+      "name": "Lennard Petrov",
+      "rating": 2329,
+      "class": "GT3",
+      "number": 93,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        7,
+        9,
+        9,
+        4,
+        4,
+        1
+      ],
+      "points": 78,
+      "mark": "†"
+    },
+    {
+      "pos": 7,
+      "country": "NL",
+      "name": "Alex Fox",
+      "rating": 2346,
+      "class": "GT3",
+      "number": 71,
+      "car": "Mercedes-AMG GT3 ...",
+      "pen": null,
+      "results": [
+        9,
+        null,
+        16,
+        6,
+        5,
+        3,
+        15,
+        12
+      ],
+      "points": 51,
+      "mark": "†"
+    },
+    {
+      "pos": 8,
+      "country": null,
+      "name": "Elias Schneider",
+      "rating": 1868,
+      "class": "GT3",
+      "number": 3,
+      "car": "Ferrari 296 GT3",
+      "pen": "DSQ",
+      "results": [
+        15,
+        null,
+        null,
+        25,
+        "DNS",
+        10,
+        6,
+        2
+      ],
+      "points": 37,
+      "mark": null
+    },
+    {
+      "pos": 9,
+      "country": "DE",
+      "name": "Finn Hübner",
+      "rating": 2260,
+      "class": "GT3",
+      "number": 40,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        17,
+        17,
+        7,
+        8,
+        4
+      ],
+      "points": 30,
+      "mark": null
+    },
+    {
+      "pos": 10,
+      "country": null,
+      "name": "Manoa Verner",
+      "rating": 2448,
+      "class": "GT3",
+      "number": 26,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        8,
+        null,
+        null,
+        null,
+        3,
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 26,
+      "mark": "†",
+      "team": "Chronos Motorsport",
+      "chronos": true
+    },
+    {
+      "pos": 11,
+      "country": "DE",
+      "name": "Mike Liebisch",
+      "rating": 1848,
+      "class": "GT3",
+      "number": 19,
+      "car": "Porsche 992 GT3",
+      "pen": null,
+      "results": [
+        31,
+        null,
+        30,
+        27,
+        "DNS",
+        6,
+        7,
+        9
+      ],
+      "points": 26,
+      "mark": null
+    },
+    {
+      "pos": 12,
+      "country": "DE",
+      "name": "Matthias Drißen",
+      "rating": 1998,
+      "class": "GT3",
+      "number": 180,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        12,
+        null,
+        10,
+        11,
+        11,
+        null,
+        11,
+        "DNS"
+      ],
+      "points": 25,
+      "mark": null
+    },
+    {
+      "pos": 13,
+      "country": null,
+      "name": "Kevin Böhm",
+      "rating": 2409,
+      "class": "GT3",
+      "number": 94,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        11,
+        null,
+        3,
+        18,
+        "DNS",
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 24,
+      "mark": "†"
+    },
+    {
+      "pos": 14,
+      "country": null,
+      "name": "Alexander Friedl",
+      "rating": 2205,
+      "class": "GT3",
+      "number": 15,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        13,
+        null,
+        null,
+        10,
+        4,
+        null,
+        null,
+        15
+      ],
+      "points": 24,
+      "mark": "†"
+    },
+    {
+      "pos": 15,
+      "country": "DE",
+      "name": "Lukas Knips",
+      "rating": 2538,
+      "class": "GT3",
+      "number": 98,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        6,
+        null,
+        5,
+        "DNS",
+        "DNS",
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 24,
+      "mark": "†"
+    },
+    {
+      "pos": 16,
+      "country": "DE",
+      "name": "Mike Dohnt",
+      "rating": 2195,
+      "class": "GT3",
+      "number": 800,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        11,
+        null,
+        8,
+        null,
+        5,
+        24
+      ],
+      "points": 24,
+      "mark": null
+    },
+    {
+      "pos": 17,
+      "country": null,
+      "name": "Tobias Hoffmann",
+      "rating": 1970,
+      "class": "GT3",
+      "number": 892,
+      "car": "Bentley Continent...",
+      "pen": null,
+      "results": [
+        20,
+        null,
+        27,
+        15,
+        22,
+        8,
+        10,
+        10
+      ],
+      "points": 23,
+      "mark": "†"
+    },
+    {
+      "pos": 18,
+      "country": null,
+      "name": "Mika Ackermann",
+      "rating": 2014,
+      "class": "GT3",
+      "number": 510,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        7,
+        null,
+        12,
+        24,
+        null,
+        null,
+        null,
+        8
+      ],
+      "points": 21,
+      "mark": null
+    },
+    {
+      "pos": 19,
+      "country": null,
+      "name": "Sebastian Röber",
+      "rating": 1936,
+      "class": "GT3",
+      "number": 16,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        17,
+        null,
+        9,
+        29,
+        "DNS",
+        12,
+        9,
+        "DNS"
+      ],
+      "points": 18,
+      "mark": null
+    },
+    {
+      "pos": 20,
+      "country": "DE",
+      "name": "Valentino Böhm",
+      "rating": 1861,
+      "class": "GT3",
+      "number": 37,
+      "car": "Ford Mustang GT3",
+      "pen": null,
+      "results": [
+        21,
+        null,
+        15,
+        19,
+        12,
+        9,
+        16,
+        11
+      ],
+      "points": 17,
+      "mark": null
+    },
+    {
+      "pos": 21,
+      "country": null,
+      "name": "Lavdim Pelaj",
+      "rating": 1882,
+      "class": "GT3",
+      "number": 96,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        null,
+        29,
+        null,
+        14,
+        7
+      ],
+      "points": 11,
+      "mark": null
+    },
+    {
+      "pos": 22,
+      "country": "AT",
+      "name": "Lukas Moser",
+      "rating": 1997,
+      "class": "GT3",
+      "number": 43,
+      "car": "McLaren 720S GT3 Evo",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        24,
+        "DNS",
+        10,
+        null,
+        12,
+        19
+      ],
+      "points": 10,
+      "mark": null
+    },
+    {
+      "pos": 23,
+      "country": "DE",
+      "name": "Tom Engemann",
+      "rating": 2019,
+      "class": "GT3",
+      "number": 22,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        28,
+        null,
+        "DNS",
+        7,
+        null,
+        null,
+        null,
+        22
+      ],
+      "points": 9,
+      "mark": null
+    },
+    {
+      "pos": 24,
+      "country": "DE",
+      "name": "Tim Lüthke",
+      "rating": 2070,
+      "class": "GT3",
+      "number": 50,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        8,
+        "DNS",
+        null,
+        "DNS",
+        25
+      ],
+      "points": 8,
+      "mark": null
+    },
+    {
+      "pos": 25,
+      "country": "DE",
+      "name": "F. Ferrix73",
+      "rating": 1835,
+      "class": "GT3",
+      "number": 73,
+      "car": "AMR V8 Vantage",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        26,
+        21,
+        21,
+        11,
+        13,
+        16
+      ],
+      "points": 8,
+      "mark": null
+    },
+    {
+      "pos": 26,
+      "country": null,
+      "name": "Leo Verner",
+      "rating": 2039,
+      "class": "GT3",
+      "number": 44,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        10,
+        null,
+        null,
+        null,
+        "DNS",
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 6,
+      "mark": null,
+      "team": "Chronos Motorsport Academy",
+      "chronos": true
+    },
+    {
+      "pos": 27,
+      "country": "DE",
+      "name": "Corvin M.",
+      "rating": 2041,
+      "class": "GT3",
+      "number": 88,
+      "car": "Porsche 992 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        14,
+        14,
+        15,
+        null,
+        "DNS",
+        null
+      ],
+      "points": 5,
+      "mark": null
+    },
+    {
+      "pos": 28,
+      "country": null,
+      "name": "David Dridiger",
+      "rating": 1935,
+      "class": "GT3",
+      "number": 777,
+      "car": "Porsche 992 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        12,
+        24,
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 4,
+      "mark": null
+    },
+    {
+      "pos": 29,
+      "country": null,
+      "name": "Marco Maurer",
+      "rating": 1935,
+      "class": "GT3",
+      "number": 174,
+      "car": "Porsche 992 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        28,
+        16,
+        null,
+        "DNS",
+        13
+      ],
+      "points": 3,
+      "mark": null
+    },
+    {
+      "pos": 30,
+      "country": "DE",
+      "name": "David Suess",
+      "rating": 1963,
+      "class": "GT3",
+      "number": 47,
+      "car": "Honda NSX GT3 Evo",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        null,
+        "DNF",
+        13,
+        null,
+        "DNF",
+        "DNF"
+      ],
+      "points": 3,
+      "mark": null
+    },
+    {
+      "pos": 31,
+      "country": null,
+      "name": "Lukas Fradl",
+      "rating": 1815,
+      "class": "GT3",
+      "number": 911,
+      "car": "Porsche 992 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        18,
+        13,
+        32,
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 3,
+      "mark": null
+    },
+    {
+      "pos": 32,
+      "country": null,
+      "name": "Clemens Hölper",
+      "rating": 1658,
+      "class": "GT3",
+      "number": 74,
+      "car": "BMW M4 GT3",
+      "pen": null,
+      "results": [
+        22,
+        null,
+        23,
+        "DNS",
+        26,
+        13,
+        null,
+        null
+      ],
+      "points": 3,
+      "mark": null
+    },
+    {
+      "pos": 33,
+      "country": "DE",
+      "name": "Jens Krauser",
+      "rating": 2677,
+      "class": "GT3",
+      "number": 579,
+      "car": "Porsche 992 GT3",
+      "pen": "DSQ",
+      "results": [
+        null,
+        null,
+        13,
+        "DNS",
+        null,
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 3,
+      "mark": null
+    },
+    {
+      "pos": 34,
+      "country": null,
+      "name": "Eitan Uchuev",
+      "rating": 1951,
+      "class": "GT3",
+      "number": 17,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        null,
+        null,
+        19,
+        null,
+        14,
+        null,
+        null,
+        null
+      ],
+      "points": 2,
+      "mark": null
+    },
+    {
+      "pos": 35,
+      "country": null,
+      "name": "Constantin Deller",
+      "rating": 1714,
+      "class": "GT3",
+      "number": 77,
+      "car": "AMR V8 Vantage",
+      "pen": null,
+      "results": [
+        27,
+        null,
+        null,
+        31,
+        23,
+        14,
+        "DNS",
+        "DNS"
+      ],
+      "points": 2,
+      "mark": null
+    },
+    {
+      "pos": 36,
+      "country": "DE",
+      "name": "Angelo Chillo",
+      "rating": 1719,
+      "class": "GT3",
+      "number": 12,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        29,
+        null,
+        null,
+        23,
+        null,
+        null,
+        null,
+        14
+      ],
+      "points": 2,
+      "mark": null
+    },
+    {
+      "pos": 37,
+      "country": null,
+      "name": "Michel Friedli",
+      "rating": 1883,
+      "class": "GT3",
+      "number": 5,
+      "car": "Ferrari 296 GT3",
+      "pen": null,
+      "results": [
+        14,
+        null,
+        32,
+        "DNS",
+        "DNS",
+        null,
+        "DNS",
+        "DNS"
+      ],
+      "points": 2,
+      "mark": null
+    }
+  ],
+  "sources": {
+    "driverStandings": {
+      "name": "ASPL Liga-Tabelle",
+      "via": "data/standings_paste.txt",
+      "importedAt": "2026-08-20",
+      "rounds": 8,
+      "entries": 25
+    },
+    "soloStandings": {
+      "name": "ASPL Liga-Tabelle",
+      "via": "data/standings_paste.txt",
+      "importedAt": "2026-08-20",
+      "rounds": 8,
+      "entries": 37
+    },
+    "teamStandings": {
+      "name": "asplracing.com",
+      "url": "https://asplracing.com/#results",
+      "importedAt": "2026-08-20",
+      "entries": 14
+    }
+  }
 }
