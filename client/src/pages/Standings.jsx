@@ -11,7 +11,11 @@ const CAR_COLOR = {
   'Mercedes-AMG GT3': '#00A19B',
   'Aston Martin Vantage GT3': '#1f6f5c',
 };
-const FLAG = { AT: '🇦🇹', DE: '🇩🇪', CH: '🇨🇭' };
+// Laendercode -> Flaggen-Emoji (zwei Regional Indicator Symbols).
+function flag(code) {
+  if (!code || code.length !== 2) return null;
+  return String.fromCodePoint(...[...code.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
+}
 
 function DriverRosterRow({ d }) {
   const color = CAR_COLOR[d.car] || 'var(--muted)';
@@ -23,7 +27,7 @@ function DriverRosterRow({ d }) {
         <span className="w-8 shrink-0 text-center text-muted/40">—</span>
       )}
       <div className="min-w-0 flex-1">
-        <div className="text-sm font-medium truncate">{d.driver} {d.country && FLAG[d.country]}</div>
+        <div className="text-sm font-medium truncate">{d.driver} {flag(d.country)}</div>
         {d.name && <div className="text-[11px] text-muted">{d.name}</div>}
       </div>
       <span className="h-2 w-2 rounded-full shrink-0" style={{ background: color }} title={d.car} />
@@ -70,18 +74,60 @@ function SeriesSwitch({ options, value, onChange }) {
   );
 }
 
-// Eine Zeile der Fahrer- oder Teamwertung. Chronos-Zeilen werden hervorgehoben,
-// damit man die eigenen Leute in der ligaweiten Tabelle sofort findet.
-function StandingRow({ pos, label, sub, points, highlight }) {
+// Ein Rundenergebnis: Platzierung, DNS/DNF/DSQ oder "—" (nicht gestartet/gewertet).
+function ResultCell({ value }) {
+  if (value == null) return <td className="hidden sm:table-cell py-2 px-1 text-center text-muted/40 mono text-xs">—</td>;
+  const podium = typeof value === 'number' && value <= 3;
   return (
-    <tr className="border-b border-line/50 last:border-0" style={highlight ? { background: 'color-mix(in srgb, var(--car-accent) 10%, transparent)' } : undefined}>
-      <td className="py-2 pl-2 text-muted mono">{pos}</td>
-      <td className="py-2">
-        <div className={`leading-tight ${highlight ? 'font-semibold' : 'font-medium'}`}>{label}</div>
+    <td className={`hidden sm:table-cell py-2 px-1 text-center mono text-xs ${podium ? 'text-car font-semibold' : 'text-muted'}`}>{value}</td>
+  );
+}
+
+// Eine Zeile der Fahrerwertung. Chronos-Zeilen werden hervorgehoben, damit man die
+// eigenen Leute in der ligaweiten Tabelle sofort findet.
+function DriverStandingRow({ d, roundCols }) {
+  const sub = [d.number ? `#${d.number}` : null, d.car, d.team].filter(Boolean).join(' · ');
+  return (
+    <tr className="border-b border-line/50 last:border-0" style={d.chronos ? { background: 'color-mix(in srgb, var(--car-accent) 10%, transparent)' } : undefined}>
+      <td className="py-2 pl-2 text-muted mono">{d.pos}</td>
+      <td className="py-2 pr-3 min-w-[170px]">
+        <div className={`leading-tight ${d.chronos ? 'font-semibold' : 'font-medium'}`}>
+          {flag(d.country) && <span className="mr-1">{flag(d.country)}</span>}{d.name}
+        </div>
         {sub && <div className="text-[11px] text-muted">{sub}</div>}
       </td>
-      <td className="py-2 pr-2 text-right mono font-semibold text-car">{points}</td>
+      {roundCols.map((i) => <ResultCell key={i} value={d.results?.[i] ?? null} />)}
+      <td className="hidden sm:table-cell py-2 px-1 text-center mono text-xs text-warn">{d.pen || ''}</td>
+      <td className="py-2 pr-2 text-right mono font-semibold text-car whitespace-nowrap">
+        {d.points}{d.mark && <span className="text-muted font-normal" title="Markierung aus der Liga-Tabelle">{d.mark}</span>}
+      </td>
     </tr>
+  );
+}
+
+// Eine Zeile der Team-Meisterschaft.
+function TeamStandingRow({ t }) {
+  return (
+    <tr className="border-b border-line/50 last:border-0" style={t.chronos ? { background: 'color-mix(in srgb, var(--car-accent) 10%, transparent)' } : undefined}>
+      <td className="py-2 pl-2 text-muted mono">{t.pos}</td>
+      <td className={`py-2 ${t.chronos ? 'font-semibold' : 'font-medium'}`}>{t.team}</td>
+      <td className="py-2 pr-2 text-right mono font-semibold text-car">{t.points}</td>
+    </tr>
+  );
+}
+
+// Herkunft und Stand einer einzelnen Tabelle — die drei Tabellen kommen aus
+// unterschiedlichen Quellen und koennen unterschiedlich aktuell sein.
+function SourceLine({ source }) {
+  if (!source) return null;
+  return (
+    <p className="text-[11px] text-muted mt-3">
+      Quelle:{' '}
+      {source.url
+        ? <a className="underline hover:text-ink" href={source.url} target="_blank" rel="noreferrer">{source.name}</a>
+        : source.name}
+      {source.importedAt ? ` · eingelesen ${source.importedAt.split('-').reverse().join('.')}` : ''}
+    </p>
   );
 }
 
@@ -103,6 +149,12 @@ export default function Standings() {
   ].filter(Boolean);
   const [series, setSeries] = useState('team');
   const activeSeries = seriesOptions.find((o) => o.id === series) ?? seriesOptions[0];
+  const sources = data?.sources;
+  // Rundenspalten aus den Daten ableiten und die leeren weglassen: die Team-Series
+  // faehrt nicht jede Runde der Liga-Tabelle mit. Die Nummern bleiben die der Liga.
+  const roundCount = Math.max(0, ...(activeSeries?.rows ?? []).map((d) => d.results?.length ?? 0));
+  const roundCols = Array.from({ length: roundCount }, (_, i) => i)
+    .filter((i) => (activeSeries?.rows ?? []).some((d) => d.results?.[i] != null));
 
   return (
     <motion.div variants={pageMotion} initial="initial" animate="animate" exit="exit">
@@ -133,62 +185,62 @@ export default function Standings() {
                   {data?.note && (
                     <p className="text-[11px] text-warn mb-4 glass rounded-xl px-3 py-2 inline-block">ℹ {data.note}</p>
                   )}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
-                    {/* Fahrerwertung — ligaweit, umschaltbar zwischen Solo- und Team-Series */}
-                    <div className="glass rounded-2xl p-5 self-start">
-                      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                        <h2 className="display text-lg font-semibold">Fahrerwertung</h2>
-                        {seriesOptions.length > 1 && (
-                          <SeriesSwitch options={seriesOptions} value={activeSeries?.id} onChange={setSeries} />
-                        )}
-                      </div>
-                      <table className="w-full text-sm">
+                  {/* Fahrerwertung — ligaweit, umschaltbar zwischen Solo- und Team-Series.
+                      Die Rundenspalten sind breit, deshalb volle Breite und horizontal scrollbar. */}
+                  <div className="glass rounded-2xl p-5 mb-5">
+                    <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                      <h2 className="display text-lg font-semibold">Fahrerwertung</h2>
+                      {seriesOptions.length > 1 && (
+                        <SeriesSwitch options={seriesOptions} value={activeSeries?.id} onChange={setSeries} />
+                      )}
+                    </div>
+                    <div className="overflow-x-auto -mx-2 px-2">
+                      <table className="w-full text-sm sm:min-w-[640px]">
                         <thead>
                           <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
                             <th className="py-2 pl-2 text-left w-7">#</th>
                             <th className="py-2 text-left">Fahrer</th>
+                            {roundCols.map((i) => (
+                              <th key={i} className="hidden sm:table-cell py-2 px-1 text-center w-8 font-normal">R{i + 1}</th>
+                            ))}
+                            <th className="hidden sm:table-cell py-2 px-1 text-center w-10 font-normal">Pen</th>
                             <th className="py-2 pr-2 text-right w-12">Pkt</th>
                           </tr>
                         </thead>
                         <tbody>
                           {(activeSeries?.rows ?? []).map((d) => (
-                            <StandingRow
-                              key={`${d.pos}-${d.name}`}
-                              pos={d.pos}
-                              label={d.name}
-                              sub={d.team}
-                              points={d.points}
-                              highlight={d.chronos}
-                            />
+                            <DriverStandingRow key={`${d.pos}-${d.name}`} d={d} roundCols={roundCols} />
                           ))}
                         </tbody>
                       </table>
                     </div>
-                    {/* Team-Meisterschaft — ebenfalls ligaweit */}
-                    <div className="glass rounded-2xl p-5 self-start">
-                      <h2 className="display text-lg font-semibold mb-3">Team-Meisterschaft</h2>
-                      <table className="w-full text-sm">
-                        <thead>
-                          <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
-                            <th className="py-2 pl-2 text-left w-7">#</th>
-                            <th className="py-2 text-left">Team</th>
-                            <th className="py-2 pr-2 text-right w-12">Pkt</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {teamStandings.map((t) => (
-                            <StandingRow key={`${t.pos}-${t.team}`} pos={t.pos} label={t.team} points={t.points} highlight={t.chronos} />
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  {data?.source && (
-                    <p className="text-[11px] text-muted mb-8">
-                      Quelle: <a className="underline hover:text-ink" href={data.source.url} target="_blank" rel="noreferrer">{data.source.name}</a>
-                      {data.lastUpdated ? ` · ${data.lastUpdated}` : ''}
+                    <p className="text-[11px] text-muted mt-3">
+                      <span className="hidden sm:inline">
+                        R-Spalten sind die Runden der Liga-Tabelle; nicht gefahrene Runden sind ausgeblendet,
+                        deshalb decken sich die Nummern nicht mit dem Rennkalender. „—" = kein Ergebnis.
+                      </span>
+                      <span className="sm:hidden">Rundenergebnisse ab Tablet-Breite sichtbar.</span>
                     </p>
-                  )}
+                    <SourceLine source={sources?.[activeSeries?.id === 'solo' ? 'soloStandings' : 'driverStandings']} />
+                  </div>
+
+                  {/* Team-Meisterschaft — ebenfalls ligaweit */}
+                  <div className="glass rounded-2xl p-5 mb-8 lg:max-w-md">
+                    <h2 className="display text-lg font-semibold mb-3">Team-Meisterschaft</h2>
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-[11px] uppercase tracking-wider text-muted border-b border-line">
+                          <th className="py-2 pl-2 text-left w-7">#</th>
+                          <th className="py-2 text-left">Team</th>
+                          <th className="py-2 pr-2 text-right w-12">Pkt</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {teamStandings.map((t) => <TeamStandingRow key={`${t.pos}-${t.team}`} t={t} />)}
+                      </tbody>
+                    </table>
+                    <SourceLine source={sources?.teamStandings} />
+                  </div>
                 </>
               )}
               </>

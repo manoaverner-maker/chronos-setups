@@ -2,13 +2,18 @@
 // und schreibt sie nach data/config/standings.json.
 //
 // Ablauf:
-//   node scripts/import_aspl_standings.mjs            # holt https://asplracing.com/
-//   node scripts/import_aspl_standings.mjs seite.html # oder aus einer lokalen Kopie
+//   node scripts/import_aspl_standings.mjs                 # alle drei Tabellen
+//   node scripts/import_aspl_standings.mjs --tables=teams  # nur die Team-Meisterschaft
+//   node scripts/import_aspl_standings.mjs --html=seite.html   # aus lokaler Kopie
 //   git add -A && git commit -m "Tabellen aktualisiert" && git push
 //
 // Die Seite liefert drei Tabellen: Solo Series (Fahrer), Teams Series (Fahrer)
 // und Team-Meisterschaft. Kader, Punktesystem und Teamleitung stehen NICHT auf der
 // Seite — die bleiben unangetastet in standings.json stehen.
+//
+// Wichtig: Die Fahrerwertungen der Liga-Plattform (scripts/import_standings_paste.mjs)
+// sind meist aktueller als die Seite. Stehen sie schon in standings.json, hier mit
+// --tables=teams nur die Team-Meisterschaft nachziehen.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -17,12 +22,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.resolve(__dirname, '../data/config/standings.json');
 const SOURCE_URL = 'https://asplracing.com/';
 
-// Ueberschrift auf der Seite -> Schluessel in standings.json.
+// Ueberschrift auf der Seite -> Schluessel in standings.json. 'id' ist der Name
+// fuer --tables=…
 const TABLES = [
-  { key: 'soloStandings', match: /solo\s*series/i, kind: 'driver', label: 'Solo Series' },
-  { key: 'driverStandings', match: /teams?\s*series/i, kind: 'driver', label: 'Team Series' },
-  { key: 'teamStandings', match: /team[-\s]?meisterschaft|team\s*championship/i, kind: 'team', label: 'Team-Meisterschaft' },
+  { id: 'solo', key: 'soloStandings', match: /solo\s*series/i, kind: 'driver', label: 'Solo Series' },
+  { id: 'team', key: 'driverStandings', match: /teams?\s*series/i, kind: 'driver', label: 'Team Series' },
+  { id: 'teams', key: 'teamStandings', match: /team[-\s]?meisterschaft|team\s*championship/i, kind: 'team', label: 'Team-Meisterschaft' },
 ];
+
+const args = process.argv.slice(2);
+const arg = (name) => args.find((a) => a.startsWith(`--${name}=`))?.split('=').slice(1).join('=');
+const wanted = arg('tables')?.split(',').map((s) => s.trim()).filter(Boolean) ?? TABLES.map((t) => t.id);
+for (const id of wanted) {
+  if (!TABLES.some((t) => t.id === id)) {
+    throw new Error(`Unbekannte Tabelle "${id}" — erlaubt: ${TABLES.map((t) => t.id).join(', ')}`);
+  }
+}
 
 function decode(s) {
   return s
@@ -100,12 +115,12 @@ function markChronos(previous, data) {
   }
 }
 
-const html = await fetchHtml(process.argv[2]);
+const html = await fetchHtml(arg('html'));
 const tables = parseTables(resultsSection(html));
 const data = {};
 const summary = [];
 
-for (const spec of TABLES) {
+for (const spec of TABLES.filter((t) => wanted.includes(t.id))) {
   const hit = tables.find((t) => spec.match.test(t.heading));
   if (!hit || hit.rows.length === 0) throw new Error(`Tabelle "${spec.label}" nicht gefunden — Seitenaufbau geaendert?`);
   data[spec.key] = toEntries(hit.rows, spec.kind);
@@ -116,20 +131,21 @@ const previous = JSON.parse(fs.readFileSync(OUT, 'utf8'));
 markChronos(previous, data);
 
 const today = new Date().toISOString().slice(0, 10);
-const next = {
-  ...previous,
-  _comment:
-    'Meisterschaftstabellen der ASPL Season 2, uebernommen von asplracing.com (Abschnitt "Ergebnisse") ueber scripts/import_aspl_standings.mjs. '
-    + 'soloStandings/driverStandings = Fahrerwertung Solo- bzw. Team-Series, teamStandings = Team-Meisterschaft (ganze Liga, nicht nur Chronos). '
-    + 'Die Punkte enthalten den Quali-Bonus so, wie ihn die Liga rechnet. teams/reservePool/pointsSystem/principals stehen nicht auf der Seite und werden hier gepflegt.',
-  source: { name: 'asplracing.com', url: `${SOURCE_URL}#results`, importedAt: today },
-  lastUpdated: `Stand ${today.split('-').reverse().join('.')}`,
-  note: 'Tabellenstand direkt von asplracing.com übernommen — die Liga aktualisiert die Tabellen nach jeder Runde.',
-  soloStandings: data.soloStandings,
-  driverStandings: data.driverStandings,
-  teamStandings: data.teamStandings,
-};
+const next = { ...previous, ...data };
 delete next.drivers;
+delete next.source;
+for (const spec of TABLES.filter((t) => wanted.includes(t.id))) {
+  next.sources = {
+    ...next.sources,
+    [spec.key]: {
+      name: 'asplracing.com',
+      url: `${SOURCE_URL}#results`,
+      importedAt: today,
+      entries: data[spec.key].length,
+    },
+  };
+}
+next.lastUpdated = `Stand ${today.split('-').reverse().join('.')}`;
 
 fs.writeFileSync(OUT, `${JSON.stringify(next, null, 2)}\n`);
 console.log(`[standings] ${summary.join(' · ')}`);
