@@ -1,39 +1,51 @@
-// Liest die Fahrerwertungen aus einer kopierten Liga-Tabelle (Plattform-Ansicht mit
-// PEN- und Rundenspalten) und schreibt sie nach data/config/standings.json.
+// Liest kopierte Liga-Tabellen aus data/standings_paste.txt und schreibt sie nach
+// data/config/standings.json.
 //
 // Ablauf:
-//   1. Auf der Liga-Plattform die Tabelle "Team Series" markieren und kopieren
-//   2. In data/standings_paste.txt einfuegen, darueber eine Zeile "Team Series:"
-//      (bzw. "Solo Series:") als Trenner setzen — beide Serien passen in eine Datei
-//   3. node scripts/import_standings_paste.mjs
+//   1. Tabelle auf der Liga-Plattform (oder im Discord-Post) markieren und kopieren
+//   2. In data/standings_paste.txt einfuegen, darueber eine Abschnittszeile setzen
+//   3. node scripts/import_standings_paste.mjs [--season=2]
 //   4. git add -A && git commit -m "Tabellen aktualisiert" && git push
 //
-// Erwartetes Format je Fahrer (so, wie die Plattform es beim Kopieren ausgibt):
-//   3
-//   🇩🇪 Kevin Böhm
-//   2,409
-//    Follow
-//   GT3  94 BMW M4 GT3
-//   3  —  1  —  5  4  DNS  DNS  65
+// Abschnittszeilen (spaetere gewinnen, so ueberschreibt ein Endstand einen Zwischenstand):
+//   "Solo Series:"            -> Fahrerwertung Solo Series
+//   "Team Series:"            -> Fahrerwertung Team Series
+//   "Teamwertung:"            -> Teamwertung
+//   … jeweils mit "Endstand" im Titel -> Tabelle gilt als final, der Erste wird Champion
 //
-// Die letzte Zeile sind die Punkte, davor die acht Rundenspalten R1..R8, ganz vorne
-// (nur wenn gesetzt) die PEN-Spalte. Die Rundennummern sind die der Plattform und
-// decken sich NICHT mit den Runden in data/config/seasons.json — die Team-Series
-// faehrt nicht jede Runde mit.
+// Zwei Zeilenformate werden erkannt:
+//
+//   a) Plattform-Ansicht mit Rundenspalten (mehrzeilig je Fahrer):
+//        3
+//        🇩🇪 Kevin Böhm
+//        2,409
+//         Follow
+//        GT3  94 BMW M4 GT3
+//        3  —  1  —  5  4  DNS  DNS  65
+//      Letzte Zeile = Punkte, davor R1..R8, ganz vorne (nur wenn gesetzt) die PEN-Spalte.
+//      Die Rundennummern sind die der Plattform und decken sich NICHT mit seasons.json.
+//
+//   b) Schlichte Tabelle, eine Zeile je Eintrag:
+//        1	E. Sprott	164
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  readStandings, pickSeason, writeStandings, heute, alsDatum, markChronos, markChronosTeams,
+} from './lib/standingsFile.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PASTE = path.resolve(__dirname, '../data/standings_paste.txt');
-const OUT = path.resolve(__dirname, '../data/config/standings.json');
 const ROUNDS = 8;
 
-// Ueberschrift im Paste -> Schluessel in standings.json.
 const SECTIONS = [
-  { key: 'driverStandings', match: /^team[s]?\s*series/i, label: 'Team Series' },
-  { key: 'soloStandings', match: /^solo\s*series/i, label: 'Solo Series' },
+  { key: 'driverStandings', kind: 'driver', match: /^team[s]?\s*series/i, label: 'Team Series' },
+  { key: 'soloStandings', kind: 'driver', match: /^solo\s*series/i, label: 'Solo Series' },
+  { key: 'teamStandings', kind: 'team', match: /^team(wertung|meisterschaft|-meisterschaft)/i, label: 'Teamwertung' },
 ];
+
+const args = process.argv.slice(2);
+const arg = (name) => args.find((a) => a.startsWith(`--${name}=`))?.split('=').slice(1).join('=');
 
 // Flaggen-Emoji (zwei Regional Indicator Symbols) -> Laendercode.
 function countryFromFlag(s) {
@@ -50,10 +62,10 @@ function cell(raw) {
 }
 
 function isHeaderLine(l) {
-  return /^P\s*\t?\s*STANDINGS/i.test(l) || /^Pos\b/i.test(l);
+  return /^(P|Pos|Platz)\b/i.test(l) && /(standings|name|team|fahrer|punkte|pts)/i.test(l);
 }
 
-// Ergebniszeile: [PEN] R1..R8 PTS. Die PEN-Spalte steht nur da, wenn sie gesetzt ist.
+// Ergebniszeile der Plattform: [PEN] R1..R8 PTS. PEN steht nur da, wenn sie gesetzt ist.
 function parseResultLine(line) {
   const cells = line.split('\t').map((c) => c.trim()).filter((c) => c !== '');
   if (cells.length < ROUNDS + 1) return null;
@@ -66,7 +78,18 @@ function parseResultLine(line) {
   return { pen, results, points, mark };
 }
 
-function parseSection(lines) {
+// Schlichte Zeile: Platz, Name, Punkte.
+function parseSimpleLine(line, kind) {
+  const cells = line.split('\t').map((c) => c.trim()).filter((c) => c !== '');
+  if (cells.length !== 3) return null;
+  const [posRaw, name, ptsRaw] = cells;
+  const pos = Number.parseInt(posRaw, 10);
+  const points = Number.parseInt(ptsRaw.replace(/[^\d-]/g, ''), 10);
+  if (!Number.isFinite(pos) || !Number.isFinite(points) || !name) return null;
+  return kind === 'team' ? { pos, team: name, points } : { pos, name, points };
+}
+
+function parseSection(lines, kind) {
   const entries = [];
   let cur = null;
   const flush = () => {
@@ -82,9 +105,12 @@ function parseSection(lines) {
     const text = line.trim();
     if (!text || isHeaderLine(text) || /^Follow(ing)?$/i.test(text)) continue;
 
+    // Schlichtes Format zuerst — es steht komplett in einer Zeile.
+    const simple = !cur && parseSimpleLine(line, kind);
+    if (simple) { entries.push(simple); continue; }
+
     // Eine Zeile, die nur die Position enthaelt, beginnt einen neuen Fahrer.
-    if (/^\d{1,3}$/.test(text) && !cur) { cur = { pos: Number(text) }; continue; }
-    if (/^\d{1,3}$/.test(text) && cur?.done) { flush(); cur = { pos: Number(text) }; continue; }
+    if (/^\d{1,3}$/.test(text) && (!cur || cur.done)) { flush(); cur = { pos: Number(text) }; continue; }
     if (!cur) continue;
 
     if (cur.name === undefined) {
@@ -112,68 +138,64 @@ function parseSection(lines) {
   return entries;
 }
 
-// Chronos-Zeilen markieren: erst ueber die Startnummer aus dem Kader, sonst ueber den
-// Namen. Geraten wird nicht — wer nicht sicher zuzuordnen ist, bleibt ohne Team.
-function markChronos(previous, entries) {
-  const byNumber = new Map();
-  const byName = new Map();
-  for (const team of previous.teams ?? []) {
-    for (const d of team.drivers ?? []) {
-      if (d.number != null) byNumber.set(d.number, team.name);
-      if (d.name) byName.set(d.name.toLowerCase(), team.name);
-    }
-  }
-  for (const e of entries) {
-    const team = byNumber.get(e.number) ?? byName.get(e.name.toLowerCase());
-    if (team) { e.team = team; e.chronos = true; }
-  }
-}
-
 const paste = fs.readFileSync(PASTE, 'utf8').split('\n');
 
-// Paste in Abschnitte schneiden (Zeile "Team Series:" / "Solo Series:").
+// Paste in Abschnitte schneiden.
 const blocks = [];
 for (const line of paste) {
-  const head = SECTIONS.find((s) => s.match.test(line.trim().replace(/:$/, '')) && line.trim().length < 40);
-  if (head) { blocks.push({ spec: head, lines: [] }); continue; }
+  const titel = line.trim().replace(/:$/, '');
+  const spec = titel.length < 40 && SECTIONS.find((s) => s.match.test(titel));
+  if (spec) { blocks.push({ spec, titel, final: /endstand|final/i.test(titel), lines: [] }); continue; }
   blocks[blocks.length - 1]?.lines.push(line);
 }
-if (blocks.length === 0) throw new Error('Keine Abschnittsueberschrift ("Team Series:" / "Solo Series:") gefunden');
+if (blocks.length === 0) {
+  throw new Error('Keine Abschnittsueberschrift gefunden (z. B. "Solo Series:" oder "Teamwertung Endstand:")');
+}
 
-const previous = JSON.parse(fs.readFileSync(OUT, 'utf8'));
-const today = new Date().toISOString().slice(0, 10);
-const next = { ...previous };
+const file = readStandings();
+const season = pickSeason(file, arg('season'));
+const today = heute();
 const summary = [];
+const champions = { ...(season.champions ?? {}) };
 
-for (const { spec, lines } of blocks) {
-  const entries = parseSection(lines);
-  if (entries.length === 0) throw new Error(`Abschnitt "${spec.label}" enthaelt keine Fahrer`);
-  markChronos(previous, entries);
-  next[spec.key] = entries;
-  next.sources = {
-    ...next.sources,
+for (const { spec, titel, final, lines } of blocks) {
+  const entries = parseSection(lines, spec.kind);
+  if (entries.length === 0) throw new Error(`Abschnitt "${titel}" enthaelt keine Zeilen`);
+  if (spec.kind === 'team') markChronosTeams(entries); else markChronos(season, entries);
+
+  season[spec.key] = entries;
+  season.sources = {
+    ...season.sources,
     [spec.key]: {
       name: 'ASPL Liga-Tabelle',
       via: 'data/standings_paste.txt',
       importedAt: today,
-      rounds: ROUNDS,
       entries: entries.length,
+      final,
+      ...(entries[0]?.results ? { rounds: ROUNDS } : {}),
     },
   };
-  summary.push(`${spec.label}: ${entries.length} Fahrer`);
+
+  // Bei einem Endstand steht der Meister fest — der Erste der Tabelle.
+  if (final) {
+    const erster = entries[0];
+    const serie = spec.key === 'soloStandings' ? 'solo' : 'team';
+    champions[serie] = {
+      kind: spec.kind,
+      name: spec.kind === 'team' ? erster.team : erster.name,
+      points: erster.points,
+      ...(spec.kind === 'driver' && erster.team ? { team: erster.team } : {}),
+    };
+  }
+  summary.push(`${titel}: ${entries.length}${final ? ' (final)' : ''}`);
 }
 
-next._comment =
-  'Meisterschaftstabellen ASPL Season 2. Fahrerwertungen (driverStandings = Team Series, soloStandings = Solo Series) '
-  + 'kommen ueber scripts/import_standings_paste.mjs aus data/standings_paste.txt, die Team-Meisterschaft ueber '
-  + 'scripts/import_aspl_standings.mjs von asplracing.com — siehe "sources", die Staende koennen sich unterscheiden. '
-  + 'results = Rundenspalten R1..R8 der Liga-Plattform (null = kein Ergebnis); diese Nummerierung deckt sich NICHT mit '
-  + 'den Runden in seasons.json. mark = Markierung der Plattform (z. B. "†"), unveraendert uebernommen. '
-  + 'teams/reservePool/pointsSystem/principals werden hier von Hand gepflegt.';
-next.lastUpdated = `Stand ${today.split('-').reverse().join('.')}`;
-next.note = 'Fahrerwertungen aus der Liga-Tabelle übernommen (inkl. R8). Die Team-Meisterschaft stammt weiterhin von asplracing.com und ist dort noch ohne R8.';
-delete next.source;
+season.champions = Object.keys(champions).length > 0 ? champions : null;
+season.lastUpdated = `Stand ${alsDatum(today)}`;
+if (season.status === 'final') {
+  season.lastUpdated = 'Endstand';
+}
+writeStandings(file);
 
-fs.writeFileSync(OUT, `${JSON.stringify(next, null, 2)}\n`);
-console.log(`[standings] ${summary.join(' · ')}`);
-console.log(`[standings] geschrieben nach ${path.relative(process.cwd(), OUT)}`);
+console.log(`[standings] Saison ${season.season} · ${summary.join(' · ')}`);
+console.log(`[standings] geschrieben nach ${path.relative(process.cwd(), '/home/user/chronos-setups/data/config/standings.json')}`);

@@ -39,11 +39,12 @@ export async function getSetupsList(car) {
   return { car, tracks: tracks.map((t) => ({ ...t, hasSetup: avail.includes(t.id) })) };
 }
 
-export async function getSeason(car) {
+export async function getSeason(car, seasonId) {
   const [data, tracks, index] = await Promise.all([cfg('seasons'), getTracks(), setupIndex()]);
   const seasons = data.seasons || [];
-  const season = seasons.find((s) => s.id === data.currentSeason) || seasons[0];
-  if (!season) return { season: null, series: [] };
+  const gewaehlt = seasonId != null ? seasons.find((s) => s.id === Number(seasonId)) : null;
+  const season = gewaehlt || seasons.find((s) => s.id === data.currentSeason) || seasons[0];
+  if (!season) return { season: null, seasons: [], series: [] };
   const byId = Object.fromEntries(tracks.map((t) => [t.id, t]));
   const avail = Object.keys(index[car] || {});
   const series = (season.series || []).map((s) => ({
@@ -60,7 +61,12 @@ export async function getSeason(car) {
       hasSetup: avail.includes(r.track),
     })),
   }));
-  return { season: { id: season.id, name: season.name }, series };
+  return {
+    season: { id: season.id, name: season.name, status: season.status ?? null, note: season.note ?? null },
+    // Fuer den Saison-Umschalter: alle Saisons, nicht nur die gewaehlte.
+    seasons: seasons.map((s) => ({ id: s.id, name: s.name, status: s.status ?? null })),
+    series,
+  };
 }
 
 /** Liste der verfügbaren Setup-Varianten (für den Picker in SetupDetail). */
@@ -108,8 +114,17 @@ export async function getSetup(car, track, { airTemp, trackTemp, slider, file } 
   };
 }
 
-export async function getStandings() {
-  return cfg('standings');
+// Die Wertung liegt je Saison vor. Ohne seasonId kommt die aktuelle Saison.
+export async function getStandings(seasonId) {
+  const file = await cfg('standings');
+  const seasons = file.seasons ?? [];
+  const gewaehlt = seasonId != null ? seasons.find((s) => s.season === Number(seasonId)) : null;
+  const season = gewaehlt || seasons.find((s) => s.season === file.currentSeason) || seasons[0] || null;
+  return {
+    ...season,
+    seasons: seasons.map((s) => ({ season: s.season, name: s.name, status: s.status ?? null })),
+    currentSeason: file.currentSeason,
+  };
 }
 
 export const getHealth = async () => ({ ok: true, mode: 'static' });

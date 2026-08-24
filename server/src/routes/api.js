@@ -133,22 +133,26 @@ router.get('/season/:car', (req, res) => {
 });
 
 // --- Championship-Wertung ------------------------------------------------
+// Die Wertung liegt je Saison vor: /api/standings liefert die aktuelle Saison,
+// /api/standings?season=3 eine bestimmte.
 router.get('/standings', (req, res) => {
-  const s = getStore().standings ?? {};
+  const file = getStore().standings ?? {};
+  const seasons = file.seasons ?? [];
+  const wunsch = req.query.season != null ? Number(req.query.season) : null;
+  const season =
+    (wunsch != null ? seasons.find((s) => s.season === wunsch) : null) ??
+    seasons.find((s) => s.season === file.currentSeason) ??
+    seasons[0];
+
+  if (!season) return res.json({ seasons: [], currentSeason: file.currentSeason ?? null });
+  if (wunsch != null && season.season !== wunsch) {
+    return res.status(404).json({ error: `Saison ${wunsch} gibt es nicht` });
+  }
+
   res.json({
-    season: s.season ?? null,
-    seriesName: s.seriesName ?? null,
-    status: s.status ?? 'pending',
-    lastUpdated: s.lastUpdated ?? null,
-    principals: s.principals ?? [],
-    pointsSystem: s.pointsSystem ?? null,
-    teams: s.teams ?? [],
-    reservePool: s.reservePool ?? [],
-    soloStandings: s.soloStandings ?? [],
-    driverStandings: s.driverStandings ?? [],
-    teamStandings: s.teamStandings ?? [],
-    source: s.source ?? null,
-    note: s.note ?? null,
+    ...season,
+    seasons: seasons.map((s) => ({ season: s.season, name: s.name ?? null, status: s.status ?? null })),
+    currentSeason: file.currentSeason ?? null,
   });
 });
 

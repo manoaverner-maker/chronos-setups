@@ -375,3 +375,67 @@ Michel Friedli
  Follow
 GT3  5 Ferrari 296 GT3
 14	—	32	DNS	DNS	—	DNS	DNS	2
+
+
+Solo Series Endstand:
+
+Platz	Name	Punkte
+1	E. Sprott	164
+2	Y. Guillaume	110
+3	L. Petrov	89
+4	C. Wilmott	87
+5	L. Nierhaus	84
+6	N. Pfeiffer	79
+7	A. Fox	60
+8	L. Knips	52
+9	F. Hübner	40
+10	El. Schneider	37
+11	T. Hoffmann	29
+12	M. Verner	26
+13	M. Liebisch	26
+14	T. Engemann	26
+15	M. Drißen	25
+16	M. Ackermann	25
+17	K. Böhm	24
+18	M. Dohnt	24
+19	A. Friedl	24
+20	S. Röber	18
+21	V. Böhm	17
+22	L. Pelaj	16
+23	L. Moser	11
+24	D. Suess	11
+25	T. Lüthke	8
+26	Ferrix	8
+27	C. Eilmes	7
+28	L. Verner	6
+29	M. Corvin	5
+30	D. Dridiger	3
+31	J. Krauser	3
+32	L. Fradl	3
+33	C. Hölper	3
+34	M. Maurer	3
+35	Klerx	3
+36	M. Friedli	2
+37	E. Uchuev	2
+38	C. Deller	2
+39	A. Chillo	2
+40	Axel Foulie	2
+
+Teamwertung Endstand:
+
+Platz	Team	Punkte
+1	Golden Dynasty	266
+2	Chronos Motorsport	130
+3	Toxic Racing	125
+4	Racing Team Langsam	74
+5	LFA Kult Competition	61
+6	Silver Dynasty	61
+7	Nussy Motorsport	58
+8	Carbon Dynasty	23
+9	Toxic Psychos	23
+10	LuMo Racing	15
+11	Development Langsam	11
+12	Toxic Academy	10
+13	Chronos Academy	9
+14	Cosmos Motorsport	8
+15	Cosmos Future	2

@@ -1,5 +1,5 @@
 {
-  "_comment": "ASPL Rennkalender. Solo- und Team-Series fahren dieselben Strecken, aber an anderen Tagen/Zeiten. Daten aus den offiziellen Saison-2-Rennkalendern. 'track' verweist auf eine id in tracks.json. (Solo-Series auf Wunsch entfernt - nur Team-Series.)",
+  "_comment": "ASPL Rennkalender, eine Saison je Eintrag. status: final = gefahren · geplant = Kalender steht noch aus. \"track\" verweist auf eine id in tracks.json. currentSeason steuert, welche Saison die App zuerst zeigt — bei Saison 3 umstellen, sobald der Kalender eingetragen ist.",
   "currentSeason": 2,
   "seasons": [
     {
@@ -61,6 +61,29 @@
               "date": "2026-08-15"
             }
           ]
+        }
+      ],
+      "status": "final"
+    },
+    {
+      "id": 3,
+      "name": "Saison 3",
+      "status": "geplant",
+      "note": "Rennkalender folgt — sobald die Liga ihn veröffentlicht, kommen die Runden hier rein.",
+      "series": [
+        {
+          "id": "team",
+          "name": "Team Series",
+          "day": null,
+          "schedule": null,
+          "rounds": []
+        },
+        {
+          "id": "solo",
+          "name": "Solo Series",
+          "day": null,
+          "schedule": null,
+          "rounds": []
         }
       ]
     }

@@ -21,6 +21,7 @@ function heute() {
 export default function Calendar() {
   const { car } = useParams();
   const [seriesId, setSeriesId] = useState('team');
+  const [seasonId, setSeasonId] = useState(null);
   const [trackQuery, setTrackQuery] = useState('');
 
   // Tageswechsel mitbekommen — auch wenn die App tagelang im Hintergrund liegt.
@@ -36,7 +37,10 @@ export default function Calendar() {
   const carInfo = cars?.find((c) => c.id === car);
   useCarAccent(carInfo?.accentColor);
 
-  const { data, isLoading, error } = useQuery({ queryKey: ['season', car], queryFn: () => getSeason(car) });
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['season', car, seasonId],
+    queryFn: () => getSeason(car, seasonId),
+  });
   const { data: setupList } = useQuery({ queryKey: ['setups', car], queryFn: () => getSetupsList(car) });
 
   const allTracks = useMemo(
@@ -54,6 +58,7 @@ export default function Calendar() {
     );
   }, [allTracks, trackQuery]);
 
+  const seasons = data?.seasons ?? [];
   const series = data?.series ?? [];
   const current = series.find((s) => s.id === seriesId) ?? series[0];
   const rounds = current?.rounds ?? [];
@@ -75,9 +80,32 @@ export default function Calendar() {
           <p className="text-muted mt-2">{carInfo?.class} · {carInfo?.manufacturer} {carInfo?.year}</p>
         </div>
         <div className="text-sm text-muted">
-          <span className="text-good">{availableCount}</span> von {rounds.length} mit Setup
+          {rounds.length > 0
+            ? <><span className="text-good">{availableCount}</span> von {rounds.length} mit Setup</>
+            : 'noch keine Runden'}
         </div>
       </div>
+
+      {/* Saison-Umschalter — Saison 3 steht schon da, der Kalender kommt noch. */}
+      {seasons.length > 1 && (
+        <div className="flex flex-wrap items-center gap-2 mb-5">
+          {seasons.map((s) => {
+            const selected = s.id === data?.season?.id;
+            return (
+              <button
+                key={s.id}
+                onClick={() => setSeasonId(s.id)}
+                aria-pressed={selected}
+                className={`glass rounded-xl px-4 py-1.5 text-sm font-medium transition-colors ${selected ? 'text-ink' : 'text-muted hover:text-ink'}`}
+                style={selected ? { background: 'color-mix(in srgb, var(--car-accent) 18%, transparent)' } : undefined}
+              >
+                {s.name}
+                {s.status === 'geplant' && <span className="text-muted font-normal"> · geplant</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {current && (
         <div className="flex flex-wrap items-center gap-3 mb-6">
@@ -96,7 +124,10 @@ export default function Calendar() {
             </div>
           )}
           <p className="text-xs text-muted">
-            <span className="text-car">{current.name}</span> · {current.day}s · Training {current.schedule?.training} · Quali {current.schedule?.quali} · Start {current.schedule?.race}
+            <span className="text-car">{current.name}</span>
+            {current.schedule
+              ? <> · {current.day}s · Training {current.schedule.training} · Quali {current.schedule.quali} · Start {current.schedule.race}</>
+              : <> · Zeiten stehen noch nicht fest</>}
           </p>
         </div>
       )}
@@ -116,7 +147,15 @@ export default function Calendar() {
             id: 'saison',
             label: 'Saison',
             hint: `${rounds.length} Rennen`,
-            content: (
+            content: rounds.length === 0 ? (
+              <div className="glass rounded-2xl p-6">
+                <h2 className="display text-lg font-semibold">Kalender folgt</h2>
+                <p className="text-sm text-muted mt-2">
+                  {data?.season?.note ?? 'Für diese Saison stehen die Rennen noch nicht fest.'}
+                </p>
+                <p className="text-sm text-muted mt-2">Setups gibt es trotzdem — im Reiter „Alle Strecken".</p>
+              </div>
+            ) : (
               <motion.div
                 variants={stagger}
                 initial="initial"

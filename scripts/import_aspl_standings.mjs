@@ -5,6 +5,7 @@
 //   node scripts/import_aspl_standings.mjs                 # alle drei Tabellen
 //   node scripts/import_aspl_standings.mjs --tables=teams  # nur die Team-Meisterschaft
 //   node scripts/import_aspl_standings.mjs --html=seite.html   # aus lokaler Kopie
+//   node scripts/import_aspl_standings.mjs --season=3      # in eine andere Saison schreiben
 //   git add -A && git commit -m "Tabellen aktualisiert" && git push
 //
 // Die Seite liefert drei Tabellen: Solo Series (Fahrer), Teams Series (Fahrer)
@@ -16,10 +17,10 @@
 // --tables=teams nur die Team-Meisterschaft nachziehen.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {
+  readStandings, pickSeason, writeStandings, heute, alsDatum, markChronos, markChronosTeams,
+} from './lib/standingsFile.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUT = path.resolve(__dirname, '../data/config/standings.json');
 const SOURCE_URL = 'https://asplracing.com/';
 
 // Ueberschrift auf der Seite -> Schluessel in standings.json. 'id' ist der Name
@@ -96,25 +97,6 @@ function toEntries(rows, kind) {
   });
 }
 
-// Chronos-Zeilen markieren, damit die App die eigenen Leute hervorheben kann.
-// Nur exakte Treffer aus dem Kader — geraten wird nicht (auf der Seite stehen
-// z. B. "Er. Schneider" und "El. Schneider", die sich nicht sicher zuordnen lassen).
-function markChronos(previous, data) {
-  const roster = new Map();
-  for (const team of previous.teams ?? []) {
-    for (const d of team.drivers ?? []) if (d.name) roster.set(d.name, team.name);
-  }
-  for (const key of ['soloStandings', 'driverStandings']) {
-    for (const row of data[key] ?? []) {
-      const team = roster.get(row.name);
-      if (team) { row.team = team; row.chronos = true; }
-    }
-  }
-  for (const row of data.teamStandings ?? []) {
-    if (/^chronos/i.test(row.team)) row.chronos = true;
-  }
-}
-
 const html = await fetchHtml(arg('html'));
 const tables = parseTables(resultsSection(html));
 const data = {};
@@ -124,29 +106,41 @@ for (const spec of TABLES.filter((t) => wanted.includes(t.id))) {
   const hit = tables.find((t) => spec.match.test(t.heading));
   if (!hit || hit.rows.length === 0) throw new Error(`Tabelle "${spec.label}" nicht gefunden — Seitenaufbau geaendert?`);
   data[spec.key] = toEntries(hit.rows, spec.kind);
-  summary.push(`${spec.label}: ${data[spec.key].length} Zeilen`);
 }
 
-const previous = JSON.parse(fs.readFileSync(OUT, 'utf8'));
-markChronos(previous, data);
+const file = readStandings();
+const season = pickSeason(file, arg('season'));
+const today = heute();
 
-const today = new Date().toISOString().slice(0, 10);
-const next = { ...previous, ...data };
-delete next.drivers;
-delete next.source;
 for (const spec of TABLES.filter((t) => wanted.includes(t.id))) {
-  next.sources = {
-    ...next.sources,
+  // Einen eingetragenen Endstand nicht versehentlich mit einem aelteren Seitenstand
+  // ueberschreiben — die Seite hinkt der Liga-Plattform regelmaessig hinterher.
+  if (season.sources?.[spec.key]?.final && !args.includes('--force')) {
+    console.log(`[standings] "${spec.label}" ist als Endstand hinterlegt — uebersprungen (--force ueberschreibt).`);
+    continue;
+  }
+  const entries = data[spec.key];
+  if (spec.kind === 'team') markChronosTeams(entries); else markChronos(season, entries);
+  season[spec.key] = entries;
+  summary.push(`${spec.label}: ${entries.length} Zeilen`);
+  season.sources = {
+    ...season.sources,
     [spec.key]: {
       name: 'asplracing.com',
       url: `${SOURCE_URL}#results`,
       importedAt: today,
-      entries: data[spec.key].length,
+      entries: entries.length,
+      final: false,
     },
   };
 }
-next.lastUpdated = `Stand ${today.split('-').reverse().join('.')}`;
+// Bei einer abgeschlossenen Saison bleibt "Endstand" stehen.
+if (season.status !== 'final') season.lastUpdated = `Stand ${alsDatum(today)}`;
 
-fs.writeFileSync(OUT, `${JSON.stringify(next, null, 2)}\n`);
-console.log(`[standings] ${summary.join(' · ')}`);
-console.log(`[standings] geschrieben nach ${path.relative(process.cwd(), OUT)}`);
+if (summary.length === 0) {
+  console.log('[standings] Nichts geschrieben.');
+  process.exit(0);
+}
+writeStandings(file);
+console.log(`[standings] Saison ${season.season} · ${summary.join(' · ')}`);
+console.log('[standings] geschrieben nach data/config/standings.json');
