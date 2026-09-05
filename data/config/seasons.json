@@ -1,6 +1,6 @@
 {
   "_comment": "ASPL Rennkalender, eine Saison je Eintrag. status: final = gefahren · geplant = Kalender steht noch aus. \"track\" verweist auf eine id in tracks.json. currentSeason steuert, welche Saison die App zuerst zeigt — bei Saison 3 umstellen, sobald der Kalender eingetragen ist.",
-  "currentSeason": 2,
+  "currentSeason": 3,
   "seasons": [
     {
       "id": 2,
@@ -68,22 +68,112 @@
     {
       "id": 3,
       "name": "Saison 3",
-      "status": "geplant",
-      "note": "Rennkalender folgt — sobald die Liga ihn veröffentlicht, kommen die Runden hier rein.",
+      "status": "live",
+      "note": "Rennkalender der Liga vom 05.09.2026. Die angegebene Zeit ist der Quali-Start, Training beginnt 60 Minuten vorher.",
       "series": [
         {
           "id": "team",
           "name": "Team Series",
-          "day": null,
-          "schedule": null,
-          "rounds": []
+          "day": "Samstag",
+          "schedule": {
+            "training": "19:00",
+            "quali": "20:00",
+            "race": "20:20"
+          },
+          "rounds": [
+            {
+              "round": 1,
+              "track": "zolder",
+              "date": "2026-09-19"
+            },
+            {
+              "round": 2,
+              "track": "oulton_park",
+              "date": "2026-09-26"
+            },
+            {
+              "round": 3,
+              "track": "zandvoort",
+              "date": "2026-10-03"
+            },
+            {
+              "round": 4,
+              "track": "silverstone",
+              "date": "2026-10-10"
+            },
+            {
+              "round": 5,
+              "track": "spa",
+              "date": "2026-10-17"
+            },
+            {
+              "round": 6,
+              "track": "hungaroring",
+              "date": "2026-10-24"
+            },
+            {
+              "round": 7,
+              "track": "misano",
+              "date": "2026-10-31"
+            },
+            {
+              "round": 8,
+              "track": "cota",
+              "date": "2026-11-07"
+            }
+          ]
         },
         {
           "id": "solo",
           "name": "Solo Series",
-          "day": null,
-          "schedule": null,
-          "rounds": []
+          "day": "Mittwoch",
+          "schedule": {
+            "training": "19:30",
+            "quali": "20:30",
+            "race": "20:50"
+          },
+          "rounds": [
+            {
+              "round": 1,
+              "track": "zolder",
+              "date": "2026-09-16"
+            },
+            {
+              "round": 2,
+              "track": "oulton_park",
+              "date": "2026-09-23"
+            },
+            {
+              "round": 3,
+              "track": "zandvoort",
+              "date": "2026-09-30"
+            },
+            {
+              "round": 4,
+              "track": "silverstone",
+              "date": "2026-10-07"
+            },
+            {
+              "round": 5,
+              "track": "spa",
+              "date": "2026-10-14"
+            },
+            {
+              "round": 6,
+              "track": "hungaroring",
+              "date": "2026-10-21"
+            },
+            {
+              "round": 7,
+              "track": "misano",
+              "date": "2026-10-28"
+            },
+            {
+              "round": 8,
+              "track": "cota",
+              "date": "2026-11-04"
+            }
+          ]
         }
       ]
     }

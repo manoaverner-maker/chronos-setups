@@ -67,7 +67,9 @@ aspl-racing-app/
 - **Andere Saison:** beide Importer nehmen `--season=3`; ohne Angabe schreiben sie in `currentSeason`.
 - **Neue Saison:** Eintrag in `data/config/seasons.json` (Kalender) **und** in
   `data/config/standings.json` (Wertung) anlegen — beide führen eine Liste `seasons`.
-  `status`: `final` · `live` · `geplant`. Sobald Saison 3 Runden hat, `currentSeason` hochsetzen.
+  `status`: `final` · `live` · `geplant`. Beide Dateien haben ein eigenes `currentSeason` — der
+  Kalender steht auf der laufenden Saison, die Wertung bleibt auf der letzten mit Ergebnissen,
+  bis die neue Saison eigene Tabellen hat.
 - Kader, Punktesystem und Teamleitung stehen in keiner Quelle und werden je Saison von Hand
   gepflegt; die Importer fassen sie nicht an.
 
@@ -77,7 +79,9 @@ aspl-racing-app/
 - ✅ Frontend (3 Features, Design, responsiv, Animationen)
 - ✅ Setups: Ferrari 296 GT3 — Imola, Kyalami, Spa, Valencia
 - ✅ Saison 2 abgeschlossen: Solo-Champion E. Sprott, Teammeister Golden Dynasty
-- ⏳ Saison 3 angelegt — Rennkalender fehlt noch
+- ✅ Saison 3: Rennkalender für Team- und Solo-Series eingetragen (8 Rennen, ab 16.09.2026),
+  alle acht Strecken haben für jedes Auto Setups
+- ⏳ Saison 3: Wertung folgt nach dem ersten Rennen
 - ⏳ Offen: Ferrari NBR 24h + NBR GP, Mercedes-AMG, Aston Martin, Referenzzeiten
 
 ## Designprinzipien (aus dem Prompt)
