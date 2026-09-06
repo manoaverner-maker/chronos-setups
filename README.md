@@ -56,13 +56,32 @@ aspl-racing-app/
 - **Neues Setup:** JSON nach `data/setups/<auto>/<strecke>/baseline_<lufttemp>c.json` legen
   (Schema: siehe `imola/baseline_21c.json`). Erscheint dank Filewatcher **ohne Neustart**.
 - **Referenzzeiten:** in `data/config/reference_times.json` eintragen (`null` = „—").
-- **Was noch fehlt:** siehe [BENOETIGTE_DATEN.md](BENOETIGTE_DATEN.md).
+- **Meisterschaftstabellen:** Tabelle kopieren, in `data/standings_paste.txt` einfügen und
+  `node scripts/import_standings_paste.mjs` laufen lassen. Abschnittszeilen steuern das Ziel:
+  `Solo Series:` · `Team Series:` · `Teamwertung:` — steht **Endstand** im Titel, gilt die Tabelle
+  als final und der Erste wird als Champion hinterlegt (die App blendet ihn dann animiert ein).
+  Erkannt werden die Plattform-Ansicht mit Rundenspalten und schlichte `Platz⇥Name⇥Punkte`-Zeilen.
+- **Team-Meisterschaft von der Website:** `node scripts/import_aspl_standings.mjs --tables=teams`
+  liest sie aus dem Ergebnis-Abschnitt von `asplracing.com`. Ein bereits hinterlegter Endstand wird
+  dabei nicht überschrieben (`--force`, wenn doch).
+- **Andere Saison:** beide Importer nehmen `--season=3`; ohne Angabe schreiben sie in `currentSeason`.
+- **Neue Saison:** Eintrag in `data/config/seasons.json` (Kalender) **und** in
+  `data/config/standings.json` (Wertung) anlegen — beide führen eine Liste `seasons`.
+  `status`: `final` · `live` · `geplant`. Beide Dateien haben ein eigenes `currentSeason` — der
+  Kalender steht auf der laufenden Saison, die Wertung bleibt auf der letzten mit Ergebnissen,
+  bis die neue Saison eigene Tabellen hat.
+- Kader, Punktesystem und Teamleitung stehen in keiner Quelle und werden je Saison von Hand
+  gepflegt; die Importer fassen sie nicht an.
 
 ## Status
 
 - ✅ Backend (Parser, Druck-Engine, Slider-Engine, API) — getestet
 - ✅ Frontend (3 Features, Design, responsiv, Animationen)
 - ✅ Setups: Ferrari 296 GT3 — Imola, Kyalami, Spa, Valencia
+- ✅ Saison 2 abgeschlossen: Solo-Champion E. Sprott, Teammeister Golden Dynasty
+- ✅ Saison 3: Rennkalender für Team- und Solo-Series eingetragen (8 Rennen, ab 16.09.2026),
+  alle acht Strecken haben für jedes Auto Setups
+- ⏳ Saison 3: Wertung folgt nach dem ersten Rennen
 - ⏳ Offen: Ferrari NBR 24h + NBR GP, Mercedes-AMG, Aston Martin, Referenzzeiten
 
 ## Designprinzipien (aus dem Prompt)
