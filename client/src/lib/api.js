@@ -39,6 +39,14 @@ export async function getSetupsList(car) {
   return { car, tracks: tracks.map((t) => ({ ...t, hasSetup: avail.includes(t.id) })) };
 }
 
+/** Name der laufenden Saison (fuer die Fusszeile) — ohne Bezug zu einem Auto. */
+export async function getCurrentSeasonName() {
+  const data = await cfg('seasons');
+  const seasons = data.seasons || [];
+  const season = seasons.find((s) => s.id === data.currentSeason) || seasons[seasons.length - 1];
+  return season?.name ?? null;
+}
+
 export async function getSeason(car, seasonId) {
   const [data, tracks, index] = await Promise.all([cfg('seasons'), getTracks(), setupIndex()]);
   const seasons = data.seasons || [];
