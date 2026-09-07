@@ -18,9 +18,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // 'prompt': neue Version wird nicht still uebernommen, sondern per
-      // "Aktualisieren"-Banner angeboten (siehe components/UpdateToast.jsx).
-      registerType: 'prompt',
+      // 'autoUpdate': eine neue Fassung wird uebernommen, sobald sie da ist.
+      // Vorher stand hier 'prompt' — dann wartet der neue Service Worker, bis der
+      // Nutzer den "Aktualisieren"-Knopf drueckt ODER alle Fenster der App
+      // geschlossen werden. Wer die PWA nur in den Hintergrund schiebt, bekommt
+      // beides nie zu sehen und haengt beliebig lange auf der alten Fassung fest.
+      registerType: 'autoUpdate',
       includeAssets: ['apple-touch-icon.png'],
       manifest: {
         name: 'Chronos Motorsport Racing Team — Setups',
@@ -41,11 +44,25 @@ export default defineConfig({
       workbox: {
         // Pfade base-unabhaengig pruefen (lokal /data/…, auf Pages /chronos-setups/data/…).
         navigateFallbackDenylist: [/\/data\//, /\/images\//],
+        // Alte Praezisions-Caches beim Wechsel wegraeumen.
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
         runtimeCaching: [
           {
+            // Saemtliche Inhalte der App (Tabellen, Kalender, Setups) kommen aus
+            // /data. Vorher stand hier StaleWhileRevalidate: das liefert erst die
+            // alte Fassung aus dem Cache und holt die neue nur im Hintergrund —
+            // neue Tabellen wurden also fruehestens beim uebernaechsten Start
+            // sichtbar. NetworkFirst zeigt sie sofort und faellt nur ohne Netz
+            // auf den Cache zurueck, die App bleibt also offline-faehig.
             urlPattern: ({ url }) => url.pathname.includes('/data/'),
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'cmrt-data', expiration: { maxEntries: 200, maxAgeSeconds: 86400 } },
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'cmrt-data',
+              networkTimeoutSeconds: 4,
+              expiration: { maxEntries: 200, maxAgeSeconds: 604800 },
+            },
           },
           {
             urlPattern: ({ url }) => url.pathname.includes('/images/'),

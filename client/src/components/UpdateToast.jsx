@@ -1,9 +1,11 @@
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
-// Update-Hinweis der PWA: Statt die neue Version beim naechsten Start stillschweigend
-// zu uebernehmen, erscheint ein Banner mit "Aktualisieren"-Knopf — die App muss nicht
-// geschlossen/neu gestartet werden. Geprueft wird sofort beim Start, bei jeder
-// Rueckkehr in den Vordergrund und alle 15 Minuten.
+// Update-Logik der PWA. Die App laeuft auf 'autoUpdate' (siehe vite.config.js): eine
+// neue Fassung wird uebernommen, sobald sie da ist — ohne dass jemand einen Knopf
+// druecken muss. Entscheidend ist deshalb, dass ueberhaupt nach Updates gesucht wird:
+// sofort beim Start, bei jeder Rueckkehr in den Vordergrund und alle 15 Minuten.
+// Das Banner bleibt als Rueckfallebene, falls der Browser die neue Fassung doch
+// warten laesst (dann steht sie bereit und ein Tippen genuegt).
 const CHECK_INTERVAL_MS = 15 * 60 * 1000;
 
 export default function UpdateToast() {
