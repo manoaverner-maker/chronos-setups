@@ -18,12 +18,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      // 'autoUpdate': eine neue Fassung wird uebernommen, sobald sie da ist.
-      // Vorher stand hier 'prompt' — dann wartet der neue Service Worker, bis der
-      // Nutzer den "Aktualisieren"-Knopf drueckt ODER alle Fenster der App
-      // geschlossen werden. Wer die PWA nur in den Hintergrund schiebt, bekommt
-      // beides nie zu sehen und haengt beliebig lange auf der alten Fassung fest.
-      registerType: 'autoUpdate',
+      // 'prompt': die neue Fassung wird NICHT von selbst uebernommen. 'autoUpdate'
+      // laedt die Seite dafuer ungefragt neu — mitten im Einstellen von Druecken ist
+      // das aergerlich. Stattdessen meldet sich UpdateToast.jsx mit einem Banner und
+      // laedt erst auf Tippen neu. Damit das Banner zuverlaessig erscheint (genau
+      // daran hing es frueher), sucht es auf drei Wegen nach einer neuen Fassung.
+      registerType: 'prompt',
       includeAssets: ['apple-touch-icon.png'],
       manifest: {
         name: 'Chronos Motorsport Racing Team — Setups',
@@ -44,10 +44,10 @@ export default defineConfig({
       workbox: {
         // Pfade base-unabhaengig pruefen (lokal /data/…, auf Pages /chronos-setups/data/…).
         navigateFallbackDenylist: [/\/data\//, /\/images\//],
-        // Alte Praezisions-Caches beim Wechsel wegraeumen.
+        // Alte Caches beim Wechsel wegraeumen. skipWaiting/clientsClaim bewusst NICHT:
+        // die neue Fassung soll warten, bis der Nutzer das Banner antippt — sonst
+        // uebernimmt sie mitten in der laufenden Seite.
         cleanupOutdatedCaches: true,
-        clientsClaim: true,
-        skipWaiting: true,
         runtimeCaching: [
           {
             // Saemtliche Inhalte der App (Tabellen, Kalender, Setups) kommen aus
