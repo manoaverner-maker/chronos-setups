@@ -16,6 +16,33 @@ import { roundTo } from './setupUtils.js';
 
 const WHEELS = ['fl', 'fr', 'rl', 'rr'];
 
+/**
+ * Bremsluftkanal-Empfehlung: pro `degPerClick` Grad gewichteter Temperaturabweichung
+ * 1 Klick (waermer -> oeffnen, kaelter -> schliessen), auf den Spielbereich geklemmt.
+ * Die Kanaele steuern seit ACC v1.8 fast nur die Bremstemperatur — der Reifendruck
+ * wird deshalb bewusst NICHT ueber die Kanaele korrigiert.
+ */
+export function computeBrakeDucts({ baseline, model, weightedDelta }) {
+  const cfg = model?.brakeDucts;
+  const ae = baseline?.advancedSetup?.aeroBalance;
+  if (!cfg || typeof ae?.brakeDuctFront !== 'number' || typeof ae?.brakeDuctRear !== 'number') return null;
+  const [lo, hi] = cfg.range ?? [0, 6];
+  // Math.round rundet -0.5 nach oben; symmetrisch runden, damit +5 und -5 Grad gleich behandelt werden.
+  const raw = weightedDelta / (cfg.degPerClick ?? 10);
+  const clicks = Math.sign(raw) * Math.round(Math.abs(raw));
+  const rec = (b) => Math.min(hi, Math.max(lo, b + clicks));
+  const st = baseline?.basicSetup?.strategy ?? {};
+  const padF = st.frontBrakePad === 2 ? 2 : 1;
+  const padR = st.rearBrakePad === 2 ? 2 : 1;
+  const win = cfg.brakeTempWindows ?? {};
+  return {
+    clicks,
+    front: { baseline: ae.brakeDuctFront, recommended: rec(ae.brakeDuctFront), pad: padF, tempWindow: win[`pad${padF}`]?.front ?? null },
+    rear: { baseline: ae.brakeDuctRear, recommended: rec(ae.brakeDuctRear), pad: padR, tempWindow: win[`pad${padR}`]?.rear ?? null },
+    degPerClick: cfg.degPerClick ?? 10,
+  };
+}
+
 export function classForCar(carId, model) {
   return model?.carClassMap?.[carId] ?? null;
 }
@@ -51,10 +78,13 @@ export function computePressures({ baseline, model, carId, airTemp, trackTemp })
   const meanBase = baseVals.reduce((a, b) => a + b, 0) / baseVals.length;
   const buildup = params.targetHotPressure - meanBase; // geschaetzter Druckaufbau
 
+  // Im Spiel einstellbarer Kaltdruck (Klick-Basis wie im Import: dry 20.3, wet 24.0; max 35.0).
+  const [pMin, pMax] = compound === 'wet' ? [24.0, 35.0] : [20.3, 35.0];
+
   const wheels = {};
   for (const w of WHEELS) {
     const base = cold[w];
-    const recommendedCold = roundTo(base - k * weightedDelta, 1);
+    const recommendedCold = roundTo(Math.min(pMax, Math.max(pMin, base - k * weightedDelta)), 1);
     // Mit empfohlenem Kaltdruck landet der Heissdruck wieder bei base + buildup (= Referenzniveau).
     const expectedHot = roundTo(base + buildup, 1);
     // Ohne Anpassung (gleicher Kaltdruck wie Baseline) driftet der Heissdruck mit der Temperatur.
@@ -70,7 +100,12 @@ export function computePressures({ baseline, model, carId, airTemp, trackTemp })
 
   return {
     available: true,
+    compound,
     carClass: cls,
+    compoundWindows: Object.fromEntries(
+      Object.entries(base.compounds ?? {}).map(([c, v]) => [c, { target: v.targetHotPressure, window: v.hotPressureWindow }]),
+    ),
+    brakeDucts: computeBrakeDucts({ baseline, model, weightedDelta }),
     targetHotPressure: params.targetHotPressure,
     hotPressureWindow: params.hotPressureWindow,
     psiPerDegC: k,

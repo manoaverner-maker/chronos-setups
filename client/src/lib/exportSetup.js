@@ -8,6 +8,15 @@ export function buildSetupExport(data) {
   const recommendedColdPressures = pressures?.available
     ? Object.fromEntries(Object.entries(pressures.wheels).map(([k, v]) => [k, v.recommendedCold]))
     : null;
+  const ducts = pressures?.available ? pressures.brakeDucts : null;
+  const recommendedBrakeDucts = ducts ? { front: ducts.front.recommended, rear: ducts.rear.recommended } : null;
+  // Datenblatt mit allen Empfehlungen: Charakter-Slider + Kaltdruck + Bremsluft.
+  const setup = JSON.parse(JSON.stringify(adjustment?.adjusted ?? baseline));
+  if (recommendedColdPressures && setup.basicSetup?.tyres) setup.basicSetup.tyres.coldPressure = recommendedColdPressures;
+  if (recommendedBrakeDucts && setup.advancedSetup?.aeroBalance) {
+    setup.advancedSetup.aeroBalance.brakeDuctFront = recommendedBrakeDucts.front;
+    setup.advancedSetup.aeroBalance.brakeDuctRear = recommendedBrakeDucts.rear;
+  }
   return {
     _meta: {
       source: 'ASPL Racing — ACC Setup & Referenz',
@@ -26,11 +35,12 @@ export function buildSetupExport(data) {
       slider: adjustment?.slider,
     },
     recommendedColdPressures,
+    recommendedBrakeDucts,
     adjustedParameters: (adjustment?.changes ?? []).reduce((o, c) => {
-      o[c.key] = { from: c.from, to: c.to, unit: c.unit };
+      if (c.delta !== 0) o[c.label ?? c.key] = { from: c.from, to: c.to, unit: c.unit };
       return o;
     }, {}),
-    setup: adjustment?.adjusted ?? baseline,
+    setup,
   };
 }
 
@@ -44,6 +54,9 @@ export function buildSetupText(data) {
   if (e.recommendedColdPressures) {
     const p = e.recommendedColdPressures;
     L.push(`Kaltdruck (psi): VL ${p.fl} · VR ${p.fr} · HL ${p.rl} · HR ${p.rr}`);
+  }
+  if (e.recommendedBrakeDucts) {
+    L.push(`Bremsluft: vorne ${e.recommendedBrakeDucts.front} · hinten ${e.recommendedBrakeDucts.rear}`);
   }
   const a = e.adjustedParameters;
   if (a && Object.keys(a).length) {

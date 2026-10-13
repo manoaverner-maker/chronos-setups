@@ -72,7 +72,7 @@ router.get('/setups/:car/:track', (req, res) => {
   const slider = req.query.slider != null ? Number(req.query.slider) : 0;
 
   const pressures = computePressures({ baseline, model: store.pressureModel, carId: car, airTemp, trackTemp });
-  const adjustment = applyAdjustments({ baseline, adjustments: store.setupAdjustments, slider });
+  const adjustment = applyAdjustments({ baseline, adjustments: store.setupAdjustments, slider, carId: car });
   const referenceTimes = store.referenceTimes?.[car]?.[track] ?? null;
 
   res.json({

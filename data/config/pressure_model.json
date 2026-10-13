@@ -20,15 +20,16 @@
           "hotPressureWindow": [
             26.0,
             27.0
-          ]
+          ],
+          "_reasoning": "Trockenreifen (DHF, seit ACC v1.9): Fenster 26.0-27.0 psi heiss, Ziel 26.5 (Setup-Guides; Race Element nutzt 26.0-27.3)."
         },
         "wet": {
-          "targetHotPressure": 30.25,
+          "targetHotPressure": 30.0,
           "hotPressureWindow": [
             29.5,
             31.0
           ],
-          "_reasoning": "ACC-Regenreifen laufen optimal bei ~29.5-31.0 psi heiss (unveraendert seit v1.9). Gleiches deterministisches Modell wie dry; psiPerDegC identisch, da keine belastbaren Wet-Telemetriedaten vorliegen."
+          "_reasoning": "ACC-Regenreifen: Ziel ~30.0 psi heiss (Coach Dave Academy: 'remains at 30 psi as an optimum target'), Fenster 29.5-31.0 psi (gaengige Angabe der Setup-Guides; Race Element nutzt 29.5-30.5). psiPerDegC identisch zu dry, da keine belastbaren Wet-Telemetriedaten vorliegen."
         }
       }
     }
@@ -37,5 +38,40 @@
     "ferrari_296_gt3": "gt3",
     "mercedes_amg_gt3_evo": "gt3",
     "amr_v8_vantage_gt3": "gt3"
-  }
+  },
+  "brakeDucts": {
+    "range": [
+      0,
+      6
+    ],
+    "degPerClick": 10,
+    "brakeTempWindows": {
+      "pad1": {
+        "front": [
+          300,
+          600
+        ],
+        "rear": [
+          260,
+          450
+        ]
+      },
+      "pad2": {
+        "front": [
+          300,
+          600
+        ],
+        "rear": [
+          200,
+          450
+        ]
+      }
+    },
+    "_reasoning": "Bremsluftkanaele (0 = zu, 6 = ganz offen) steuern seit ACC v1.8 fast nur noch die Bremstemperatur — laut Coach Dave Academy haben sie 'minimal effect on tyre temperatures'. Darum wird der Reifendruck NICHT ueber die Kanaele korrigiert. Faustregel fuer die Kanaele: pro ~10 Grad gewichteter Temperaturabweichung von der Baseline 1 Klick (waermer -> oeffnen, kaelter -> schliessen), gerundet, also erst ab +-5 Grad eine Aenderung. Das ist ein Richtwert — massgeblich sind die Bremstemperaturen im Spiel (Fenster je Belag, Coach Dave Academy v1.8 FAQ)."
+  },
+  "_sources": [
+    "https://coachdaveacademy.com/release-notes/v1-8-acc-update-faq-coach-dave-academy/",
+    "https://simracingsetup.com/assetto-corsa/acc-tyre-pressure-guide/",
+    "github.com/RiddleTime/Race-Element (Race_Element.HUD.ACC/Overlays/Driving/PressureTrace/TyrePressures.cs)"
+  ]
 }

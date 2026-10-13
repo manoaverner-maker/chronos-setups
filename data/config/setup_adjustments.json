@@ -16,6 +16,7 @@
   "rules": [
     {
       "key": "rearWing",
+      "label": "Heckflügel",
       "path": "advancedSetup.aeroBalance.rearWing",
       "perStep": -1,
       "min": 0,
@@ -26,6 +27,7 @@
     },
     {
       "key": "arbFront",
+      "label": "Stabilisator vorne",
       "path": "advancedSetup.mechanicalBalance.arbFront",
       "perStep": -1,
       "min": 0,
@@ -36,6 +38,7 @@
     },
     {
       "key": "arbRear",
+      "label": "Stabilisator hinten",
       "path": "advancedSetup.mechanicalBalance.arbRear",
       "perStep": 1,
       "min": 0,
@@ -46,6 +49,7 @@
     },
     {
       "key": "brakeBias",
+      "label": "Bremsbalance",
       "path": "advancedSetup.mechanicalBalance.brakeBias",
       "perStep": -0.4,
       "min": 50.0,
@@ -56,13 +60,83 @@
     },
     {
       "key": "preload",
+      "label": "Differential-Vorspannung",
       "path": "advancedSetup.mechanicalBalance.preload",
       "perStep": -20,
       "min": 20,
       "max": 300,
       "unit": "Nm",
       "decimals": 0,
-      "reasoning": "Hoehere Differential-Vorspannung = mehr Traktion/Stabilitaet unter Last, aber traeger. Aggressiv senkt die Vorspannung (agileres Einlenken), Sicher erhoeht sie. Schrittweite -20 = 2 ACC-Klicks (das Spiel verstellt in 10-Nm-Schritten), damit jeder Slider-Wert im Spiel exakt einstellbar ist."
+      "reasoning": "Differential-Vorspannung (Preload, Nm) — das ist das Sperrdifferential, NICHT der Diffusor. Hoehere Vorspannung = mehr Traktion/Stabilitaet unter Last, aber traeger. Aggressiv senkt die Vorspannung (agileres Einlenken), Sicher erhoeht sie. Schrittweite -20 = 2 ACC-Klicks (das Spiel verstellt in 10-Nm-Schritten), damit jeder Slider-Wert im Spiel exakt einstellbar ist."
     }
-  ]
+  ],
+  "_limitsComment": "carLimits: im Spiel einstellbarer Bereich je Auto [min, max] in Anzeigewerten. Aston Martin V8 aus Race Element (SetupParser/Cars/GT3/AMRV8VantageGT3.cs). Ferrari 296 und Mercedes-AMG Evo: Race Element hinterlegt dort keine Bereiche — als sichere Grenze gilt der groesste Wert, der in den oeffentlichen Setups (github.com/Lon3035/ACC_Setups) vorkommt; der Slider schlaegt damit nie einen Wert vor, den es im Spiel nicht gibt. Der Diffusor/Splitter wird bewusst NIE veraendert (beim Ferrari 296 und Aston V8 im Spiel fest).",
+  "carLimits": {
+    "ferrari_296_gt3": {
+      "rearWing": [
+        0,
+        12
+      ],
+      "arbFront": [
+        0,
+        6
+      ],
+      "arbRear": [
+        0,
+        4
+      ],
+      "brakeBias": [
+        50.0,
+        70.0
+      ],
+      "preload": [
+        20,
+        300
+      ]
+    },
+    "mercedes_amg_gt3_evo": {
+      "rearWing": [
+        1,
+        10
+      ],
+      "arbFront": [
+        0,
+        10
+      ],
+      "arbRear": [
+        0,
+        13
+      ],
+      "brakeBias": [
+        50.0,
+        70.0
+      ],
+      "preload": [
+        20,
+        300
+      ]
+    },
+    "amr_v8_vantage_gt3": {
+      "rearWing": [
+        0,
+        10
+      ],
+      "arbFront": [
+        0,
+        8
+      ],
+      "arbRear": [
+        0,
+        8
+      ],
+      "brakeBias": [
+        57.0,
+        78.0
+      ],
+      "preload": [
+        20,
+        300
+      ]
+    }
+  }
 }

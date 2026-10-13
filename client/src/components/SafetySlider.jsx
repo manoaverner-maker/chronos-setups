@@ -25,7 +25,10 @@ export default function SafetySlider({ adjustment, value, onChange }) {
             className="flex items-center justify-between text-sm py-1.5 px-2 rounded-lg hover:bg-white/5"
             title={c.reasoning}
           >
-            <span className="text-muted capitalize">{c.key}</span>
+            <span className="text-muted">
+              {c.label}
+              {c.atLimit && <span className="ml-1.5 text-[10px] text-warn">Spiel-Grenze</span>}
+            </span>
             <span className="tabular-nums">
               <span className="text-muted/70">{c.from}</span>
               <span className="mx-1 opacity-40">→</span>
@@ -37,6 +40,11 @@ export default function SafetySlider({ adjustment, value, onChange }) {
           </motion.div>
         ))}
       </div>
+
+      <p className="text-[11px] text-muted mt-3">
+        Verändert nur Heckflügel, Stabilisatoren, Bremsbalance und Differential-Vorspannung (Preload, Sperrdifferential).
+        Der Diffusor bzw. Splitter wird nie verstellt.
+      </p>
     </div>
   );
 }

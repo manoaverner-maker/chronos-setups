@@ -89,7 +89,7 @@ export default function SetupSheet({ baseline, adjustment }) {
           <Field label="Bremsbalance" value={mb.brakeBias} unit="%" change={ch['advancedSetup.mechanicalBalance.brakeBias']} />
           <Field label="Bremskraft" value={mb.brakeTorque} unit="%" />
           <Field label="Lenkübersetzung" value={mb.steeringRatio} />
-          <Field label="Vorspannung Diff." value={mb.preload} unit=" Nm" change={ch['advancedSetup.mechanicalBalance.preload']} />
+          <Field label="Differential-Vorspannung" value={mb.preload} unit=" Nm" change={ch['advancedSetup.mechanicalBalance.preload']} />
         </Group>
 
         <Group title="Aerodynamik">
