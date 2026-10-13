@@ -104,7 +104,7 @@ export async function getSetup(car, track, { airTemp, trackTemp, slider, file } 
   const trk = trackTemp ?? ref.track;
   const sld = slider ?? 0;
   const pressures = computePressures({ baseline, model, carId: car, airTemp: air, trackTemp: trk });
-  const adjustment = applyAdjustments({ baseline, adjustments, slider: sld });
+  const adjustment = applyAdjustments({ baseline, adjustments, slider: sld, carId: car });
   const referenceTimes = refTimesAll.times?.[car]?.[track] ?? null;
   return {
     car, track, sourceFile: entry.file,
